@@ -1,0 +1,1 @@
+NumLock:: Winset, Alwaysontop, , A
