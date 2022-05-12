@@ -40,10 +40,10 @@ GroupAdd, browsers, ahk_exe firefox.exe
   return
  ~`::
   if(light) {
-   Gui, %dark%:Color, 000000
+   try Gui, %dark%:Color, 000000
    light := false
   } else {
-   Gui, %dark%:Color, FFFFFF
+   try Gui, %dark%:Color, FFFFFF
    light := true
   }
   return
