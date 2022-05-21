@@ -21,7 +21,7 @@ runWindowsTroubleshooter(troubleshooter) {
  Run *RunAs %A_ComSpec% /c msdt.exe /id %troubleshooter%,, Hide
 }
 
-troubleshooters := [["&Internet Connection", "NetworkDiagnosticsWeb"], ["&Hardware and Devices", "DeviceDiagnostic"], ["Incoming &Connections", "NetworkDiagnosticsInbound"], ["&Microphone", "AudioRecordingDiagnostic"], ["&Network Adapter", "NetworkDiagnosticsNetworkAdapter"], ["&Playing Audio", "AudioPlaybackDiagnostic"], ["&Windows Update", "WindowsUpdateDiagnostic"]]
+troubleshooters := [["&Internet Connection", "NetworkDiagnosticsWeb"], ["&Hardware and Devices", "DeviceDiagnostic"], ["Incoming &Connections", "NetworkDiagnosticsInbound"], ["&Microphone", "AudioRecordingDiagnostic"], ["&Network Adapter", "NetworkDiagnosticsNetworkAdapter"], ["&Playing Audio", "AudioPlaybackDiagnostic"], ["&Search and Indexing", "SearchDiagnostic"], ["&Windows Update", "WindowsUpdateDiagnostic"]]
 for i, troubleshooter in troubleshooters {
  act := Func("runWindowsTroubleshooter").Bind(troubleshooter[2])
  label := troubleshooter[1]
