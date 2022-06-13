@@ -41,6 +41,9 @@ ApplyVolume(vol_lvl, mod:=0) {
  DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
 }
 
+solo := true
+Gosub, ^NumpadDiv
+
 ^NumpadDot::DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Command.Restart", "Float", 1.0)
 ^NumpadAdd::ApplyVolume(1.44, 1)
 ^NumpadSub::ApplyVolume(-1.44, 1)
@@ -58,16 +61,19 @@ NumpadMult & NumpadSub::ApplyVolume(-1, 2)
 ^Numpad9::ApplyVolume(4.8)
 ^NumpadMult::ApplyVolume(12.0)
 ^NumpadDiv::
- DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
- vol_lvl := 0.0
- DllCall("VoicemeeterRemote64\VBVMR_GetParameterFloat", "AStr", "Bus[2].Gain", "Ptr", &vol_lvl)
- vol_lvl := NumGet(vol_lvl, 0, "Float")
- if(vol_lvl = -60.0) {
-  DllCall("VoicemeeterRemote64\VBVMR_GetParameterFloat", "AStr", "Bus[0].Gain", "Ptr", &vol_lvl)
-  vol_lvl := NumGet(vol_lvl, 0, "Float")
-  DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Bus[2].Gain", "Float", vol_lvl)
+ if(solo) {
+  DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Bus[0].Mute", "Float", 0.0)
+  DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Bus[1].Mute", "Float", 0.0)
+  DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Bus[2].Mute", "Float", 1.0)
+  DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Bus[3].Mute", "Float", 0.0)
+  DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Bus[4].Mute", "Float", 0.0)
+  solo := false
  } else {
-  DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Bus[2].Gain", "Float", -60.0)
+  DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Bus[0].Mute", "Float", 1.0)
+  DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Bus[1].Mute", "Float", 1.0)
+  DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Bus[2].Mute", "Float", 0.0)
+  DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Bus[3].Mute", "Float", 1.0)
+  DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Bus[4].Mute", "Float", 1.0)
+  solo := true
  }
- DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
 return
