@@ -4,17 +4,19 @@ DetectHiddenWindows, On
 loaded := false
 reticle := 0x0
 
-all := [".Hotkeys", "Citra", "Internet", "Magicka", "Minecraft", "Risk of Rain 2", "Sonic Adventure DX", "Superliminal", "Terraria", "The Escapists 2", "Valheim"]
+all := [".Hotkeys", 0, "Citra", "Magicka", "Minecraft", "Risk of Rain 2", "Sonic Adventure DX", "Superliminal", "Terraria", "The Escapists 2", "Valheim", 0, "Internet", "Voicemeeter"]
 showMenu() {
  global loaded
  if(loaded) {
   global all
   for i, item in all {
-   path := % A_WorkingDir "\" item ".ahk"
-   if(WinExist(path)) {
-    Menu, stop, Enable, %item%
-   } else {
-    Menu, stop, Disable, %item%
+   if(item != 0) {
+    path := % A_WorkingDir "\" item ".ahk"
+    if(WinExist(path)) {
+     Menu, stop, Enable, %item%
+    } else {
+     Menu, stop, Disable, %item%
+    }
    }
   }
   Menu, hotkey, Show
@@ -38,18 +40,24 @@ runWindowsTroubleshooter(troubleshooter) {
 }
 
 for i, item in all {
- act := Func("startScript").Bind(item)
- Menu, start, Add, %item%, % act
- act := Func("stopScript").Bind(item)
- Menu, stop, Add, %item%, % act
- act := Func("editScript").Bind(item)
- Menu, edit, Add, %item%, % act
- if(i > 1) {
-  startScript(item)
+ if(item = 0) {
+  Menu, start, Add
+  Menu, stop, Add
+  Menu, edit, Add
  } else {
-  Menu, start, Default, 1&
-  Menu, stop, Default, 1&
-  Menu, edit, Default, 1&
+  act := Func("startScript").Bind(item)
+  Menu, start, Add, %item%, % act
+  act := Func("stopScript").Bind(item)
+  Menu, stop, Add, %item%, % act
+  act := Func("editScript").Bind(item)
+  Menu, edit, Add, %item%, % act
+  if(i > 1) {
+   startScript(item)
+  } else {
+   Menu, start, Default, 1&
+   Menu, stop, Default, 1&
+   Menu, edit, Default, 1&
+  }
  }
 }
 
