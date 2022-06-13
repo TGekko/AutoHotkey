@@ -41,6 +41,7 @@ ApplyVolume(vol_lvl, mod:=0) {
  DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
 }
 
+^NumpadDot::DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Command.Restart", "Float", 1.0)
 ^NumpadAdd::ApplyVolume(1.44, 1)
 ^NumpadSub::ApplyVolume(-1.44, 1)
 NumpadMult & NumpadAdd::ApplyVolume(1, 2)
