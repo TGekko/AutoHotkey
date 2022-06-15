@@ -18,28 +18,34 @@ VMLogout() {
  Logout := DllCall("VoicemeeterRemote64\VBVMR_Logout")
 }
 
-ApplyVolume(vol_lvl, mod:=0) {
- if(mod = 1 || mod = 2) {
-  DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
-  current_vol_lvl := 0.0
-  if(mod = 1) {
-   DllCall("VoicemeeterRemote64\VBVMR_GetParameterFloat", "AStr", "Strip[5].Gain", "Ptr", &current_vol_lvl)
-  } else {
-   DllCall("VoicemeeterRemote64\VBVMR_GetParameterFloat", "AStr", "Strip[6].Gain", "Ptr", &current_vol_lvl)
-  }
-  current_vol_lvl := NumGet(current_vol_lvl, 0, "Float")
-  vol_lvl := % current_vol_lvl + vol_lvl
+clamp(min, value, max) {
+ if(min > value) {
+  value := min
+ } else if(max < value) {
+  value := max
  }
- if (vol_lvl > 12.0){
-  vol_lvl = 12.0
- } else if (vol_lvl < -60.0) {
-  vol_lvl = -60.0
+ return value
+}
+
+ApplyVolume(volume, mod:=0) {
+ current := 0.0
+ DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
+ if(mod = 2) {
+  DllCall("VoicemeeterRemote64\VBVMR_GetParameterFloat", "AStr", "Strip[6].Gain", "Ptr", &current)
+  current := clamp(-60.0, NumGet(current, 0, "Float")+volume, 12.0)
+  DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Strip[6].Gain", "Float", current)
+ } else {
+  Loop {
+   strip := A_Index+4
+   if(mod = 0) {
+    current := volume
+   } else {
+    DllCall("VoicemeeterRemote64\VBVMR_GetParameterFloat", "AStr", "Strip[" . strip . "].Gain", "Ptr", &current)
+    current := clamp(-60.0, NumGet(current, 0, "Float")+volume, 12.0)
+   }
+   DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Strip[" . strip . "].Gain", "Float", current)   
+  } Until A_Index = 3
  }
- if(mod = 0 || mod = 1) {
-  DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Strip[5].Gain", "Float", vol_lvl)
-  DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Strip[7].Gain", "Float", vol_lvl)
- }
- DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Strip[6].Gain", "Float", vol_lvl)
  DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
 }
 
@@ -50,8 +56,8 @@ Gosub, ^NumpadDiv
  ^NumpadDot::DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Command.Restart", "Float", 1.0)
  ^NumpadAdd::ApplyVolume(1.44, 1)
  ^NumpadSub::ApplyVolume(-1.44, 1)
- NumpadMult & NumpadAdd::ApplyVolume(1, 2)
- NumpadMult & NumpadSub::ApplyVolume(-1, 2)
+ ^+NumpadAdd::ApplyVolume(1, 2)
+ ^+NumpadSub::ApplyVolume(-1, 2)
  ^Numpad0::ApplyVolume(-60.0)
  ^Numpad1::ApplyVolume(-52.8)
  ^Numpad2::ApplyVolume(-45.6)
