@@ -228,7 +228,7 @@ destroyGUI(ui) {
 ; Set window to 100% of the screen's size
 #NumpadSub:: activeMoveTo(0.5, 0.5, 1)
 ; Set window to 100% of the screen's size including the taskbar
-!#NumpadSub:: activeMoveTo(0.5, 0.5, 1, true)
+#!NumpadSub:: activeMoveTo(0.5, 0.5, 1, true)
 
 ; Toggle "Always On Top" for the active window
 ^#a::WinSet, AlwaysOnTop, Toggle, A
@@ -266,16 +266,23 @@ return
 ; Enable Theatre Mode for the active window
 ; This makes the rest of the screen black
 ^#/::
+; Enable Soft Theatre Mode
+; Any number of windows can be on top of the black screen
+^#!/::
  if (not destroyGUI(dark)) {
-  Gui, New, +AlwaysOnTop +ToolWindow -Caption +LastFound +Hwnddark
+  if(GetKeyState("Alt")) {
+   Gui, New, +ToolWindow -Caption +LastFound +Hwnddark
+  } else {
+   Gui, New, +AlwaysOnTop +ToolWindow -Caption +LastFound +Hwnddark
+   WinSet, TransColor, 100100
+   WinGetActiveStats, title, w, h, x, y
+   x += margin
+   y += margin
+   w -= margin*2
+   h -= margin*2
+   Gui, %dark%:Add, Progress, x%x% y%y% w%w% h%h% c100100 background100100 Hwnddarkwindow, 100
+  }
   Gui, %dark%:Color, 000000
-  WinSet, TransColor, 100100
-  WinGetActiveStats, title, w, h, x, y
-  x += margin
-  y += margin
-  w -= margin*2
-  h -= margin*2
-  Gui, %dark%:Add, Progress, x%x% y%y% w%w% h%h% c100100 background100100 Hwnddarkwindow, 100
   Gui, %dark%:Show, x0 y0 w%A_ScreenWidth% h%A_ScreenHeight% NoActivate, AutoHotkey :: Windows.ahk > GUI > Theatre Mode
  }
 return

@@ -9,7 +9,7 @@ GroupAdd, browsers, ahk_exe firefox.exe
 #IfWinActive ahk_group browsers
  ^Right::Send {Right 17}
  ^Left::Send {Left 17}
- ^#!/::
+ ^+#/::
   if (not hide(dark)) {
    Gui, New, +AlwaysOnTop +ToolWindow -Caption +LastFound +Hwnddark
    Gui, %dark%:Color, 000000

@@ -1,17 +1,17 @@
 #SingleInstance Force
 #NoTrayIcon
 
-; Forward	W
-; Left		A
-; Backward	S
-; Right		D
-; Jump		Space
-; Camera Left	Left
-; Campera Right Right
-; Action	E / Down
-; Look Around	Up
-; Back		Backspace
-; Pause		Escape / Enter
+; Forward         W
+; Left            A
+; Backward        S
+; Right           D
+; Jump            Space
+; Camera Left     Left
+; Camera Right    Right
+; Action          E or Down
+; Look Around     Up
+; Back            Backspace
+; Pause           Escape or Enter
 
 ; Sonic Adventure DX
 ; ahk_class Sonic Adventure DX
