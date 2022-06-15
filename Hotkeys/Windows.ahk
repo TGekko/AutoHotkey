@@ -12,7 +12,7 @@ overtaskbar = []
 windowprofiles := [[["Steam ahk_exe steam.exe", 0, 0, 1694, 2112], ["Friends List ahk_exe steamwebhelper.exe", 1694, 0, 226, 2112], ["ahk_exe Discord.exe", 1920, 0, 1920, 2112]]]
 
 ; This accounts for Windows Aero invisible borders
-margin := 10
+margin := 7
 
 ; This will contain the styles of windows toggled as borderless
 borderless := {}
@@ -271,10 +271,10 @@ return
   Gui, %dark%:Color, 000000
   WinSet, TransColor, 100100
   WinGetActiveStats, title, w, h, x, y
-  x += 10
-  y += 10
-  w -= 20
-  h -= 20
+  x += margin
+  y += margin
+  w -= margin*2
+  h -= margin*2
   Gui, %dark%:Add, Progress, x%x% y%y% w%w% h%h% c100100 background100100 Hwnddarkwindow, 100
   Gui, %dark%:Show, x0 y0 w%A_ScreenWidth% h%A_ScreenHeight% NoActivate, AutoHotkey :: Windows.ahk > GUI > Theatre Mode
  }
