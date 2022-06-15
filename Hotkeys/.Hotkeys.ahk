@@ -4,7 +4,7 @@ DetectHiddenWindows, On
 loaded := false
 reticle := 0x0
 
-all := [".Hotkeys", 0, "Citra", "Magicka", "Minecraft", "Risk of Rain 2", "Sonic Adventure DX", "Superliminal", "Terraria", "The Escapists 2", "Valheim", 0, "Internet", "Voicemeeter"]
+all := [".Hotkeys", 0, "Citra", "Magicka", "Minecraft", "Risk of Rain 2", "Sonic Adventure DX", "Superliminal", "Terraria", "The Escapists 2", "Valheim", 0, "Internet", "Voicemeeter", "Windows"]
 showMenu() {
  global loaded
  if(loaded) {
