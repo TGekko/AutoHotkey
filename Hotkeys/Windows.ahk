@@ -271,11 +271,11 @@ destroyGUI(ui) {
 ; Toggle Borderless Mode for the active window and set it to 100% of the screen's size including the taskbar
 ; Ignore arbitrary margin adjustment
 ^#!b::
- activeMoveTo(0.5, 0.5, 1, true)
-; Toggle Borderless Mode for the active window
-^#b::
  activeToggleBorderless()
+ activeMoveTo(0.5, 0.5, 1, true)
 return
+; Toggle Borderless Mode for the active window
+^#b::activeToggleBorderless()
 
 ; Toggle window transparency
 ^#t::activeToggleTransparency()
