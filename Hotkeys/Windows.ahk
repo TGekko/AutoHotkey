@@ -232,11 +232,14 @@ destroyGUI(ui) {
 
 ; Toggle "Always On Top" for the active window
 ^#a::WinSet, AlwaysOnTop, Toggle, A
-; Toggle "Always On Top" for the Windows taskbar
-^#!a::WinSet, AlwaysOnTop, Toggle, ahk_class Shell_TrayWnd
 
+; Toggle Borderless Mode for the active window and set it to 100% of the screen's size including the taskbar
+^#!b::
+ activeMoveTo(0.5, 0.5, 1, true)
 ; Toggle Borderless Mode for the active window
-^#b::activeToggleBorderless()
+^#b::
+ activeToggleBorderless()
+return
 
 ; Toggle window transparency
 ^#t::
