@@ -38,6 +38,15 @@ openFolder() {
 runWindowsTroubleshooter(troubleshooter) {
  Run *RunAs %A_ComSpec% /c msdt.exe /id %troubleshooter%,, Hide
 }
+exitAll() {
+ global all
+ for i, item in all {
+  if(!(item = 0 || item = ".Hotkeys")) {
+   stopScript(item)
+  }
+ }
+}
+OnExit("exitAll")
 
 for i, item in all {
  if(item = 0) {
@@ -121,7 +130,15 @@ scripthotkeys["Internet"] := [["Skip Forward 17 times", "Control+Right"], ["Skip
 
 scripthotkeys["Voicemeeter"] := [["Restart Audio Engine", "Control+Numpad Dot"], 0, ["Increase Volume by 2%", "Control+Numpad Add"], ["Decrease Volume by 2%", "Control+Numpad Subtract"], ["Increase Auxiliary Volume by 2%", "Control+Shift+Numpad Add"], ["Decrease Auxiliary Volume by 2%", "Control+Shift+Numpad Subtract"], 0, ["Mute", "Control+Numpad 0"], ["Set Volume to 10%", "Control+Numpad 1"], ["Set Volume to 20%", "Control+Numpad 2"], ["Set Volume to 30%", "Control+Numpad 3"], ["Set Volume to 40%", "Control+Numpad 4"], ["Set Volume to 50%", "Control+Numpad 5"], ["Set Volume to 60%", "Control+Numpad 6"], ["Set Volume to 70%", "Control+Numpad 7"], ["Set Volume to 80%", "Control+Numpad 8"], ["Set Volume to 90%", "Control+Numpad 9"], ["Set Volume to 100%", "Control+Numpad Multiply"], 0, ["Toggle Solo Mode", "Control+Numpad Divide"], ["Toggle Solo Mode With Message", "Control+Shift+Numpad Divide"]]
 
-scripthotkeys["Windows"] := [["Activate Window Profile - Main", "Control+Windows+Comma"], 0, ["Center Active Window Horizontally", "Windows+Numpad 0"], ["Center Active Window", "Windows+Numpad Dot"], ["Center Active Window Vertically", "Windows+Numpad Enter"], 0, ["Move Active Window and Size to 50% of the Screen", "-"], ["Bottom Left", "Windows+Numpad 1"], ["Bottom Center", "Windows+Numpad 2"], ["Bottom Right", "Windows+Numpad 3"], ["Center Left", "Windows+Numpad 4"], ["Center", "Windows+Numpad 5"], ["Center Right", "Windows+Numpad 6"], ["Top Left", "Windows+Numpad 7"], ["Top Center", "Windows+Numpad 8"], ["Top Right", "Windows+Numpad 9"], 0, ["Move Active Window Up", "Windows+Alt+Numpad 8"], ["Move Active Window Right", "Windows+Alt+Numpad 6"], ["Move Active Window Down", "Windows+Alt+Numpad 2"], ["Move Active Window Left", "Windows+Alt+Numpad 4"], 0, ["Resize Active Window by +5% of the Screen", "Windows+Numpad Multiply"], ["Resize Active Window by -5% of the Screen", "Windows+Numpad Divide"], ["Resize Active Window to Fill the Screen", "Windows+Numpad Subtract"], ["Resize Active Window to Fill Screen && Taskbar", "Windows+Alt+Numpad Subtract"], 0, ["Toggle Active Window Always On Top", "Control+Windows+A"], ["Toggle Active Window Borderless Mode", "Control+Windows+B"], ["Toggle Active Window Borderless Fullscreen", "Control+Windows+Alt+B"], 0, ["Toggle Window Transparency (50%)", "Control+Windows+T"], ["Toggle Window Transparency (Custom)", "Control+Windows+Alt+T"], 0, ["Toggle Theatre Mode", "Control+Windows+Forward Slash"], ["Toggle Soft Theatre Mode", "Control+Windows+Alt+Forward Slash"]]
+scripthotkeys["Windows"] := []
+scripthotkeys["Windows"].push(["Activate Window Profile - Main", "Control+Windows+Comma"], 0)
+scripthotkeys["Windows"].push(["Center Active Window Horizontally", "Windows+Numpad 0"], ["Center Active Window", "Windows+Numpad Dot"], ["Center Active Window Vertically", "Windows+Numpad Enter"], 0)
+scripthotkeys["Windows"].push(["Move Active Window and Size to 50% of the Screen", "-"], ["Bottom Left", "Windows+Numpad 1"], ["Bottom Center", "Windows+Numpad 2"], ["Bottom Right", "Windows+Numpad 3"], ["Center Left", "Windows+Numpad 4"], ["Center", "Windows+Numpad 5"], ["Center Right", "Windows+Numpad 6"], ["Top Left", "Windows+Numpad 7"], ["Top Center", "Windows+Numpad 8"], ["Top Right", "Windows+Numpad 9"], 0)
+scripthotkeys["Windows"].push(["Move Active Window Up", "Control+Windows+Numpad 8"], ["Move Active Window Right", "Control+Windows+Numpad 6"], ["Move Active Window Down", "Control+Windows+Numpad 2"], ["Move Active Window Left", "Control+Windows+Numpad 4"], 0)
+scripthotkeys["Windows"].push(["Resize Active Window by +5% of the Screen", "Windows+Numpad Multiply"], ["Resize Active Window by -5% of the Screen", "Windows+Numpad Divide"], ["Resize Active Window to Fill the Screen", "Windows+Numpad Subtract"], ["Resize Active Window to Fill Screen && Taskbar", "Windows+Alt+Numpad Subtract"], 0)
+scripthotkeys["Windows"].push(["Toggle Active Window Always On Top", "Control+Windows+A"], ["Toggle Active Window Borderless Mode", "Control+Windows+B"], ["Toggle Active Window Borderless Fullscreen", "Control+Windows+Alt+B"], 0)
+scripthotkeys["Windows"].push(["Toggle Window Transparency (50%)", "Control+Windows+T"], ["Toggle Window Transparency (Custom)", "Control+Windows+Alt+T"], 0)
+scripthotkeys["Windows"].push(["Toggle Theatre Mode", "Control+Windows+Forward Slash"], ["Toggle Soft Theatre Mode", "Control+Windows+Alt+Forward Slash"])
 
 for n, script in all {
  name := StrReplace(script, " ")
@@ -132,7 +149,9 @@ for n, script in all {
    if(item = 0) {
     Menu, scriptlist%name%, Add
    } else {
-    label := item[1]
+    ; A space is added to label to correct an issue with adding certain labels to menus.
+    ; The reason that this is effective in correcting both the left and right columns is unknown.
+    label := item[1] . " "
     Menu, scriptlist%name%, Add, %label%, Nothing
    }
   }

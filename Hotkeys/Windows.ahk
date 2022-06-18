@@ -76,6 +76,11 @@ activeWindowMonitorBounds(full:=false) {
 }
 
 ; Moves the active window to a given position within the monitor which it resides.
+; Windows without the following styles ignore arbitrary margin adjustment:
+; > 0xC00000 - WS_CAPTION  (title bar)
+; > 0x800000 - WS_BORDER   (thin-line border)
+; > 0x400000 - WS_DLGFRAME (dialog box border)
+; > 0x40000  - WS_SIZEBOX  (sizing border)
 ;  x    - A value *between 0 and 1* which represents a percentage of the monitor's width.
 ;         The center of the active window will be at this position.
 ;          A value of 0.5 will move the window to the center of the monitor.
@@ -99,8 +104,13 @@ activeMoveTo(x:=-1, y:=-1, size:=-1, full:=false) {
   bounds := activeWindowMonitorBounds()
  }
  if(size >= 0 && size <= 1) {
-  width := (bounds[3]*size)+(margin*2)
-  height := (bounds[4]*size)+(margin*2)
+  width := bounds[3]*size
+  height := bounds[4]*size
+  WinGet, style, Style, A
+  if(!(style & 0xC00000 || style & 0x800000 || style & 0x400000 || style & 0x40000)) {
+   width += margin*2
+   height += margin*2
+  }
  }
  if(x >= 0 && x <= 1) {
   winx := bounds[1]+(bounds[3]*x)-(width/2)
@@ -176,6 +186,30 @@ activeToggleBorderless() {
  }
 }
 
+; Toggles Transparency for the active window
+;  prompt - A boolean value indicating whether the user should (true) or should not (false) be prompted for a custom transparency percentage
+activeToggleTransparency(prompt:=false) {
+ transparency := 0
+ WinGet, transparency, Transparent, A
+ if(transparency) {
+  WinSet, Transparent, 255, A
+  WinSet, Transparent, Off, A
+ } else {
+  if(prompt) {
+   InputBox, transparency, Set Window Transparency, Input a number from 0 to 100 to set the percentage of opacity.,, 300, 150,,, Locale,, 95
+   if(ErrorLevel) {
+    return
+   }
+  } else {
+   transparency := 50
+  }
+  if(transparency >= 0 && transparency <= 100) {
+   transparency := (transparency/100)*255
+   WinSet, Transparent, %transparency%, A
+  }
+ }
+}
+
 ; If the given gui exists, the gui is destroyed.
 ;  ui      - The gui id of the gui to destroy.
 ;  returns - A boolean value indicating whether the given gui was (true) or was not (false) destroyed.
@@ -215,17 +249,18 @@ destroyGUI(ui) {
 #Numpad9::activeMoveTo(0.75, 0.25, 0.5)
 
 ; Move window by one pixel in the direction of the numpad key with relation to [Numpad5]
-#!Numpad8::activeMoveBy(, -1)
-#!Numpad6::activeMoveBy(1)
-#!Numpad2::activeMoveBy(, 1)
-#!Numpad4::activeMoveBy(-1)
+^#Numpad8::activeMoveBy(, -1)
+^#Numpad6::activeMoveBy(1)
+^#Numpad2::activeMoveBy(, 1)
+^#Numpad4::activeMoveBy(-1)
 
 ; Resize active window by +5% of the monitor size
-#NumpadMult::activeSizeBy(0.05, 0.05, true, true)
+#NumpadMult::activeSizeBy(0.05, 0.05, true)
 ; Resize active window by -5% of the monitor size
-#NumpadDiv::activeSizeBy(-0.05, -0.05, true, true)
+#NumpadDiv::activeSizeBy(-0.05, -0.05, true)
 
 ; Set window to 100% of the screen's size
+; Hold Shift to ignore arbitrary margin adjustment
 #NumpadSub:: activeMoveTo(0.5, 0.5, 1)
 ; Set window to 100% of the screen's size including the taskbar
 #!NumpadSub:: activeMoveTo(0.5, 0.5, 1, true)
@@ -234,6 +269,7 @@ destroyGUI(ui) {
 ^#a::WinSet, AlwaysOnTop, Toggle, A
 
 ; Toggle Borderless Mode for the active window and set it to 100% of the screen's size including the taskbar
+; Ignore arbitrary margin adjustment
 ^#!b::
  activeMoveTo(0.5, 0.5, 1, true)
 ; Toggle Borderless Mode for the active window
@@ -242,29 +278,9 @@ destroyGUI(ui) {
 return
 
 ; Toggle window transparency
-^#t::
+^#t::activeToggleTransparency()
 ; Prompt for window transparency percentage
-^#!t::
- transparency := 0
- WinGet, transparency, Transparent, A
- if(transparency) {
-  WinSet, Transparent, 255, A
-  WinSet, Transparent, Off, A
- } else {
-  if(GetKeyState("Alt")) {
-   InputBox, transparency, Set Window Transparency, Input a number from 0 to 100 to set the percentage of transparency.,, 300, 150,,, Locale,, 95
-   if(ErrorLevel) {
-    return
-   }
-  } else {
-   transparency := 50
-  }
-  if(transparency >= 0 && transparency <= 100) {
-   transparency := (transparency/100)*255
-   WinSet, Transparent, %transparency%, A
-  }
- }
-return
+^#!t::activeToggleTransparency(true)
 
 ; Enable Theatre Mode for the active window
 ; This makes the rest of the screen black
