@@ -12,7 +12,7 @@ overtaskbar = []
 windowprofiles := [[["Steam ahk_exe steam.exe", 0, 0, 1694, 2112], ["Friends List ahk_exe steamwebhelper.exe", 1694, 0, 226, 2112], ["ahk_exe Discord.exe", 1920, 0, 1920, 2112]]]
 
 ; This accounts for Windows Aero invisible borders
-margin := 7
+margin := [7, 4]
 
 ; This will contain the styles of windows toggled as borderless
 borderless := {}
@@ -105,8 +105,8 @@ activeMoveTo(x:=-1, y:=-1, size:=-1, full:=false) {
   height := bounds[4]*size
   WinGet, style, Style, A
   if(style & 0xC00000) {
-   width += margin*2
-   height += margin*2
+   width += margin[1]*2
+   height += margin[2]*2
   }
  }
  if(x >= 0 && x <= 1) {
@@ -257,7 +257,6 @@ destroyGUI(ui) {
 #NumpadDiv::activeSizeBy(-0.05, -0.05, true)
 
 ; Set window to 100% of the screen's size
-; Hold Shift to ignore arbitrary margin adjustment
 #NumpadSub:: activeMoveTo(0.5, 0.5, 1)
 ; Set window to 100% of the screen's size including the taskbar
 #!NumpadSub:: activeMoveTo(0.5, 0.5, 1, true)
@@ -266,7 +265,7 @@ destroyGUI(ui) {
 ^#a::WinSet, AlwaysOnTop, Toggle, A
 
 ; Toggle Borderless Mode for the active window and set it to 100% of the screen's size including the taskbar
-; Ignore arbitrary margin adjustment
+; Ignores arbitrary margin adjustment
 ^#!b::
  activeToggleBorderless()
  activeMoveTo(0.5, 0.5, 1, true)
@@ -292,10 +291,10 @@ return
    Gui, New, +AlwaysOnTop +ToolWindow -Caption +LastFound +Hwnddark
    WinSet, TransColor, 100100
    WinGetActiveStats, title, w, h, x, y
-   x += margin
-   y += margin
-   w -= margin*2
-   h -= margin*2
+   x += margin[1]
+   y += margin[2]
+   w -= margin[1]*2
+   h -= margin[2]*2
    Gui, %dark%:Add, Progress, x%x% y%y% w%w% h%h% c100100 background100100 Hwnddarkwindow, 100
   }
   Gui, %dark%:Color, 000000
