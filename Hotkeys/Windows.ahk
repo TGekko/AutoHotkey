@@ -76,11 +76,8 @@ activeWindowMonitorBounds(full:=false) {
 }
 
 ; Moves the active window to a given position within the monitor which it resides.
-; Windows without the following styles ignore arbitrary margin adjustment:
+; Windows without the following style ignore arbitrary margin adjustment:
 ; > 0xC00000 - WS_CAPTION  (title bar)
-; > 0x800000 - WS_BORDER   (thin-line border)
-; > 0x400000 - WS_DLGFRAME (dialog box border)
-; > 0x40000  - WS_SIZEBOX  (sizing border)
 ;  x    - A value *between 0 and 1* which represents a percentage of the monitor's width.
 ;         The center of the active window will be at this position.
 ;          A value of 0.5 will move the window to the center of the monitor.
@@ -107,7 +104,7 @@ activeMoveTo(x:=-1, y:=-1, size:=-1, full:=false) {
   width := bounds[3]*size
   height := bounds[4]*size
   WinGet, style, Style, A
-  if(!(style & 0xC00000 || style & 0x800000 || style & 0x400000 || style & 0x40000)) {
+  if(style & 0xC00000) {
    width += margin*2
    height += margin*2
   }
