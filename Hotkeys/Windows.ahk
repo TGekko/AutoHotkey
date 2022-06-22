@@ -78,44 +78,61 @@ activeWindowMonitorBounds(full:=false) {
 ; Moves the active window to a given position within the monitor which it resides.
 ; Windows without the following style ignore arbitrary margin adjustment:
 ; > 0xC00000 - WS_CAPTION  (title bar)
-;  x    - A value *between 0 and 1* which represents a percentage of the monitor's width.
-;         The center of the active window will be at this position.
-;          A value of 0.5 will move the window to the center of the monitor.
-;          * If a value outside of 0-1 is given, the window will not be moved on this axis.
-;         (Default == -1)
-;  y    - A value between 0 and 1 which represents a percentage of the monitor's height.
-;         See the notes for <x> for more information.
-;         (Default == -1)
-;  size - A value *between 0 and 1* which represents a percentage of the monitor's width and height.
-;         The active window will be resized using this value.
-;          A value of 0.5 would resize the active window to 50% of the monitor's width and height.
-;          * If a value ouside of 0-1 is given, the window will not be resized.
-;         (Default == -1)
-activeMoveTo(x:=-1, y:=-1, size:=-1, full:=false) {
+;  x      - A value *between 0 and 1* which represents a percentage of the monitor's width.
+;           The center of the active window will be at this position.
+;            A value of 0.5 will move the window to the center of the monitor.
+;            * If a value outside of 0-1 is given, the window will not be moved on this axis.
+;           (Default == -1)
+;  y      - A value between 0 and 1 which represents a percentage of the monitor's height.
+;           See the notes for <x> for more information.
+;           (Default == -1)
+;  width  - A value *between 0 and 1* which represents a percentage of the monitor's width.
+;           The active window will be resized using this value.
+;            A value of 0.5 would resize the active window to 50% of the monitor's width.
+;            * If a value ouside of 0-1 is given, the window will not be resized.
+;           (Default == -1)
+;  height - A value *between 0 and 1* which represents a percentage of the monitor's height.
+;           The active window will be resized using this value.
+;            A value of 0.5 would resize the active window to 50% of the monitor's height.
+;            * If a value ouside of 0-1 is given, the window will not be resized.
+;           (Default == -1)
+;  full   - A boolean value indicating whether or not to ignore an automatic arbitrary margin adjustment when resizing the window.
+;           A value of true will ignore the arbitrary margin adjustment.
+;           A value of false will allow the arbitrary margin adjustment.
+;           (Default == false) 
+activeMoveTo(x:=-1, y:=-1, width:=-1, height:=-1, full:=false) {
  global margin
- WinGetPos, winx, winy, width, height, A
+ WinGetPos, winx, winy, winwidth, winheight, A
  bounds := 0
  if(full) {
   bounds := activeWindowMonitorBounds(true)
  } else {
   bounds := activeWindowMonitorBounds()
  }
- if(size >= 0 && size <= 1) {
-  width := bounds[3]*size
-  height := bounds[4]*size
-  WinGet, style, Style, A
+ WinGet, style, Style, A
+ winx+= winwidth/2
+ winy+= winheight/2
+ if(width >= 0 && width <= 1) {
+  winwidth := bounds[3]*width
   if(style & 0xC00000) {
-   width += margin[1]*2
-   height += margin[2]*2
+   winwidth += margin[1]*2
+  }
+ }
+ if(height >= 0 && height <= 1) {
+  winheight := bounds[4]*height
+  if(style & 0xC00000) {
+   winheight += margin[2]*2
   }
  }
  if(x >= 0 && x <= 1) {
-  winx := bounds[1]+(bounds[3]*x)-(width/2)
+  winx := bounds[1]+(bounds[3]*x)
  }
  if(y >= 0 && y <= 1) {
-  winy := bounds[2]+(bounds[4]*y)-(height/2)
+  winy := bounds[2]+(bounds[4]*y)
  }
- WinMove, A,, winx, winy, width, height
+ winx-= winwidth/2
+ winy-= winheight/2
+ WinMove, A,, winx, winy, winwidth, winheight
 }
 
 ; Moves the active window by a specified amount of pixels.
@@ -232,18 +249,27 @@ destroyGUI(ui) {
 #NumpadDot::activeMoveTo(0.5, 0.5)
 ; Center active window vertically
 #NumpadEnter::activeMoveTo(, 0.5)
+; Expand Active Window to Fill Screen Horizontally
+#!Numpad0::activeMoveTo(,, 1)
+; Expand Active Window to Fill Screen Vertically
+#!NumpadEnter::activeMoveTo(,,, 1)
 
 ; Move window to numpad key position on the screen and scale to 50% of the screen size
 ; [Numpad5] represents the center of the screen
-#Numpad1::activeMoveTo(0.25, 0.75, 0.5)
-#Numpad2::activeMoveTo(0.5, 0.75, 0.5)
-#Numpad3::activeMoveTo(0.75, 0.75, 0.5)
-#Numpad4::activeMoveTo(0.25, 0.5, 0.5)
-#Numpad5::activeMoveTo(0.5, 0.5, 0.5)
-#Numpad6::activeMoveTo(0.75, 0.5, 0.5)
-#Numpad7::activeMoveTo(0.25, 0.25, 0.5)
-#Numpad8::activeMoveTo(0.5, 0.25, 0.5)
-#Numpad9::activeMoveTo(0.75, 0.25, 0.5)
+#Numpad1::activeMoveTo(0.25, 0.75, 0.5, 0.5)
+#Numpad2::activeMoveTo(0.5, 0.75, 0.5, 0.5)
+#Numpad3::activeMoveTo(0.75, 0.75, 0.5, 0.5)
+#Numpad4::activeMoveTo(0.25, 0.5, 0.5, 0.5)
+#Numpad5::activeMoveTo(0.5, 0.5, 0.5, 0.5)
+#Numpad6::activeMoveTo(0.75, 0.5, 0.5, 0.5)
+#Numpad7::activeMoveTo(0.25, 0.25, 0.5, 0.5)
+#Numpad8::activeMoveTo(0.5, 0.25, 0.5, 0.5)
+#Numpad9::activeMoveTo(0.75, 0.25, 0.5, 0.5)
+
+; Resize active window by +5% of the monitor size
+#NumpadMult::activeSizeBy(0.05, 0.05, true)
+; Resize active window by -5% of the monitor size
+#NumpadDiv::activeSizeBy(-0.05, -0.05, true)
 
 ; Move window by one pixel in the direction of the numpad key with relation to [Numpad5]
 ^#Numpad8::activeMoveBy(, -1)
@@ -251,15 +277,10 @@ destroyGUI(ui) {
 ^#Numpad2::activeMoveBy(, 1)
 ^#Numpad4::activeMoveBy(-1)
 
-; Resize active window by +5% of the monitor size
-#NumpadMult::activeSizeBy(0.05, 0.05, true)
-; Resize active window by -5% of the monitor size
-#NumpadDiv::activeSizeBy(-0.05, -0.05, true)
-
 ; Set window to 100% of the screen's size
-#NumpadSub:: activeMoveTo(0.5, 0.5, 1)
+#NumpadSub:: activeMoveTo(0.5, 0.5, 1, 1)
 ; Set window to 100% of the screen's size including the taskbar
-#!NumpadSub:: activeMoveTo(0.5, 0.5, 1, true)
+#!NumpadSub:: activeMoveTo(0.5, 0.5, 1, 1, true)
 
 ; Toggle "Always On Top" for the active window
 ^#a::WinSet, AlwaysOnTop, Toggle, A
@@ -268,7 +289,7 @@ destroyGUI(ui) {
 ; Ignores arbitrary margin adjustment
 ^#!b::
  activeToggleBorderless()
- activeMoveTo(0.5, 0.5, 1, true)
+ activeMoveTo(0.5, 0.5, 1, 1, true)
 return
 ; Toggle Borderless Mode for the active window
 ^#b::activeToggleBorderless()

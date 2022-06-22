@@ -132,10 +132,10 @@ scripthotkeys["Voicemeeter"] := [["Restart Audio Engine", "Control+Numpad Dot"],
 
 scripthotkeys["Windows"] := []
 scripthotkeys["Windows"].push(["Activate Window Profile - Main", "Control+Windows+Comma"], 0)
-scripthotkeys["Windows"].push(["Center Active Window Horizontally", "Windows+Numpad 0"], ["Center Active Window", "Windows+Numpad Dot"], ["Center Active Window Vertically", "Windows+Numpad Enter"], 0)
+scripthotkeys["Windows"].push(["Center Active Window Horizontally", "Windows+Numpad 0"], ["Center Active Window", "Windows+Numpad Dot"], ["Center Active Window Vertically", "Windows+Numpad Enter"], ["Expand Active Window to Fill Screen Horizontally", "Windows+Alt+Numpad 0"], ["Expand Active Window to Fill Screen Vertically", "Windows+Alt+Numpad Enter"], 0)
 scripthotkeys["Windows"].push(["Move Active Window and Size to 50% of the Screen", "-"], ["Bottom Left", "Windows+Numpad 1"], ["Bottom Center", "Windows+Numpad 2"], ["Bottom Right", "Windows+Numpad 3"], ["Center Left", "Windows+Numpad 4"], ["Center", "Windows+Numpad 5"], ["Center Right", "Windows+Numpad 6"], ["Top Left", "Windows+Numpad 7"], ["Top Center", "Windows+Numpad 8"], ["Top Right", "Windows+Numpad 9"], 0)
-scripthotkeys["Windows"].push(["Move Active Window Up", "Control+Windows+Numpad 8"], ["Move Active Window Right", "Control+Windows+Numpad 6"], ["Move Active Window Down", "Control+Windows+Numpad 2"], ["Move Active Window Left", "Control+Windows+Numpad 4"], 0)
 scripthotkeys["Windows"].push(["Resize Active Window by +5% of the Screen", "Windows+Numpad Multiply"], ["Resize Active Window by -5% of the Screen", "Windows+Numpad Divide"], ["Resize Active Window to Fill the Screen", "Windows+Numpad Subtract"], ["Resize Active Window to Fill Screen && Taskbar", "Windows+Alt+Numpad Subtract"], 0)
+scripthotkeys["Windows"].push(["Move Active Window Up", "Control+Windows+Numpad 8"], ["Move Active Window Right", "Control+Windows+Numpad 6"], ["Move Active Window Down", "Control+Windows+Numpad 2"], ["Move Active Window Left", "Control+Windows+Numpad 4"], 0)
 scripthotkeys["Windows"].push(["Toggle Active Window Always On Top", "Control+Windows+A"], ["Toggle Active Window Borderless Mode", "Control+Windows+B"], ["Toggle Active Window Borderless Fullscreen", "Control+Windows+Alt+B"], 0)
 scripthotkeys["Windows"].push(["Toggle Window Transparency (50%)", "Control+Windows+T"], ["Toggle Window Transparency (Custom)", "Control+Windows+Alt+T"], 0)
 scripthotkeys["Windows"].push(["Toggle Theatre Mode", "Control+Windows+Forward Slash"], ["Toggle Soft Theatre Mode", "Control+Windows+Alt+Forward Slash"])
@@ -182,6 +182,7 @@ act := Func("runWindowsTroubleshooter").Bind("NetworkDiagnosticsWeb")
 Menu, hotkey, Add, &Internet Connection, % act
 Menu, hotkey, Add
 Menu, hotkey, Add, Script &Hotkeys, :scriptlist
+Menu, hotkey, Add, Modify &Clipboard, modifyClipboard
 Menu, hotkey, Add, Toggle &Reticle, toggleReticle
 Menu, hotkey, Add
 Menu, hotkey, Add, &Start Script, :start
@@ -237,6 +238,14 @@ Nothing:
 return
 
 
+
+; Additional Functions
+
+modifyClipboard() {
+ MsgBox, 4,, This will convert your clipboard to text. Would you like to continue?
+ IfMsgBox Yes
+  InputBox, clipboard, Modify Clipboard, Modify the clipboard contents below and submit!,, 600, 200,,,Locale,, %clipboard%
+}
 
 toggleReticle() {
  global reticle
