@@ -250,9 +250,9 @@ destroyGUI(ui) {
 ; Center active window vertically
 #NumpadEnter::activeMoveTo(, 0.5)
 ; Expand Active Window to Fill Screen Horizontally
-#!Numpad0::activeMoveTo(,, 1)
+#!Numpad0::activeMoveTo(0.5,, 1)
 ; Expand Active Window to Fill Screen Vertically
-#!NumpadEnter::activeMoveTo(,,, 1)
+#!NumpadEnter::activeMoveTo(, 0.5,, 1)
 
 ; Move window to numpad key position on the screen and scale to 50% of the screen size
 ; [Numpad5] represents the center of the screen
