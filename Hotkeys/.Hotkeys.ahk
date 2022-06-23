@@ -138,7 +138,9 @@ scripthotkeys["Windows"].push(["Resize Active Window by +5% of the Screen", "Win
 scripthotkeys["Windows"].push(["Move Active Window Up", "Control+Windows+Numpad 8"], ["Move Active Window Right", "Control+Windows+Numpad 6"], ["Move Active Window Down", "Control+Windows+Numpad 2"], ["Move Active Window Left", "Control+Windows+Numpad 4"], 0)
 scripthotkeys["Windows"].push(["Toggle Active Window Always On Top", "Control+Windows+A"], ["Toggle Active Window Borderless Mode", "Control+Windows+B"], ["Toggle Active Window Borderless Fullscreen", "Control+Windows+Alt+B"], 0)
 scripthotkeys["Windows"].push(["Toggle Window Transparency (50%)", "Control+Windows+T"], ["Toggle Window Transparency (Custom)", "Control+Windows+Alt+T"], 0)
+scripthotkeys["Windows"].push(["Toggle Display Projection Mode (PC screen only or Duplicate)", "Control+Windows+P"], 0)
 scripthotkeys["Windows"].push(["Toggle Theatre Mode", "Control+Windows+Forward Slash"], ["Toggle Soft Theatre Mode", "Control+Windows+Alt+Forward Slash"])
+; ADD IF THEATRE MODE IS ENABLED HOTKEYS
 
 for n, script in all {
  name := StrReplace(script, " ")

@@ -1,6 +1,5 @@
 #SingleInstance Force
 #NoTrayIcon
-overtaskbar = []
 
 ; Window Profiles
 ; Add to this array to create additional profiles.
@@ -16,6 +15,9 @@ margin := [7, 4]
 
 ; This will contain the styles of windows toggled as borderless
 borderless := {}
+
+; This contains a boolean value which indicates which display mode was toggled last (true == "PC screen only", false == "Duplicate")
+displaymode := true
 
 ; Activates a given Window Profile.
 ; profile - A *Window Profile*
@@ -225,6 +227,29 @@ activeToggleTransparency(prompt:=false) {
  }
 }
 
+; Toggles Theatre Mode
+; When active, everything except the active window will be hidden behind an entirely black GUI
+;  soft - A boolean value indicating whether or not to enable Soft Theatre Mode
+;         Soft Theatre Mode allows multiple windows to be in front of the generated GUI
+toggleTheatreMode(soft:=false) {
+ if (not destroyGUI(dark)) {
+  if(soft) {
+   Gui, New, +ToolWindow -Caption +LastFound +Hwnddark
+  } else {
+   Gui, New, +AlwaysOnTop +ToolWindow -Caption +LastFound +Hwnddark
+   WinSet, TransColor, 100100
+   WinGetActiveStats, title, w, h, x, y
+   x += margin[1]
+   y += margin[2]
+   w -= margin[1]*2
+   h -= margin[2]*2
+   Gui, %dark%:Add, Progress, x%x% y%y% w%w% h%h% c100100 background100100 Hwnddarkwindow, 100
+  }
+  Gui, %dark%:Color, 000000
+  Gui, %dark%:Show, x0 y0 w%A_ScreenWidth% h%A_ScreenHeight% NoActivate, AutoHotkey :: Windows.ahk > GUI > Theatre Mode
+ }
+}
+
 ; If the given gui exists, the gui is destroyed.
 ;  ui      - The gui id of the gui to destroy.
 ;  returns - A boolean value indicating whether the given gui was (true) or was not (false) destroyed.
@@ -300,29 +325,24 @@ return
 ; Prompt for window transparency percentage
 ^#!t::activeToggleTransparency(true)
 
-; Enable Theatre Mode for the active window
-; This makes the rest of the screen black
-^#/::
-; Enable Soft Theatre Mode
-; Any number of windows can be on top of the black screen
-^#!/::
- if (not destroyGUI(dark)) {
-  if(GetKeyState("Alt")) {
-   Gui, New, +ToolWindow -Caption +LastFound +Hwnddark
-  } else {
-   Gui, New, +AlwaysOnTop +ToolWindow -Caption +LastFound +Hwnddark
-   WinSet, TransColor, 100100
-   WinGetActiveStats, title, w, h, x, y
-   x += margin[1]
-   y += margin[2]
-   w -= margin[1]*2
-   h -= margin[2]*2
-   Gui, %dark%:Add, Progress, x%x% y%y% w%w% h%h% c100100 background100100 Hwnddarkwindow, 100
-  }
-  Gui, %dark%:Color, 000000
-  Gui, %dark%:Show, x0 y0 w%A_ScreenWidth% h%A_ScreenHeight% NoActivate, AutoHotkey :: Windows.ahk > GUI > Theatre Mode
+; Toggle Windows display mode between "PC screen only" and "Duplicate"
+^#p::
+ if(displaymode) {
+  Run, C:\Windows\System32\DisplaySwitch.exe /clone
+  displaymode = false
+ } else {
+  Run, C:\Windows\System32\DisplaySwitch.exe /internal
+  displaymode = true
  }
 return
+
+; Enable Theatre Mode for the active window
+; This makes the rest of the screen black
+^#/::toggleTheatreMode()
+; Enable Soft Theatre Mode
+; Any number of windows can be on top of the black screen
+^#!/::toggleTheatreMode(true)
+
 #IfWinActive AutoHotkey :: Windows.ahk > GUI > Theatre Mode
  LButton up::destroyGUI(dark)
 #IfWinActive
