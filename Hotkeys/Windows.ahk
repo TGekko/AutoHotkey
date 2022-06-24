@@ -232,6 +232,7 @@ activeToggleTransparency(prompt:=false) {
 ;  soft - A boolean value indicating whether or not to enable Soft Theatre Mode
 ;         Soft Theatre Mode allows multiple windows to be in front of the generated GUI
 toggleTheatreMode(soft:=false) {
+ global dark
  if (not destroyGUI(dark)) {
   if(soft) {
    Gui, New, +ToolWindow -Caption +LastFound +Hwnddark
@@ -329,10 +330,10 @@ return
 ^#p::
  if(displaymode) {
   Run, C:\Windows\System32\DisplaySwitch.exe /clone
-  displaymode = false
+  displaymode := false
  } else {
   Run, C:\Windows\System32\DisplaySwitch.exe /internal
-  displaymode = true
+  displaymode := true
  }
 return
 
