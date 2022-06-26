@@ -1,15 +1,6 @@
 #SingleInstance Force
 #NoTrayIcon
 
-; Window Profiles
-; Add to this array to create additional profiles.
-; Additional Hotkeys may need to be added to activate custom profiles.
-; To activate a profile use the following -- replacing the 1 with the desired profile:
-;  windowProfile(windowprofiles[1])
-; Use the following layout for additional profiles:
-;  [["WinTitle 1", x, y, width, height], ["WinTitle 2", x, y, width, height], ...]
-windowprofiles := [[["Steam ahk_exe steam.exe", 0, 0, 1694, 2112], ["Friends List ahk_exe steamwebhelper.exe", 1694, 0, 226, 2112], ["ahk_exe Discord.exe", 1920, 0, 1920, 2112]]]
-
 ; This accounts for Windows Aero invisible borders
 margin := [7, 4]
 
@@ -19,17 +10,160 @@ borderless := {}
 ; This contains a boolean value which indicates which display mode was toggled last (true == "PC screen only", false == "Duplicate")
 displaymode := true
 
+; Joins any number of strings separated by a given delimiter
+;  delimiter - The string that will appear between the supplied strings
+;              (Default == "")
+;  strings*  - Any number of strings or numbers to be combined
+;  return    - A delimited concatenation of the provided strings
+concatenate(delimiter:="", strings*) {
+ result := ""
+ for i, value in strings {
+  if(i > 1) {
+   result .= delimiter
+  }
+  result .= value
+ }
+ return result
+}
+
+; Makes a string match the length of another string
+; An ideal use for this would be to match number length:
+;    StrMatchLen(4, 122, 0) == "004"
+;  value  - The value to change
+;  match  - The value to match the length of
+;  fill   - The character to add to the start of <value> if match is longer than value
+;           Only the first character of this string will be used
+;  return - A string containing the contents of <value> up to the length of <match>
+StrMatchLen(value, match, fill:=" ") {
+ value .= ""
+ match .= ""
+ fill := SubStr(fill "", 1, 1)
+ while(StrLen(value) < StrLen(match)) {
+  value := fill . value
+ }
+ value := SubStr(value, 1, StrLen(match))
+ return value
+}
+
+; Reads an ini file and returns it as an object
+;  path    - The path to the desired ini file
+;  return  - An object which matches the sections and their key value pairs in the specified ini section
+;            To access a "section" and "key" in the resulting object, use the following:
+;              myini := IniReadObject(mypath)
+;              myvalue := myini["section"]["key"]
+IniReadObject(path) {
+ ini := {}
+ IniRead, sections, %path%
+ sections := StrSplit(sections, "`n")
+ for i, section in sections {
+  ini[section] := {}
+  iniRead, values, %path%, %section%
+  values := StrSplit(values, "`n")
+  for n, value in values {
+   ini[section][SubStr(value, 1, InStr(value, "=") - 1) ""] := SubStr(value, InStr(value, "=") + 1)
+  }
+ }
+ return ini
+}
+
+; Saves the open window's positions and focus order as a Window Profile
+;  name - The desired name of the new window profile
+;         If the <name> is already in use, the profile with that name will be rewritten
+;         If <name> is not provided, the user will be prompted for a name
+saveWindowProfile(name:="") {
+ if(!name) {
+  InputBox, name, Save Window Profile, Please input the name of the new Window Profile.,,,,,,Locale,, Default
+  if(ErrorLevel || !name) {
+   return
+  }
+ }
+ IniDelete, Windows\WindowProfiles.ini, %name%
+ WinGet, i, List
+ Loop, %i% {
+  window := "ahk_id " i%A_Index%
+  WinGetTitle, title, %window%
+  WinGet, exe, ProcessName, %window%
+  if(title) {
+   WinGetPos, x, y, w, h, %window%
+   value := concatenate(",, ", title " ahk_exe " exe, x, y, w, h)
+   IniWrite, %value%, Windows\WindowProfiles.ini, %name%, % StrReplace(title, "=", "-")
+  }
+ }
+}
+
+; Opens a menu allowing the removal of saved Window Profiles or specific windows within them
+;  x - The x coordinate to place the menu
+;  y - The y coordinate to place the menu
+;      Both <x> and <y> must be present for either to be used
+manageWindowProfiles(x:="", y:="") {
+ if(!(x && y)) {
+  MouseGetPos, x, y
+ }
+ Menu, profilemenu, Add
+ Menu, profilemenu, Delete
+ Menu, profilemenu, Add, Window Profiles, doNothing
+ Menu, profilemenu, Default, 1&
+ act := Func("openWindowProfiles")
+ Menu, profilemenu, Add, Open WindowProfiles.ini, %act%
+ act := Func("saveWindowProfile").Bind("")
+ Menu, profilemenu, Add, Save new Window Profile, %act%
+ Menu, profilemenu, Add
+ ini := IniReadObject("Windows\WindowProfiles.ini")
+ for section, keys in ini {
+  name := "profilemenu" A_Index
+  act := Func("removeWindowProfileContents").Bind(section,, true, x, y)
+  Menu, %name%, Add
+  Menu, %name%, Delete
+  act := Func("activateWindowProfile").Bind(section)
+  Menu, %name%, Add, Activate Profile, %act%
+  Menu, %name%, Default, 1&
+  Menu, %name%, Add, Delete Profile, %act%
+  Menu, %name%, Add, Click any value below to delete it from the profile, doNothing
+  Menu, %name%, Add
+  for key, value in keys {
+   act := Func("removeWindowProfileContents").Bind(section, key, true, x, y)
+   Menu, %name%, Add, %key%, %act%
+  }
+  Menu, profilemenu, Add, %section%, :%name%
+ }
+ Menu, profilemenu, Show, %x%, %y%
+}
+
+; Opens the WindowProfiles.ini file
+openWindowProfiles() {
+ Run "C:\Windows\Notepad.exe" "%A_WorkingDir%\Windows\WindowProfiles.ini"
+}
+
+; Removes a section or key of WindowProfiles.ini
+;  section     - The section to remove if no <key> is provided
+;  key         - The key to remove from <section>
+;  edit        - A boolean value indicating whether or not to call manageWindowProfiles()
+;  x           - The x coordinate to pass to manageWindowProfiles()
+;  y           - The y coordinate to pass to manageWindowProfiles()
+;                Both <x> and <y> must be present for either to be used
+removeWindowProfileContents(section:="", key:="", edit:=false, x:="", y:="") {
+ if(key) {
+  IniDelete, Windows\WindowProfiles.ini, %section%, %key%
+ } else if(section) {
+  IniDelete, Windows\WindowProfiles.ini, %section%
+ }
+ if(edit) {
+  manageWindowProfiles(x, y)
+ }
+}
+
 ; Activates a given Window Profile.
-; profile - A *Window Profile*
-;            *An array containing one or more of the following array: ["WinTitle", x, y, width, height]
-windowProfile(profile) {
- for i, window in profile {
-  title := window[1]
-  x := window[2]
-  y := window[3]
-  width := window[4]
-  height := window[5]
-  WinMove, %title%,, x, y, width, height
+;  profile - The name of the desired Window Profile to load.
+activateWindowProfile(profile) {
+ ini := IniReadObject("Windows\WindowProfiles.ini")
+ for key, value in ini[profile] {
+  value := StrSplit(value, ",, ")
+  id := value[1]
+  x := value[2]
+  y := value[3]
+  width := value[4]
+  height := value[5]
+  WinMove, %id%,, x, y, width, height
  }
 }
 
@@ -267,8 +401,10 @@ destroyGUI(ui) {
 
 ; Hotkeys
 
-; Activate Window Profile 1
-^#,::windowProfile(windowprofiles[1])
+; Manage Window Profiles
+^#\::manageWindowProfiles()
+; Activate Window Profile: Default
+^#,::activateWindowProfile("Default")
 
 ; Center active window horizontally
 #Numpad0::activeMoveTo(0.5)
@@ -367,3 +503,6 @@ return
   }
   return
 #IfWinExist
+
+doNothing:
+return
