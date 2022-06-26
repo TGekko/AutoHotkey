@@ -1,5 +1,6 @@
 #SingleInstance Force
 #NoTrayIcon
+SetTitleMatchMode, 2
 
 ; This accounts for Windows Aero invisible borders
 margin := [7, 4]
