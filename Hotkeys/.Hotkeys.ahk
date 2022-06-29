@@ -126,7 +126,7 @@ scripthotkeys["The Escapists 2"] := [["Train Strength", "Alt+1"]]
 
 scripthotkeys["Valheim"] := [["Press E 10 times", "Alt+E"], ["Scroll Through Hotbar", "Alt+Scroll"], ["Move Mouse", "Arrow Keys"], 0, ["Train Bow", "Alt+1"], ["Train Jump", "Alt+2"], ["Train Run", "Alt+3"], ["Train Sneak", "Alt+4"], ["Train Sword", "Alt+5"]]
 
-scripthotkeys["Internet"] := [["Skip Forward 17 times", "Control+Right"], ["Skip Backward 17 times", "Control+Left"], ["Toggle Browser Theatre Mode", "Control+Shift+Windows+Forward Slash"], 0, ["Theatre - Toggle Black/White", "Backquote"], ["Theatre - Hide Browser", "Pause"]]
+scripthotkeys["Internet"] := [["Skip Forward 17 times", "Control+Right"], ["Skip Backward 17 times", "Control+Left"], ["Toggle Browser Theatre Mode", "Control+Shift+Windows+Forward Slash"], 0, ["Theatre - Disable Theatre Mode", "Delete"], ["Theatre - Toggle Light Mode", "Backquote"], ["Theatre - Hide Browser", "Pause"]]
 
 scripthotkeys["Voicemeeter"] := [["Restart Audio Engine", "Control+Numpad Dot"], 0, ["Increase Volume by 2%", "Control+Numpad Add"], ["Decrease Volume by 2%", "Control+Numpad Subtract"], ["Increase Auxiliary Volume by 2%", "Control+Shift+Numpad Add"], ["Decrease Auxiliary Volume by 2%", "Control+Shift+Numpad Subtract"], 0, ["Mute", "Control+Numpad 0"], ["Set Volume to 10%", "Control+Numpad 1"], ["Set Volume to 20%", "Control+Numpad 2"], ["Set Volume to 30%", "Control+Numpad 3"], ["Set Volume to 40%", "Control+Numpad 4"], ["Set Volume to 50%", "Control+Numpad 5"], ["Set Volume to 60%", "Control+Numpad 6"], ["Set Volume to 70%", "Control+Numpad 7"], ["Set Volume to 80%", "Control+Numpad 8"], ["Set Volume to 90%", "Control+Numpad 9"], ["Set Volume to 100%", "Control+Numpad Multiply"], 0, ["Toggle Solo Mode", "Control+Numpad Divide"], ["Toggle Solo Mode With Message", "Control+Shift+Numpad Divide"]]
 
@@ -139,8 +139,8 @@ scripthotkeys["Windows"].push(["Move Active Window Up", "Control+Windows+Numpad 
 scripthotkeys["Windows"].push(["Toggle Active Window Always On Top", "Control+Windows+A"], ["Toggle Active Window Borderless Mode", "Control+Windows+B"], ["Toggle Active Window Borderless Fullscreen", "Control+Windows+Alt+B"], 0)
 scripthotkeys["Windows"].push(["Toggle Window Transparency (50%)", "Control+Windows+T"], ["Toggle Window Transparency (Custom)", "Control+Windows+Alt+T"], 0)
 scripthotkeys["Windows"].push(["Toggle Display Projection Mode (PC screen only or Duplicate)", "Control+Windows+P"], 0)
-scripthotkeys["Windows"].push(["Toggle Theatre Mode", "Control+Windows+Forward Slash"], ["Toggle Soft Theatre Mode", "Control+Windows+Alt+Forward Slash"])
-; ADD IF THEATRE MODE IS ENABLED HOTKEYS
+scripthotkeys["Windows"].push(["Toggle Theatre Mode", "Control+Windows+Forward Slash"], ["Toggle Soft Theatre Mode", "Control+Windows+Alt+Forward Slash"], 0)
+scripthotkeys["Windows"].push(["When Theatre Mode is Active", "-"], ["Disable Theatre Mode", "Delete"], ["Hide Active Window (Excluding Soft Theatre Mode)", "Pause"], ["Toggle Light Mode", "Backquote"])
 
 for n, script in all {
  name := StrReplace(script, " ")

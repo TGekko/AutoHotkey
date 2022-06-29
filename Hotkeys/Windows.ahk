@@ -485,7 +485,7 @@ return
  LButton up::destroyGUI(dark)
 #IfWinActive
 #IfWinExist AutoHotkey :: Windows.ahk > GUI > Theatre Mode
- ~Escape::destroyGUI(dark)
+ ~Delete::destroyGUI(dark)
  ~Pause::
   GuiControlGet, darkwindowvisible, Visible, %darkwindow%
   if(darkwindowvisible == 1) {

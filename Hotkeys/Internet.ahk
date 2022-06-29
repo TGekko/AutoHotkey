@@ -29,7 +29,7 @@ GroupAdd, browsers, ahk_exe firefox.exe
 #IfWinActive
 
 #IfWinExist AutoHotkey :: Internet.ahk > GUI
- ~Escape::hide(dark)
+ ~Delete::hide(dark)
  ~Pause::
   GuiControlGet, darkwindowvisible, Visible, %darkwindow%
   if(darkwindowvisible == 1) {
