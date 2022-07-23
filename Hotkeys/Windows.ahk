@@ -1,6 +1,9 @@
 #SingleInstance Force
 #NoTrayIcon
 SetTitleMatchMode, 2
+GroupAdd, browsers, ahk_exe chrome.exe
+GroupAdd, browsers, ahk_exe msedge.exe
+GroupAdd, browsers, ahk_exe firefox.exe
 
 ; This accounts for Windows Aero invisible borders
 margin := [7, 4]
@@ -213,8 +216,9 @@ activeWindowMonitorBounds(full:=false) {
 }
 
 ; Moves the active window to a given position within the monitor which it resides.
-; Windows without the following style ignore arbitrary margin adjustment:
-; > 0xC00000 - WS_CAPTION  (title bar)
+; Microsoft Edge, Google Chrome, and Firefox are adjusted with an arbitrary margin adjustment unless explicitly stated using the [margins] parameter.
+;     x-Old version-x Windows without the following style ignore arbitrary margin adjustment:
+;     x-Old version-x > 0xC00000 - WS_CAPTION  (title bar)
 ;  x       - A value *between 0 and 1* which represents a percentage of the monitor's width.
 ;            The center of the active window will be at this position.
 ;             A value of 0.5 will move the window to the center of the monitor.
@@ -237,7 +241,8 @@ activeWindowMonitorBounds(full:=false) {
 ;            A value of true will ignore the arbitrary margin adjustment.
 ;            A value of false will allow the arbitrary margin adjustment.
 ;            (Default == false)
-;  margins - A boolean value indicating whether or not to apply an arbitrary margin adjustment when resizing the window.
+;  margins - A boolean value indicating whether or not to apply an arbitrary margin adjustment to web browsers when resizing the window.
+;            (Default == true)
 activeMoveTo(x:=-1, y:=-1, width:=-1, height:=-1, full:=false, margins:=true) {
  global margin
  WinGetPos, winx, winy, winwidth, winheight, A
@@ -247,20 +252,26 @@ activeMoveTo(x:=-1, y:=-1, width:=-1, height:=-1, full:=false, margins:=true) {
  } else {
   bounds := activeWindowMonitorBounds()
  }
- WinGet, style, Style, A
+ ; WinGet, style, Style, A
  winx+= winwidth/2
  winy+= winheight/2
  if(width >= 0 && width <= 1) {
   winwidth := bounds[3]*width
-  if((style & 0xC00000) && margins) {
+  if(WinActive("ahk_group browsers") && margins) {
    winwidth += margin[1]*2
   }
+  ; if((style & 0xC00000) && margins) {
+  ;  winwidth += margin[1]*2
+  ; }
  }
  if(height >= 0 && height <= 1) {
   winheight := bounds[4]*height
-  if((style & 0xC00000) && margins) {
+  if(WinActive("ahk_group browsers") && margins) {
    winheight += margin[2]*2
   }
+  ; if((style & 0xC00000) && margins) {
+  ;  winheight += margin[2]*2
+  ; }
  }
  if(x >= 0 && x <= 1) {
   winx := bounds[1]+(bounds[3]*x)
