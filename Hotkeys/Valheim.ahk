@@ -8,7 +8,7 @@ activetool := 0
  #Include Valheim\General\AltWheelDown.ahk
  #Include Valheim\General\AltWheelUp.ahk
  #Include Valheim\General\ArrowKeys.ahk
- *~/::Send {Blind}{LButton}
+ *~\::Send {Blind}{LButton}
 
  !1::Run, Valheim\Skills\Bows.ahk
  !2::Run, Valheim\Skills\Jump.ahk
