@@ -124,7 +124,7 @@ scripthotkeys["Terraria"] := [["Duplicate Honey", "Alt+1"], ["Duplicate Lava", "
 
 scripthotkeys["The Escapists 2"] := [["Train Strength", "Alt+1"]]
 
-scripthotkeys["Valheim"] := [["Press E 10 times", "Alt+E"], ["Scroll Through Hotbar", "Alt+Scroll"], ["Move Mouse", "Arrow Keys"], 0, ["Train Bow", "Alt+1"], ["Train Jump", "Alt+2"], ["Train Run", "Alt+3"], ["Train Sneak", "Alt+4"], ["Train Sword", "Alt+5"]]
+scripthotkeys["Valheim"] := [["Press E 10 times", "Alt+E"], ["Scroll Through Hotbar", "Alt+Scroll"], ["Move Mouse", "Arrow Keys"], ["Left Click", "Backslash"], 0, ["Train Bow", "Alt+1"], ["Train Jump", "Alt+2"], ["Train Run", "Alt+3"], ["Train Sneak", "Alt+4"], ["Train Sword", "Alt+5"]]
 
 scripthotkeys["Internet"] := [["Skip Forward 17 times", "Control+Right"], ["Skip Backward 17 times", "Control+Left"], ["Toggle Browser Theatre Mode", "Control+Shift+Windows+Forward Slash"], 0, ["Theatre - Disable Theatre Mode", "Delete"], ["Theatre - Toggle Light Mode", "Backquote"], ["Theatre - Hide Browser", "Pause"]]
 
