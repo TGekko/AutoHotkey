@@ -81,7 +81,7 @@ for i, troubleshooter in troubleshooters {
  }
 }
 
-generalhotkeys := [["Show Menu", "Win+Right Click", "#RButton"], 0, ["Hold Left Click", "Alt+9", "!9"], ["Repeat Left Click", "Alt+0", "!0"], ["Hold Right Click", "Alt+Shift+9", "!+9"], ["Repeat Right Click", "Alt+Shift+0", "!+0"], 0, ["Stop Running Hotkey", "Pause or End", "Pause"], 0, ["Move Mouse Up", "Alt+Up", "!Up"], ["Mouse Mouse Down", "Alt+Down", "!Down"], ["Mouse Mouse Left", "Alt+Left", "!Left"], ["Mouse Mouse Right", "Alt+Right", "!Right"], ["Left Click", "Alt+[", "![["], ["Right Click", "Alt+]", "!]]"], 0, ["Toggle Reticle", "Alt+Insert", "!Insert"]]
+generalhotkeys := [["Show Menu", "Win+Right Click", "#RButton"], 0, ["Repeat Left Click", "Alt+9", "!9"], ["Repeat Right Click", "Alt+0", "!0"], ["Hold Left Click", "Alt+Shift+9", "!+9"], ["Hold Right Click", "Alt+Shift+0", "!+0"], 0, ["Stop Running Hotkey", "Pause or End", "Pause"], 0, ["Move Mouse Up", "Alt+Up", "!Up"], ["Mouse Mouse Down", "Alt+Down", "!Down"], ["Mouse Mouse Left", "Alt+Left", "!Left"], ["Mouse Mouse Right", "Alt+Right", "!Right"], ["Left Click", "Alt+[", "![["], ["Right Click", "Alt+]", "!]]"], 0, ["Toggle Reticle", "Alt+Insert", "!Insert"]]
 
 for i, item in generalhotkeys {
  if(item = 0) {
@@ -201,10 +201,10 @@ loaded := true
 
 ; Hotkeys
 
-!9::Run, .Hotkeys\Hold_Left_Mouse_Button.ahk
-!0::Run, .Hotkeys\Repeat_Left_Mouse_Button.ahk
-!+9::Run, .Hotkeys\Hold_Right_Mouse_Button.ahk
-!+0::Run, .Hotkeys\Repeat_Right_Mouse_Button.ahk
+!9::Run, .Hotkeys\Repeat_Left_Mouse_Button.ahk
+!0::Run, .Hotkeys\Repeat_Right_Mouse_Button.ahk
+!+9::Run, .Hotkeys\Hold_Left_Mouse_Button.ahk
+!+0::Run, .Hotkeys\Hold_Right_Mouse_Button.ahk
 
 !Up::DllCall("mouse_event", "UInt", 0x01, "UInt", 0, "UInt", -1)
 !Down::DllCall("mouse_event", "UInt", 0x01, "UInt", 0, "UInt", 1)
