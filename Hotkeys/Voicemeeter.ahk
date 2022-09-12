@@ -31,14 +31,15 @@ ApplyVolume(volume, mod:=0) {
  current := 0.0
  DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
  if(mod = 2) {
-  DllCall("VoicemeeterRemote64\VBVMR_GetParameterFloat", "AStr", "Bus[0].Gain", "Ptr", &current)
+  DllCall("VoicemeeterRemote64\VBVMR_GetParameterFloat", "AStr", "Strip[5].Gain", "Ptr", &current)
   current := clamp(-60.0, NumGet(current, 0, "Float")+volume, 12.0)
-  DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Bus[0].Gain", "Float", current)
+  DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Strip[5].Gain", "Float", current)
  } else {
   Loop {
    bus := A_Index-1
    if(mod = 0) {
     current := volume
+    DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Strip[5].Gain", "Float", 0.0)
    } else {
     DllCall("VoicemeeterRemote64\VBVMR_GetParameterFloat", "AStr", "Bus[" . bus . "].Gain", "Ptr", &current)
     current := clamp(-60.0, NumGet(current, 0, "Float")+volume, 12.0)

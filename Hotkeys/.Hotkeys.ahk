@@ -38,6 +38,11 @@ openFolder() {
 runWindowsTroubleshooter(troubleshooter) {
  Run *RunAs %A_ComSpec% /c msdt.exe /id %troubleshooter%,, Hide
 }
+sendHotkey(value) {
+ SendLevel 1
+ SendInput %value%
+ SendLevel 0
+}
 exitAll() {
  global all
  for i, item in all {
@@ -108,39 +113,39 @@ for i, item in generalhotkeys {
 
 scripthotkeys := {}
 
-scripthotkeys["Citra"] := [["Go Home", "Controller Home"]]
+scripthotkeys["Citra"] := [["Go Home", "Controller Home", "{vk07}"]]
 
-scripthotkeys["Magicka"] := [["Show Spell Menu", "Alt+Right Click"], 0, ["Cast Charm", "Numpad 0"], ["Cast Conflagration", "Numpad 1"], ["Cast Confuse", "Numpad 2"], ["Cast Corporealize", "Numpad 3"], ["Cast Crash to Desktop", "Numpad 4"], ["Cast Fear", "Numpad 5"], ["Cast Invisibility", "Numpad 6"], ["Cast Meteor Storm", "Numpad 7"], ["Cast Raise Dead", "Numpad 8"], ["Cast Summon Death", "Numpad 9"], ["Cast Summon Elemental", "Numpad Add"], ["Cast Thunder Storm", "Numpad Dot"], ["Cast Vortex", "Numpad Subtract"]]
+scripthotkeys["Magicka"] := [["Show Spell Menu", "Alt+Right Click", "!{RButton}"], 0, ["Cast Charm", "Numpad 0", "{Numpad0}"], ["Cast Conflagration", "Numpad 1", "{Numpad1}"], ["Cast Confuse", "Numpad 2", "{Numpad2}"], ["Cast Corporealize", "Numpad 3", "{Numpad3}"], ["Cast Crash to Desktop", "Numpad 4", "{Numpad4}"], ["Cast Fear", "Numpad 5", "{Numpad5}"], ["Cast Invisibility", "Numpad 6", "{Numpad6}"], ["Cast Meteor Storm", "Numpad 7", "{Numpad7}"], ["Cast Raise Dead", "Numpad 8", "{Numpad8}"], ["Cast Summon Death", "Numpad 9", "{Numpad9}"], ["Cast Summon Elemental", "Numpad Add", "{NumpadAdd}"], ["Cast Thunder Storm", "Numpad Dot", "{NumpadDot}"], ["Cast Vortex", "Numpad Subtract", "{NumpadSub}"]]
 
-scripthotkeys["Minecraft"] := [["Swing Sword and Eat Food", "Alt+1"], ["Hold Shift", "Alt+Shift"]]
+scripthotkeys["Minecraft"] := [["Swing Sword and Eat Food", "Alt+1", "!1"], ["Hold Shift", "Alt+Shift", "!{Shift}"]]
 
-scripthotkeys["Risk of Rain 2"] := [["Show Item Reference", "Left Control"], ["Show Help", "Right Control"]]
+scripthotkeys["Risk of Rain 2"] := [["Show Item Reference", "Left Control", "{LControl}"], ["Show Help", "Right Control", "{RControl}"]]
 
-scripthotkeys["Sonic Adventure DX"] := [["Forward", "W"], ["Left", "A"], ["Backward", "S"], ["Right", "D"], ["Jump", "Space"], ["Camera Left", "Left Arrow"], ["Camera Right", "Right Arrow"], ["Action", "E or Down"], ["Look Around", "Up"], ["Back", "Backspace"], ["Pause", "Escape or Enter"]]
+scripthotkeys["Sonic Adventure DX"] := [["Forward", "W", "w"], ["Left", "A", "a"], ["Backward", "S", "s"], ["Right", "D", "d"], ["Jump", "Space", "{Space}"], ["Camera Left", "Left Arrow", "{Left}"], ["Camera Right", "Right Arrow", "{Right}"], ["Action", "E or Down", "e"], ["Look Around", "Up", "{Up}"], ["Back", "Backspace", "{Backspace}"], ["Pause", "Escape or Enter", "{Escape}"]]
 
-scripthotkeys["Superliminal"] := [["Click", "Forward Slash"], 0, ["Move Mouse Up", "Up"], ["Move Mouse Right", "Right"], ["Move Mouse Down", "Down"], ["Move Mouse Left", "Left"]]
+scripthotkeys["Superliminal"] := [["Click", "Backward Slash", "\"], 0, ["Move Mouse Up", "Up", "{Up}"], ["Move Mouse Right", "Right", "{Right}"], ["Move Mouse Down", "Down", "{Down}"], ["Move Mouse Left", "Left", "{Left}"]]
 
-scripthotkeys["Terraria"] := [["Duplicate Honey", "Alt+1"], ["Duplicate Lava", "Alt+2"]]
+scripthotkeys["Terraria"] := [["Duplicate Honey", "Alt+1", "!1"], ["Duplicate Lava", "Alt+2", "!2"]]
 
-scripthotkeys["The Escapists 2"] := [["Train Strength", "Alt+1"]]
+scripthotkeys["The Escapists 2"] := [["Train Strength", "Alt+1", "!1"]]
 
-scripthotkeys["Valheim"] := [["Press E 10 times", "Alt+E"], ["Scroll Through Hotbar", "Alt+Scroll"], ["Move Mouse", "Arrow Keys"], ["Left Click", "Backslash"], 0, ["Train Bow", "Alt+1"], ["Train Jump", "Alt+2"], ["Train Run", "Alt+3"], ["Train Sneak", "Alt+4"], ["Train Sword", "Alt+5"]]
+scripthotkeys["Valheim"] := [["Press E 10 times", "Alt+E", "!e"], ["Scroll Through Hotbar", "Alt+Scroll", ""], ["Move Mouse", "Arrow Keys", ""], ["Left Click", "Backslash", "\"], 0, ["Train Bow", "Alt+1", "!1"], ["Train Jump", "Alt+2", "!2"], ["Train Run", "Alt+3", "!3"], ["Train Sneak", "Alt+4", "!4"], ["Train Sword", "Alt+5", "!5"]]
 
-scripthotkeys["Internet"] := [["Skip Forward 17 times", "Control+Right"], ["Skip Backward 17 times", "Control+Left"], ["Toggle Browser Theatre Mode", "Control+Shift+Windows+Forward Slash"], 0, ["Theatre - Disable Theatre Mode", "Delete"], ["Theatre - Toggle Light Mode", "Backquote"], ["Theatre - Hide Browser", "Pause"]]
+scripthotkeys["Internet"] := [["Skip Forward 17 times", "Control+Right", "^{Right}"], ["Skip Backward 17 times", "Control+Left", "^{Left}"], ["Toggle Browser Theatre Mode", "Control+Shift+Windows+Forward Slash", "^!#/"], 0, ["Theatre - Disable Theatre Mode", "Delete", "{Delete}"], ["Theatre - Toggle Light Mode", "Backquote", "`"], ["Theatre - Hide Browser", "Pause", "{Pause}"]]
 
-scripthotkeys["Voicemeeter"] := [["Restart Audio Engine", "Control+Numpad Dot"], 0, ["Increase Volume by 2%", "Control+Numpad Add"], ["Decrease Volume by 2%", "Control+Numpad Subtract"], ["Increase Auxiliary Volume by 2%", "Control+Shift+Numpad Add"], ["Decrease Auxiliary Volume by 2%", "Control+Shift+Numpad Subtract"], 0, ["Mute", "Control+Numpad 0"], ["Set Volume to 10%", "Control+Numpad 1"], ["Set Volume to 20%", "Control+Numpad 2"], ["Set Volume to 30%", "Control+Numpad 3"], ["Set Volume to 40%", "Control+Numpad 4"], ["Set Volume to 50%", "Control+Numpad 5"], ["Set Volume to 60%", "Control+Numpad 6"], ["Set Volume to 70%", "Control+Numpad 7"], ["Set Volume to 80%", "Control+Numpad 8"], ["Set Volume to 90%", "Control+Numpad 9"], ["Set Volume to 100%", "Control+Numpad Multiply"], 0, ["Toggle Solo Mode", "Control+Numpad Divide"], ["Toggle Solo Mode With Message", "Control+Shift+Numpad Divide"]]
+scripthotkeys["Voicemeeter"] := [["Restart Audio Engine", "Control+Numpad Dot", "^{NumpadDot}"], 0, ["Increase Volume by 2%", "Control+Numpad Add", "^{NumpadAdd}"], ["Decrease Volume by 2%", "Control+Numpad Subtract", "^{NumpadSub}"], ["Increase Non-Auxiliary Volume by 2%", "Control+Shift+Numpad Add", "^+{NumpadAdd}"], ["Decrease Non-Auxiliary Volume by 2%", "Control+Shift+Numpad Subtract", "^!{NumpadSub}"], 0, ["Mute", "Control+Numpad 0", "^{Numpad0}"], ["Set Volume to 10%", "Control+Numpad 1", "^{Numpad1}"], ["Set Volume to 20%", "Control+Numpad 2", "^{Numpad2}"], ["Set Volume to 30%", "Control+Numpad 3", "^{Numpad3}"], ["Set Volume to 40%", "Control+Numpad 4", "^{Numpad4}"], ["Set Volume to 50%", "Control+Numpad 5", "^{Numpad5}"], ["Set Volume to 60%", "Control+Numpad 6", "^{Numpad6}"], ["Set Volume to 70%", "Control+Numpad 7", "^{Numpad7}"], ["Set Volume to 80%", "Control+Numpad 8", "^{Numpad8}"], ["Set Volume to 90%", "Control+Numpad 9", "^{Numpad9}"], ["Set Volume to 100%", "Control+Numpad Multiply", "^{NumpadMult}"], 0, ["Toggle Solo Mode", "Control+Numpad Divide", "^{NumpadDiv}"], ["Toggle Solo Mode With Message", "Control+Shift+Numpad Divide", "^!{NumpadDiv}"]]
 
 scripthotkeys["Windows"] := []
-scripthotkeys["Windows"].push(["Manage Window Profiles", "Control+Windows+\"], ["Activate Window Profile: Default", "Control+Windows+Comma"], 0)
-scripthotkeys["Windows"].push(["Center Active Window Horizontally", "Windows+Numpad 0"], ["Center Active Window", "Windows+Numpad Dot"], ["Center Active Window Vertically", "Windows+Numpad Enter"], ["Expand Active Window to Fill Screen Horizontally", "Windows+Alt+Numpad 0"], ["Expand Active Window to Fill Screen Vertically", "Windows+Alt+Numpad Enter"], 0)
-scripthotkeys["Windows"].push(["Move Active Window and Size to 50% of the Screen", "-"], ["Bottom Left", "Windows+Numpad 1"], ["Bottom Center", "Windows+Numpad 2"], ["Bottom Right", "Windows+Numpad 3"], ["Center Left", "Windows+Numpad 4"], ["Center", "Windows+Numpad 5"], ["Center Right", "Windows+Numpad 6"], ["Top Left", "Windows+Numpad 7"], ["Top Center", "Windows+Numpad 8"], ["Top Right", "Windows+Numpad 9"], 0)
-scripthotkeys["Windows"].push(["Resize Active Window by +5% of the Screen", "Windows+Numpad Multiply"], ["Resize Active Window by -5% of the Screen", "Windows+Numpad Divide"], ["Resize Active Window to Fill the Screen", "Windows+Numpad Subtract"], ["Resize Active Window to Fill Screen && Taskbar", "Windows+Alt+Numpad Subtract"], 0)
-scripthotkeys["Windows"].push(["Move Active Window Up", "Control+Windows+Numpad 8"], ["Move Active Window Right", "Control+Windows+Numpad 6"], ["Move Active Window Down", "Control+Windows+Numpad 2"], ["Move Active Window Left", "Control+Windows+Numpad 4"], 0)
-scripthotkeys["Windows"].push(["Toggle Active Window Always On Top", "Control+Windows+A"], ["Toggle Active Window Borderless Mode", "Control+Windows+B"], ["Toggle Active Window Borderless Fullscreen", "Control+Windows+Alt+B"], 0)
-scripthotkeys["Windows"].push(["Toggle Window Transparency (50%)", "Control+Windows+T"], ["Toggle Window Transparency (Custom)", "Control+Windows+Alt+T"], 0)
-scripthotkeys["Windows"].push(["Toggle Display Projection Mode (PC screen only or Duplicate)", "Control+Windows+P"], 0)
-scripthotkeys["Windows"].push(["Toggle Theatre Mode", "Control+Windows+Forward Slash"], ["Toggle Soft Theatre Mode", "Control+Windows+Alt+Forward Slash"], 0)
-scripthotkeys["Windows"].push(["When Theatre Mode is Active", "-"], ["Disable Theatre Mode", "Delete"], ["Hide Active Window (Excluding Soft Theatre Mode)", "Pause"], ["Toggle Light Mode", "Backquote"])
+scripthotkeys["Windows"].push(["Manage Window Profiles", "Control+Windows+\", "^#\"], ["Activate Window Profile: Default", "Control+Windows+Comma", "^#,"], 0)
+scripthotkeys["Windows"].push(["Center Active Window Horizontally", "Windows+Numpad 0", "#{Numpad0}"], ["Center Active Window", "Windows+Numpad Dot", "#{NumpadDot}"], ["Center Active Window Vertically", "Windows+Numpad Enter", "#{NumpadEnter}"], ["Expand Active Window to Fill Screen Horizontally", "Windows+Alt+Numpad 0", "#!{Numpad0}"], ["Expand Active Window to Fill Screen Vertically", "Windows+Alt+Numpad Enter", "#!{NumpadEnter}"], 0)
+scripthotkeys["Windows"].push(["Move Active Window and Size to 50% of the Screen", "-", ""], ["Bottom Left", "Windows+Numpad 1", "#{Numpad1}"], ["Bottom Center", "Windows+Numpad 2", "#{Numpad2}"], ["Bottom Right", "Windows+Numpad 3", "#{Numpad3}"], ["Center Left", "Windows+Numpad 4", "#{Numpad4}"], ["Center", "Windows+Numpad 5", "#{Numpad5}"], ["Center Right", "Windows+Numpad 6", "#{Numpad6}"], ["Top Left", "Windows+Numpad 7", "#{Numpad7}"], ["Top Center", "Windows+Numpad 8", "#{Numpad8}"], ["Top Right", "Windows+Numpad 9", "#{Numpad9}"], 0)
+scripthotkeys["Windows"].push(["Resize Active Window by +5% of the Screen", "Windows+Numpad Multiply", "#{NumpadMult}"], ["Resize Active Window by -5% of the Screen", "Windows+Numpad Divide", "#{NumpadDiv}"], ["Resize Active Window to Fill the Screen", "Windows+Numpad Subtract", "#{NumpadSub}"], ["Resize Active Window to Fill Screen && Taskbar", "Windows+Alt+Numpad Subtract", "#!{NumpadSub}"], 0)
+scripthotkeys["Windows"].push(["Move Active Window Up", "Control+Windows+Numpad 8", "^#{Numpad8}"], ["Move Active Window Right", "Control+Windows+Numpad 6", "^#{Numpad6}"], ["Move Active Window Down", "Control+Windows+Numpad 2", "^#{Numpad2}"], ["Move Active Window Left", "Control+Windows+Numpad 4", "^#{Numpad4}"], 0)
+scripthotkeys["Windows"].push(["Toggle Active Window Always On Top", "Control+Windows+A", "^#a"], ["Toggle Active Window Borderless Mode", "Control+Windows+B", "^#b"], ["Toggle Active Window Borderless Fullscreen", "Control+Windows+Alt+B", "^#!b"], 0)
+scripthotkeys["Windows"].push(["Toggle Window Transparency (50%)", "Control+Windows+T", "^#t"], ["Toggle Window Transparency (Custom)", "Control+Windows+Alt+T", "^#!t"], 0)
+scripthotkeys["Windows"].push(["Toggle Display Projection Mode (PC screen only or Duplicate)", "Control+Windows+P", "^#9"], 0)
+scripthotkeys["Windows"].push(["Toggle Theatre Mode", "Control+Windows+Forward Slash", "^#/"], ["Toggle Soft Theatre Mode", "Control+Windows+Alt+Forward Slash", "^#!/"], 0)
+scripthotkeys["Windows"].push(["When Theatre Mode is Active", "-", ""], ["Disable Theatre Mode", "Delete", "{Delete}"], ["Hide Active Window (Excluding Soft Theatre Mode)", "Pause", "{Pause}"], ["Toggle Light Mode", "Backquote", "`"])
 
 for n, script in all {
  name := StrReplace(script, " ")
@@ -154,7 +159,8 @@ for n, script in all {
     ; A space is added to label to correct an issue with adding certain labels to menus.
     ; The reason that this is effective in correcting both the left and right columns is unknown.
     label := item[1] . " "
-    Menu, scriptlist%name%, Add, %label%, Nothing
+    act := Func("sendHotkey").Bind(item[3])
+    Menu, scriptlist%name%, Add, %label%, % act
    }
   }
   for i, item in scripthotkeys[script] {
@@ -162,11 +168,8 @@ for n, script in all {
     Menu, scriptlist%name%, Add
    } else {
     label := item[2]
-    if(i = 1) {
-     Menu, scriptlist%name%, Add, %label%, Nothing, +Break
-    } else {
-     Menu, scriptlist%name%, Add, %label%, Nothing
-    }
+    act := Func("sendHotkey").Bind(item[3])
+    Menu, scriptlist%name%, Add, %label%, %act%, % (i = 1 ? "+Break" : "")
    }
   }
   Menu, scriptlist, Add, %script%, :scriptlist%name%
