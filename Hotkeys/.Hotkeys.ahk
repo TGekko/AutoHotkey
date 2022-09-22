@@ -4,7 +4,7 @@ DetectHiddenWindows, On
 loaded := false
 reticle := 0x0
 
-all := [".Hotkeys", 0, "Citra", "Magicka", "Minecraft", "Risk of Rain 2", "Sonic Adventure DX", "Superliminal", "Terraria", "The Escapists 2", "Valheim", 0, "Internet", "Voicemeeter", "Windows"]
+all := [".Hotkeys", 0, "Citra", "Fortnite", "Magicka", "Minecraft", "Risk of Rain 2", "Sonic Adventure DX", "Superliminal", "Terraria", "The Escapists 2", "Valheim", 0, "Internet", "Voicemeeter", "Windows"]
 showMenu() {
  global loaded
  if(loaded) {
@@ -114,6 +114,8 @@ for i, item in generalhotkeys {
 scripthotkeys := {}
 
 scripthotkeys["Citra"] := [["Go Home", "Controller Home", "{vk07}"]]
+
+scripthotkeys["Fortnite"] := [["Show Emote Menu", "F13", "{F13}"]]
 
 scripthotkeys["Magicka"] := [["Show Spell Menu", "Alt+Right Click", "!{RButton}"], 0, ["Cast Charm", "Numpad 0", "{Numpad0}"], ["Cast Conflagration", "Numpad 1", "{Numpad1}"], ["Cast Confuse", "Numpad 2", "{Numpad2}"], ["Cast Corporealize", "Numpad 3", "{Numpad3}"], ["Cast Crash to Desktop", "Numpad 4", "{Numpad4}"], ["Cast Fear", "Numpad 5", "{Numpad5}"], ["Cast Invisibility", "Numpad 6", "{Numpad6}"], ["Cast Meteor Storm", "Numpad 7", "{Numpad7}"], ["Cast Raise Dead", "Numpad 8", "{Numpad8}"], ["Cast Summon Death", "Numpad 9", "{Numpad9}"], ["Cast Summon Elemental", "Numpad Add", "{NumpadAdd}"], ["Cast Thunder Storm", "Numpad Dot", "{NumpadDot}"], ["Cast Vortex", "Numpad Subtract", "{NumpadSub}"]]
 
