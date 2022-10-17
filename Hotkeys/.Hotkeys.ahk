@@ -147,7 +147,7 @@ scripthotkeys["Windows"].push(["Toggle Active Window Always On Top", "Control+Wi
 scripthotkeys["Windows"].push(["Toggle Window Transparency (50%)", "Control+Windows+T", "^#t"], ["Toggle Window Transparency (Custom)", "Control+Windows+Alt+T", "^#!t"], 0)
 scripthotkeys["Windows"].push(["Toggle Display Projection Mode (PC screen only or Duplicate)", "Control+Windows+P", "^#9"], 0)
 scripthotkeys["Windows"].push(["Toggle Theatre Mode", "Control+Windows+Forward Slash", "^#/"], ["Toggle Soft Theatre Mode", "Control+Windows+Alt+Forward Slash", "^#!/"], 0)
-scripthotkeys["Windows"].push(["When Theatre Mode is Active", "-", ""], ["Disable Theatre Mode", "Delete", "{Delete}"], ["Hide Active Window (Excluding Soft Theatre Mode)", "Pause", "{Pause}"], ["Toggle Light Mode", "Backquote", "`"])
+scripthotkeys["Windows"].push(["When Theatre Mode is Active", "- ", ""], ["Disable Theatre Mode", "Delete", "{Delete}"], ["Hide Active Window (Excluding Soft Theatre Mode)", "Pause", "{Pause}"], ["Toggle Light Mode", "Backquote", "`"])
 
 for n, script in all {
  name := StrReplace(script, " ")
