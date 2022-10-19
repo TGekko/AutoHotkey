@@ -4,7 +4,7 @@ DetectHiddenWindows, On
 loaded := false
 reticle := 0x0
 
-all := [".Hotkeys", 0, "Citra", "Fortnite", "Magicka", "Minecraft", "Risk of Rain 2", "Sonic Adventure DX", "Superliminal", "Terraria", "The Escapists 2", "Valheim", 0, "Internet", "Voicemeeter", "Windows"]
+all := [".Hotkeys", 0, "Magicka", "Risk of Rain 2", "Sonic Adventure DX", "Valheim", 0, "Internet", "Voicemeeter", "Windows", 0, "Miscellaneous"]
 showMenu() {
  global loaded
  if(loaded) {
@@ -113,23 +113,11 @@ for i, item in generalhotkeys {
 
 scripthotkeys := {}
 
-scripthotkeys["Citra"] := [["Go Home", "Controller Home", "{vk07}"]]
-
-scripthotkeys["Fortnite"] := [["Show Emote Menu", "F13", "{F13}"]]
-
 scripthotkeys["Magicka"] := [["Show Spell Menu", "Alt+Right Click", "!{RButton}"], 0, ["Cast Charm", "Numpad 0", "{Numpad0}"], ["Cast Conflagration", "Numpad 1", "{Numpad1}"], ["Cast Confuse", "Numpad 2", "{Numpad2}"], ["Cast Corporealize", "Numpad 3", "{Numpad3}"], ["Cast Crash to Desktop", "Numpad 4", "{Numpad4}"], ["Cast Fear", "Numpad 5", "{Numpad5}"], ["Cast Invisibility", "Numpad 6", "{Numpad6}"], ["Cast Meteor Storm", "Numpad 7", "{Numpad7}"], ["Cast Raise Dead", "Numpad 8", "{Numpad8}"], ["Cast Summon Death", "Numpad 9", "{Numpad9}"], ["Cast Summon Elemental", "Numpad Add", "{NumpadAdd}"], ["Cast Thunder Storm", "Numpad Dot", "{NumpadDot}"], ["Cast Vortex", "Numpad Subtract", "{NumpadSub}"]]
-
-scripthotkeys["Minecraft"] := [["Swing Sword and Eat Food", "Alt+1", "!1"], ["Hold Shift", "Alt+Shift", "!{Shift}"]]
 
 scripthotkeys["Risk of Rain 2"] := [["Show Item Reference", "Left Control", "{LControl}"], ["Show Help", "Right Control", "{RControl}"]]
 
 scripthotkeys["Sonic Adventure DX"] := [["Forward", "W", "w"], ["Left", "A", "a"], ["Backward", "S", "s"], ["Right", "D", "d"], ["Jump", "Space", "{Space}"], ["Camera Left", "Left Arrow", "{Left}"], ["Camera Right", "Right Arrow", "{Right}"], ["Action", "E or Down", "e"], ["Look Around", "Up", "{Up}"], ["Back", "Backspace", "{Backspace}"], ["Pause", "Escape or Enter", "{Escape}"]]
-
-scripthotkeys["Superliminal"] := [["Click", "Backward Slash", "\"], 0, ["Move Mouse Up", "Up", "{Up}"], ["Move Mouse Right", "Right", "{Right}"], ["Move Mouse Down", "Down", "{Down}"], ["Move Mouse Left", "Left", "{Left}"]]
-
-scripthotkeys["Terraria"] := [["Duplicate Honey", "Alt+1", "!1"], ["Duplicate Lava", "Alt+2", "!2"]]
-
-scripthotkeys["The Escapists 2"] := [["Train Strength", "Alt+1", "!1"]]
 
 scripthotkeys["Valheim"] := [["Press E 10 times", "Alt+E", "!e"], ["Scroll Through Hotbar", "Alt+Scroll", ""], ["Move Mouse", "Arrow Keys", ""], ["Left Click", "Backslash", "\"], 0, ["Train Bow", "Alt+1", "!1"], ["Train Jump", "Alt+2", "!2"], ["Train Run", "Alt+3", "!3"], ["Train Sneak", "Alt+4", "!4"], ["Train Sword", "Alt+5", "!5"]]
 
@@ -149,31 +137,40 @@ scripthotkeys["Windows"].push(["Toggle Display Projection Mode (PC screen only o
 scripthotkeys["Windows"].push(["Toggle Theatre Mode", "Control+Windows+Forward Slash", "^#/"], ["Toggle Soft Theatre Mode", "Control+Windows+Alt+Forward Slash", "^#!/"], 0)
 scripthotkeys["Windows"].push(["When Theatre Mode is Active", "- ", ""], ["Disable Theatre Mode", "Delete", "{Delete}"], ["Hide Active Window (Excluding Soft Theatre Mode)", "Pause", "{Pause}"], ["Toggle Light Mode", "Backquote", "`"])
 
+scripthotkeys["Miscellaneous"] := []
+scripthotkeys["Miscellaneous"].push(["Citra", "-", ""], ["Go Home", "Controller Home", "{vk07}"], 0)
+scripthotkeys["Miscellaneous"].push(["Fortnite", "-", ""], ["Show Emote Menu", "F13", "{F13}"], 0)
+scripthotkeys["Miscellaneous"].push(["Minecraft", "-", ""], ["Swing Sword and Eat Food", "Alt+1", "!1"], ["Hold Shift", "Alt+Shift", "!{Shift}"], 0)
+scripthotkeys["Miscellaneous"].push(["Terraria", "-", ""], ["Duplicate Honey", "Alt+1", "!1"], ["Duplicate Lava", "Alt+2", "!2"], 0)
+scripthotkeys["Miscellaneous"].push(["The Escapists 2", "-", ""], ["Train Strength", "Alt+1", "!1"])
+scripthotkeys["Miscellaneous"].push(0, 0)
+scripthotkeys["Miscellaneous"].push(["paint.net", "-", ""], ["Undo", "Control+Shift+Z", "^+z"])
+
 for n, script in all {
  name := StrReplace(script, " ")
  if(script = 0) {
   Menu, scriptlist, Add
  } else if(scripthotkeys[script]) {
+  Menu, scriptlist%name%, Add, _Menu_End, Nothing
   for i, item in scripthotkeys[script] {
    if(item = 0) {
-    Menu, scriptlist%name%, Add
+    Menu, scriptlist%name%, Insert, _Menu_End
    } else {
-    ; A space is added to label to correct an issue with adding certain labels to menus.
-    ; The reason that this is effective in correcting both the left and right columns is unknown.
-    label := item[1] . " "
+    label := item[1]
     act := Func("sendHotkey").Bind(item[3])
-    Menu, scriptlist%name%, Add, %label%, % act
+    Menu, scriptlist%name%, Insert, _Menu_End, %label%, % act
    }
   }
   for i, item in scripthotkeys[script] {
    if(item = 0) {
-    Menu, scriptlist%name%, Add
+    Menu, scriptlist%name%, Insert, _Menu_End
    } else {
     label := item[2]
     act := Func("sendHotkey").Bind(item[3])
-    Menu, scriptlist%name%, Add, %label%, %act%, % (i = 1 ? "+Break" : "")
+    Menu, scriptlist%name%, Insert, _Menu_End, %label%, %act%, % (i = 1 ? "+Break" : "")
    }
   }
+  Menu, scriptlist%name%, Delete, _Menu_End
   Menu, scriptlist, Add, %script%, :scriptlist%name%
  } else if(n = 1) {
   Menu, scriptlist, Add, .Hotkeys.ahk, :list
