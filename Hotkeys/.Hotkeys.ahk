@@ -142,8 +142,8 @@ scripthotkeys["Miscellaneous"].push(["Citra", "-", ""], ["Go Home", "Controller 
 scripthotkeys["Miscellaneous"].push(["Fortnite", "-", ""], ["Show Emote Menu", "F13", "{F13}"], 0)
 scripthotkeys["Miscellaneous"].push(["Minecraft", "-", ""], ["Swing Sword and Eat Food", "Alt+1", "!1"], ["Hold Shift", "Alt+Shift", "!{Shift}"], 0)
 scripthotkeys["Miscellaneous"].push(["Terraria", "-", ""], ["Duplicate Honey", "Alt+1", "!1"], ["Duplicate Lava", "Alt+2", "!2"], 0)
-scripthotkeys["Miscellaneous"].push(["The Escapists 2", "-", ""], ["Train Strength", "Alt+1", "!1"])
-scripthotkeys["Miscellaneous"].push(0, 0)
+scripthotkeys["Miscellaneous"].push(["The Escapists 2", "-", ""], ["Train Strength", "Alt+1", "!1"], 0)scripthotkeys["Miscellaneous"].push(["ARK: Survival Evolved", "-", ""], ["Select Hotbar Slot 1", "F13", "1"], ["Show Whistle Menu", "F14", "`"], ["Emote 1", "F15", "["], ["Select Hotbar Slot 2", "F16", "0"], ["Drop Inventory Item", "F17", "o"], ["Unequip Hotbar Item", "F18", "q"], ["Emote 2", "F19", "]"], 0)
+scripthotkeys["Miscellaneous"].push(0)
 scripthotkeys["Miscellaneous"].push(["paint.net", "-", ""], ["Undo", "Control+Shift+Z", "^+z"])
 
 for n, script in all {

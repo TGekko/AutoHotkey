@@ -31,6 +31,17 @@ sendHotkey(value) {
 #IfWinActive ahk_exe TheEscapists2.exe
  !1::Run, Miscellaneous\The Escapists 2\Strength.ahk
 
+; ARK: Survival Evolved
+#IfWinActive ARK: Survival Evolved
+ F13::1
+ F14::'
+ F15::[
+ F16::0
+ F17::o
+ F18::q
+ F19::]
+
+; paint.net
 #IfWinActive ahk_exe paintdotnet.exe
  ^+z::SendHotkey("^y")
 
