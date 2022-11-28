@@ -86,7 +86,7 @@ for i, troubleshooter in troubleshooters {
  }
 }
 
-generalhotkeys := [["Show Menu", "Win+Right Click", "#RButton"], 0, ["Repeat Left Click", "Alt+9", "!9"], ["Repeat Right Click", "Alt+0", "!0"], ["Hold Left Click", "Alt+Shift+9", "!+9"], ["Hold Right Click", "Alt+Shift+0", "!+0"], 0, ["Stop Running Hotkey", "Pause or End", "Pause"], 0, ["Move Mouse Up", "Alt+Up", "!Up"], ["Mouse Mouse Down", "Alt+Down", "!Down"], ["Mouse Mouse Left", "Alt+Left", "!Left"], ["Mouse Mouse Right", "Alt+Right", "!Right"], ["Left Click", "Alt+[", "![["], ["Right Click", "Alt+]", "!]]"], 0, ["Toggle Reticle", "Alt+Insert", "!Insert"]]
+generalhotkeys := [["Show Menu", "Win+Right Click", "#RButton"], 0, ["Hold Left Click", "Alt+9", "!9"], ["Hold Right Click", "Alt+0", "!0"], ["Repeat Left Click", "Alt+Shift+9", "!+9"], ["Repeat Right Click", "Alt+Shift+0", "!+0"], 0, ["Stop Running Hotkey", "Pause or End", "Pause"], 0, ["Move Mouse Up", "Alt+Up", "!Up"], ["Mouse Mouse Down", "Alt+Down", "!Down"], ["Mouse Mouse Left", "Alt+Left", "!Left"], ["Mouse Mouse Right", "Alt+Right", "!Right"], ["Left Click", "Alt+[", "![["], ["Right Click", "Alt+]", "!]]"], 0, ["Toggle Reticle", "Alt+Insert", "!Insert"]]
 
 for i, item in generalhotkeys {
  if(item = 0) {
@@ -139,9 +139,9 @@ scripthotkeys["Windows"].push(["When Theatre Mode is Active", "- ", ""], ["Disab
 
 scripthotkeys["Miscellaneous"] := []
 scripthotkeys["Miscellaneous"].push(["Citra", "-", ""], ["Go Home", "Controller Home", "{vk07}"], 0)
-scripthotkeys["Miscellaneous"].push(["Fortnite", "-", ""], ["Show Emote Menu", "F13", "{F13}"], 0)
+scripthotkeys["Miscellaneous"].push(["Fortnite", "-", ""], ["Show Emote Menu", "F13", "{F13}"], ["Push to Talk", "F14", "{F14}"], 0)
 scripthotkeys["Miscellaneous"].push(["Minecraft", "-", ""], ["Swing Sword and Eat Food", "Alt+1", "!1"], ["Hold Shift", "Alt+Shift", "!{Shift}"], 0)
-scripthotkeys["Miscellaneous"].push(["Terraria", "-", ""], ["Duplicate Honey", "Alt+1", "!1"], ["Duplicate Lava", "Alt+2", "!2"], 0)
+scripthotkeys["Miscellaneous"].push(["Terraria", "-", ""], ["Map", "F13", "{F13}"], ["Duplicate Honey", "Alt+1", "!1"], ["Duplicate Lava", "Alt+2", "!2"], 0)
 scripthotkeys["Miscellaneous"].push(["The Escapists 2", "-", ""], ["Train Strength", "Alt+1", "!1"], 0)scripthotkeys["Miscellaneous"].push(["ARK: Survival Evolved", "-", ""], ["Select Hotbar Slot 1", "F13", "1"], ["Show Whistle Menu", "F14", "`"], ["Emote 1", "F15", "["], ["Select Hotbar Slot 2", "F16", "0"], ["Drop Inventory Item", "F17", "o"], ["Unequip Hotbar Item", "F18", "q"], ["Emote 2", "F19", "]"], 0)
 scripthotkeys["Miscellaneous"].push(0)
 scripthotkeys["Miscellaneous"].push(["paint.net", "-", ""], ["Undo", "Control+Shift+Z", "^+z"])
@@ -203,10 +203,10 @@ loaded := true
 
 ; Hotkeys
 
-!9::Run, .Hotkeys\Repeat_Left_Mouse_Button.ahk
-!0::Run, .Hotkeys\Repeat_Right_Mouse_Button.ahk
-!+9::Run, .Hotkeys\Hold_Left_Mouse_Button.ahk
-!+0::Run, .Hotkeys\Hold_Right_Mouse_Button.ahk
+!9::Run, .Hotkeys\Hold_Left_Mouse_Button.ahk
+!0::Run, .Hotkeys\Hold_Right_Mouse_Button.ahk
+!+9::Run, .Hotkeys\Repeat_Left_Mouse_Button.ahk
+!+0::Run, .Hotkeys\Repeat_Right_Mouse_Button.ahk
 
 !Up::DllCall("mouse_event", "UInt", 0x01, "UInt", 0, "UInt", -1)
 !Down::DllCall("mouse_event", "UInt", 0x01, "UInt", 0, "UInt", 1)

@@ -14,6 +14,7 @@ sendHotkey(value) {
 ; Fortnite
 #IfWinActive ahk_exe FortniteClient-Win64-Shipping.exe
  F13::b
+ F14::7
 
 ; Minecraft
 #IfWinActive Minecraft
@@ -24,6 +25,7 @@ sendHotkey(value) {
 
 ; Terraria
 #IfWinActive Terraria
+ F13::m
  !1::Run, Miscellaneous\Terraria\Honey.ahk
  !2::Run, Miscellaneous\Terraria\Lava.ahk
 
