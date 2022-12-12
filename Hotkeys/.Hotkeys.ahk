@@ -1,6 +1,7 @@
 #SingleInstance Force
 SetTitleMatchMode, 2
 DetectHiddenWindows, On
+SetNumLockState, AlwaysOn
 loaded := false
 reticle := 0x0
 
@@ -139,7 +140,7 @@ scripthotkeys["Windows"].push(["When Theatre Mode is Active", "- ", ""], ["Disab
 
 scripthotkeys["Miscellaneous"] := []
 scripthotkeys["Miscellaneous"].push(["Citra", "-", ""], ["Go Home", "Controller Home", "{vk07}"], 0)
-scripthotkeys["Miscellaneous"].push(["Fortnite", "-", ""], ["Show Emote Menu", "F13", "{F13}"], ["Push to Talk", "F14", "{F14}"], 0)
+scripthotkeys["Miscellaneous"].push(["Fortnite", "-", ""], ["Augment", "F13", "{F13}"], ["Show Emote Menu", "F14", "{F14}"], 0)
 scripthotkeys["Miscellaneous"].push(["Minecraft", "-", ""], ["Swing Sword and Eat Food", "Alt+1", "!1"], ["Hold Shift", "Alt+Shift", "!{Shift}"], 0)
 scripthotkeys["Miscellaneous"].push(["Terraria", "-", ""], ["Map", "F13", "{F13}"], ["Duplicate Honey", "Alt+1", "!1"], ["Duplicate Lava", "Alt+2", "!2"], 0)
 scripthotkeys["Miscellaneous"].push(["The Escapists 2", "-", ""], ["Train Strength", "Alt+1", "!1"], 0)scripthotkeys["Miscellaneous"].push(["ARK: Survival Evolved", "-", ""], ["Select Hotbar Slot 1", "F13", "1"], ["Show Whistle Menu", "F14", "`"], ["Emote 1", "F15", "["], ["Select Hotbar Slot 2", "F16", "0"], ["Drop Inventory Item", "F17", "o"], ["Unequip Hotbar Item", "F18", "q"], ["Emote 2", "F19", "]"], 0)
@@ -182,8 +183,8 @@ Menu, hotkey, Add, &.Hotkeys.ahk, :Tray
 Menu, hotkey, Default, 1&
 Menu, hotkey, Add
 Menu, hotkey, Add, Windows &Troubleshooters, :trouble
-act := Func("runWindowsTroubleshooter").Bind("NetworkDiagnosticsWeb")
-Menu, hotkey, Add, &Internet Connection, % act
+act := Func("runWindowsTroubleshooter").Bind("NetworkDiagnosticsNetworkAdapter")
+Menu, hotkey, Add, &Network Adapter, % act
 Menu, hotkey, Add
 Menu, hotkey, Add, Script &Hotkeys, :scriptlist
 Menu, hotkey, Add, Modify &Clipboard, modifyClipboard

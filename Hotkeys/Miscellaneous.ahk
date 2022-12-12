@@ -13,8 +13,8 @@ sendHotkey(value) {
 
 ; Fortnite
 #IfWinActive ahk_exe FortniteClient-Win64-Shipping.exe
- F13::b
- F14::7
+ F13::7
+ F14::b
 
 ; Minecraft
 #IfWinActive Minecraft
