@@ -215,10 +215,10 @@ activeWindowMonitorBounds(full:=false) {
  return %monitor%
 }
 
-; Moves the active window to a given position within the monitor which it resides.
+; Moves the active window to a given position within the monitor which it resides. The window is kept within the monitor.
 ; Microsoft Edge, Google Chrome, and Firefox are adjusted with an arbitrary margin adjustment unless explicitly stated using the [margins] parameter.
-;     x-Old version-x Windows without the following style ignore arbitrary margin adjustment:
-;     x-Old version-x > 0xC00000 - WS_CAPTION  (title bar)
+;     --Old version-- Windows without the following style ignore arbitrary margin adjustment:
+;     --Old version-- > 0xC00000 - WS_CAPTION  (title bar)
 ;  x       - A value *between 0 and 1* which represents a percentage of the monitor's width.
 ;            The center of the active window will be at this position.
 ;             A value of 0.5 will move the window to the center of the monitor.
@@ -237,9 +237,9 @@ activeWindowMonitorBounds(full:=false) {
 ;             A value of 0.5 would resize the active window to 50% of the monitor's height.
 ;             * If a value ouside of 0-1 is given, the window will not be resized.
 ;            (Default == -1)
-;  full    - A boolean value indicating whether or not to ignore an automatic arbitrary margin adjustment when resizing the window.
-;            A value of true will ignore the arbitrary margin adjustment.
-;            A value of false will allow the arbitrary margin adjustment.
+;  full    - A boolean value indicating whether or not to include the Taskbar when resizing the window.
+;            A value of true will include the height of the Taskbar in the size of the monitor.
+;            A value of false will exclude the height of the Taskbar in the size of the monitor.
 ;            (Default == false)
 ;  margins - A boolean value indicating whether or not to apply an arbitrary margin adjustment to web browsers when resizing the window.
 ;            (Default == true)
@@ -275,9 +275,13 @@ activeMoveTo(x:=-1, y:=-1, width:=-1, height:=-1, full:=false, margins:=true) {
  }
  if(x >= 0 && x <= 1) {
   winx := bounds[1]+(bounds[3]*x)
+  winx := Min(winx, bounds[3]-winwidth/2)
+  winx := Max(winx, bounds[1]+winwidth/2)
  }
  if(y >= 0 && y <= 1) {
   winy := bounds[2]+(bounds[4]*y)
+  winy := Min(winy, bounds[4]-winheight/2)
+  winy := Max(winy, bounds[2]+winheight/2)
  }
  winx-= winwidth/2
  winy-= winheight/2
@@ -451,6 +455,13 @@ destroyGUI(ui) {
 ^#Numpad6::activeMoveBy(1)
 ^#Numpad2::activeMoveBy(, 1)
 ^#Numpad4::activeMoveBy(-1)
+; Move window to the screen's edge in the direction of the numpad key with relation to [Numpad8]
+^#NumpadDiv::activeMoveTo(, 0)
+^#Numpad9::activeMoveTo(1)
+^#Numpad5::activeMoveTo(, 1)
+^#Numpad7::activeMoveTo(0)
+; Move the window to the bottom of the screen's edge ignoring the taskbar
+^#Numpad0::activeMoveTo(, 1,,,true)
 
 ; Set window to 100% of the screen's size
 #NumpadSub:: activeMoveTo(0.5, 0.5, 1, 1)
