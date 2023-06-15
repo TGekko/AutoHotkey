@@ -6,42 +6,53 @@
 ;
 
 #SingleInstance Force
-loaded := false
-
+menus := {
+ loaded: false,
+ general: Menu(),
+ call: menus_call
+}
+menus_call(function, parameters:="__", menuvariables*) {
+ if(parameters == "__") {
+  function()
+  return
+ }
+ if(Type(parameters) != "Array") {
+  parameters := [parameters]
+ }
+ function(parameters*)
+}
 showMenu() {
- global loaded
- if(loaded) {
-  Menu, hotkey, Show
+ global menus
+ if(menus.loaded) {
+  menus.general.Show()
  }
 }
 openFolder() {
- Run %A_WorkingDir%
+ Run A_WorkingDir
 }
 runWindowsTroubleshooter(troubleshooter) {
- Run *RunAs %A_ComSpec% /c msdt.exe /id %troubleshooter%,, Hide
+ Run "*RunAs " A_ComSpec " /c msdt.exe /id " troubleshooter,, "Hide"
 }
 
+menus.trouble := Menu()
 troubleshooters := [["&Internet Connection", "NetworkDiagnosticsWeb"], ["&Hardware and Devices", "DeviceDiagnostic"], ["Incoming &Connections", "NetworkDiagnosticsInbound"], ["&Microphone", "AudioRecordingDiagnostic"], ["&Network Adapter", "NetworkDiagnosticsNetworkAdapter"], ["&Playing Audio", "AudioPlaybackDiagnostic"], ["&Search and Indexing", "SearchDiagnostic"], ["&Windows Update", "WindowsUpdateDiagnostic"]]
 for i, troubleshooter in troubleshooters {
- act := Func("runWindowsTroubleshooter").Bind(troubleshooter[2])
- label := troubleshooter[1]
- Menu, trouble, Add, %label%, % act
- if(i = 1) {
-  Menu, trouble, Default, 1&
-  Menu, trouble, Add
+ menus.trouble.Add(troubleshooter[1], menus.call.Bind(runWindowsTroubleshooter, troubleshooter[2]))
+ if(i == 1) {
+  menus.trouble.Default := "1&"
+  menus.trouble.Add()
  }
 }
 
-Menu, hotkey, Add, &General.ahk, :Tray
-Menu, hotkey, Default, 1&
-Menu, hotkey, Add
-Menu, hotkey, Add, Windows &Troubleshooters, :trouble
-act := Func("runWindowsTroubleshooter").Bind("NetworkDiagnosticsWeb")
-Menu, hotkey, Add, &Internet Connection, % act
-Menu, Tray, Add
-Menu, Tray, Add, Open Script &Folder, openFolder
-Menu, Tray, Add, Open Script &Menu, showMenu
+menus.general.Add("&General.ahk", A_TrayMenu)
+menus.general.Default := "1&"
+menus.general.Add()
+menus.general.Add("Windows &Troubleshooters", menus.trouble)
+menus.general.Add("&Internet Connection", menus.call.Bind(runWindowsTroubleshooter, "NetworkDiagnosticsWeb"))
+A_TrayMenu.Add()
+A_TrayMenu.Add("Open Script &Folder", menus.call.bind(openFolder, "__"))
+A_TrayMenu.Add("Open Script &Menu", menus.call.bind(showMenu, "__"))
 
-loaded := true
+menus.loaded := true
 
 #RButton::showMenu()
