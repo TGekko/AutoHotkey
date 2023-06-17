@@ -14,6 +14,7 @@ menus := {
  trouble: Menu(),
  list: Menu(),
  scriptlist: Menu(),
+ scripts: Map(),
  tray: A_TrayMenu,
  call: menus_call
 }
@@ -106,24 +107,9 @@ for i, troubleshooter in troubleshooters {
  }
 }
 
-generalhotkeys := [["Show Menu", "Win+Right Click", "#RButton"], 0, ["Hold Left Click", "Alt+9", "!9"], ["Hold Right Click", "Alt+0", "!0"], ["Repeat Left Click", "Alt+Shift+9", "!+9"], ["Repeat Right Click", "Alt+Shift+0", "!+0"], 0, ["Stop Running Hotkey", "Pause or End", "Pause"], 0, ["Move Mouse Up", "Alt+Up", "!Up"], ["Mouse Mouse Down", "Alt+Down", "!Down"], ["Mouse Mouse Left", "Alt+Left", "!Left"], ["Mouse Mouse Right", "Alt+Right", "!Right"], ["Left Click", "Alt+[", "![["], ["Right Click", "Alt+]", "!]]"], 0, ["Toggle Reticle", "Alt+Insert", "!Insert"]]
-
-for i, item in generalhotkeys {
- if(item = 0) {
-  menus.list.Add()
- } else {
-  menus.list.Add(item[1], menus.call.bind(sendHotkey, item[3]))
- }
-}
-for i, item in generalhotkeys {
- if(item = 0) {
-  menus.list.Add()
- } else {
-  menus.list.Add(item[2], menus.call.bind(sendHotkey, item[3]), (i = 1 ? "+Break" : ""))
- }
-}
-
 scripthotkeys := Map()
+
+scripthotkeys[".Hotkeys"] := [["Show Menu", "Win+Right Click", "#RButton"], 0, ["Hold Left Click", "Alt+9", "!9"], ["Hold Right Click", "Alt+0", "!0"], ["Repeat Left Click", "Alt+Shift+9", "!+9"], ["Repeat Right Click", "Alt+Shift+0", "!+0"], 0, ["Stop Running Hotkey", "Pause or End", "Pause"], 0, ["Move Mouse Up", "Alt+Up", "!Up"], ["Mouse Mouse Down", "Alt+Down", "!Down"], ["Mouse Mouse Left", "Alt+Left", "!Left"], ["Mouse Mouse Right", "Alt+Right", "!Right"], ["Left Click", "Alt+[", "![["], ["Right Click", "Alt+]", "!]]"], 0, ["Toggle Reticle", "Alt+Insert", "!Insert"], 0]
 
 scripthotkeys["Magicka"] := [["Show Spell Menu", "Alt+Right Click", "!{RButton}"], 0, ["Cast Charm", "Numpad 0", "{Numpad0}"], ["Cast Conflagration", "Numpad 1", "{Numpad1}"], ["Cast Confuse", "Numpad 2", "{Numpad2}"], ["Cast Corporealize", "Numpad 3", "{Numpad3}"], ["Cast Crash to Desktop", "Numpad 4", "{Numpad4}"], ["Cast Fear", "Numpad 5", "{Numpad5}"], ["Cast Invisibility", "Numpad 6", "{Numpad6}"], ["Cast Meteor Storm", "Numpad 7", "{Numpad7}"], ["Cast Raise Dead", "Numpad 8", "{Numpad8}"], ["Cast Summon Death", "Numpad 9", "{Numpad9}"], ["Cast Summon Elemental", "Numpad Add", "{NumpadAdd}"], ["Cast Thunder Storm", "Numpad Dot", "{NumpadDot}"], ["Cast Vortex", "Numpad Subtract", "{NumpadSub}"]]
 
@@ -162,30 +148,23 @@ scripthotkeys["Miscellaneous"] := []
  scripthotkeys["Miscellaneous"].push(["Applications", "-", ""], 0)
  scripthotkeys["Miscellaneous"].push(["paint.net", "-", ""], ["Undo", "Control+Shift+Z", "^+z"])
 
-for n, script in all {
- name := StrReplace(script, " ")
- if(script = 0) {
+for script in all {
+ if(script == 0) {
   menus.scriptlist.Add()
- } else if(n = 1) {
-  menus.scriptlist.Add(".Hotkeys.ahk", menus.list)
-  menus.scriptlist.Default := "1&"
  } else {
-  menus.scriptlist%name% := Menu()
-  for i, item in scripthotkeys[script] {
-   if(item = 0) {
-    menus.scriptlist%name%.Insert()
-   } else {
-    menus.scriptlist%name%.Insert(, item[1], menus.call.Bind(sendHotkey, item[3]))
+  menus.scripts[script] := Menu()
+  i := 1
+  Loop 2 {
+   n := A_Index
+   for l, item in scripthotkeys[script] {
+    if(item == 0) {
+     menus.scripts[script].Insert(i++ "&")
+    } else {
+     menus.scripts[script].Insert(i++ "&", item[n], menus.call.bind(sendHotkey, item[3]), (n == 2 && l == 1 ? "+Break" : ""))
+    }
    }
   }
-  for i, item in scripthotkeys[script] {
-   if(item = 0) {
-    menus.scriptlist%name%.Insert()
-   } else {
-    menus.scriptlist%name%.Insert(, item[2], menus.call.bind(sendHotkey, item[3]), (i = 1 ? "+Break" : ""))
-   }
-  }
-  menus.scriptlist.Add(script, menus.scriptlist%name%)
+  menus.scriptlist.Add(script (script == ".Hotkeys" ? ".ahk" : ""), menus.scripts[script])
  }
 }
 
