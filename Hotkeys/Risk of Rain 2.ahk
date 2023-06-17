@@ -2,43 +2,36 @@
 #NoTrayIcon
 visible := []
 
-Gui, New, +AlwaysOnTop +ToolWindow -Caption -Disabled +E0x20 +LastFound +Hwndreference
-Gui, Color, 100100
-WinSet, TransColor, 100100 153
-Gui, New, +AlwaysOnTop +ToolWindow -Caption -Disabled +E0x20 +LastFound +Hwndhelp
-Gui, Color, 100100
-WinSet, TransColor, 100100 153
+reference := Gui("+AlwaysOnTop +ToolWindow -Caption -Disabled +E0x20 +LastFound", "AutoHotkey :: Risk of Rain 2.ahk > GUI:Item Reference")
+reference.BackColor := "100100"
+WinSetTransColor "100100 153", reference.Hwnd
+help := Gui("+AlwaysOnTop +ToolWindow -Caption -Disabled +E0x20 +LastFound", "AutoHotkey :: Risk of Rain 2.ahk > GUI:Help")
+help.BackColor := "100100"
+WinSetTransColor "100100 153", help.Hwnd
 
-if(A_ScreenHeight < A_ScreenWidth) {
- Gui, %reference%:Add, Picture, w-1 h%A_ScreenHeight%,  Risk of Rain 2\Reference.png
- Gui, %help%:Add, Picture, w-1 h%A_ScreenHeight%, Risk of Rain 2\Help.png
-} else {
- Gui, %reference%:Add, Picture, w%A_ScreenWidth% h-1,  Risk of Rain 2\Reference.png
- Gui, %help%:Add, Picture, w%A_ScreenWidth% h-1, Risk of Rain 2\Help.png
-}
+h := A_ScreenHeight
+w := A_ScreenWidth
+reference.Add("Picture", (h < w ? "w-1 h" h : "w" w " h-1"), "Risk of Rain 2\Reference.png")
+help.Add("Picture", (h < w ? "w-1 h" h : "w" w " h-1"), "Risk of Rain 2\Help.png")
 
-
-
-#IfWinActive ahk_exe Risk of Rain 2.exe
- ~LControl::
-  toggle(reference, "AutoHotkey :: Risk of Rain 2.ahk > GUI:Item Reference")
-  KeyWait, LControl
-  return
- ~RControl::toggle(help, "AutoHotkey :: Risk of Rain 2.ahk > GUI:Help")
-#IfWinActive
-
-#IfWinExist AutoHotkey :: Risk of Rain 2.ahk > GUI
+#HotIf WinActive("ahk_exe Risk of Rain 2.exe")
+ ~LControl:: {
+  toggle(reference, "Item Reference")
+  KeyWait "LControl"
+ }
+ ~RControl::toggle(help, "Help")
+#HotIf WinExist("AutoHotkey :: Risk of Rain 2.ahk > GUI")
  ~Pause::
- ~Delete::
-  Gui, %reference%:Hide
-  Gui, %help%:Hide
-  return
-#IfWinExist
+ ~Delete:: {
+  reference.Hide()
+  help.Hide()
+ }
+#HotIf
 
-toggle(ui, name) {
- if(WinExist("ahk_id" ui)) {
-  Gui, %ui%:Hide
+toggle(ui, title) {
+ if(WinExist("AutoHotkey :: Risk of Rain 2.ahk > GUI:" title)) {
+  ui.Hide()
  } else {
-  Gui, %ui%:Show, x0 y0 w%A_ScreenWidth% h%A_ScreenHeight% NoActivate, %name%
+  ui.Show("x0 y0 w" A_ScreenWidth " h" A_ScreenHeight " NoActivate")
  }
 }

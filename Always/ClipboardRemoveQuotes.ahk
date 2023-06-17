@@ -1,7 +1,5 @@
-~Pause & Delete::
-ClipWait, 2
-if (ErrorLevel = 0)
-{
- StringReplace, clipboard, clipboard, `", , All
+~Pause & Delete:: {
+ if (ClipWait, 2) {
+  A_Clipboard := StrReplace)A_Clipboard, '"')
+ }
 }
-Return

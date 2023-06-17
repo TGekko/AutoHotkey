@@ -1,1 +1,1 @@
-NumLock:: Winset, Alwaysontop, , A
+NumLock:: WinSetAlwaysOnTop -1, A

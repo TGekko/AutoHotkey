@@ -1,18 +1,43 @@
 #SingleInstance Force
 #NoTrayIcon
-SetTitleMatchMode, 2
-GroupAdd, browsers, ahk_exe chrome.exe
-GroupAdd, browsers, ahk_exe msedge.exe
-GroupAdd, browsers, ahk_exe firefox.exe
+SetTitleMatchMode 2
+GroupAdd "browsers", "ahk_exe chrome.exe"
+GroupAdd "browsers", "ahk_exe msedge.exe"
+GroupAdd "browsers", "ahk_exe firefox.exe"
 
 ; This accounts for Windows Aero invisible borders
 margin := [7, 4]
 
 ; This will contain the styles of windows toggled as borderless
-borderless := {}
+borderless := Map()
 
 ; This contains a boolean value which indicates which display mode was toggled last (true == "PC screen only", false == "Duplicate")
 displaymode := true
+
+; This is the file path which leads to the Window Profiles .ini file
+inipath := "Windows\WindowProfiles.ini"
+
+; A custom object used to store menues and apply custom functions to menus
+menus := {
+ tray: A_TrayMenu,
+ call: menus_call
+}
+; Use menus.%name%.Add("Item", menus.call.bind(function, [parameters])) to add a custom function to an item
+;  If there is only one desired parameter that is not an array, it can be passed directly instead of being passed in an array
+;  If there are no desired parameters, you must pass "__" in the place of the parameters
+;  If there is no desired function, pass an empty string in place of the function
+menus_call(function:="", parameters:="__", menuvariables*) {
+ if(function == "")
+  return
+ if(parameters == "__") {
+  function()
+  return
+ }
+ if(Type(parameters) != "Array") {
+  parameters := [parameters]
+ }
+ function(parameters*)
+}
 
 ; Joins any number of strings separated by a given delimiter
 ;  delimiter - The string that will appear between the supplied strings
@@ -56,15 +81,12 @@ StrMatchLen(value, match, fill:=" ") {
 ;              myini := IniReadObject(mypath)
 ;              myvalue := myini["section"]["key"]
 IniReadObject(path) {
- ini := {}
- IniRead, sections, %path%
- sections := StrSplit(sections, "`n")
- for i, section in sections {
-  ini[section] := {}
-  iniRead, values, %path%, %section%
-  values := StrSplit(values, "`n")
-  for n, value in values {
-   ini[section][SubStr(value, 1, InStr(value, "=") - 1) ""] := SubStr(value, InStr(value, "=") + 1)
+ ini := Map()
+ for i, section in StrSplit(IniRead(path), "`n") {
+  ini[section] := Map()
+  values := IniRead(path, section)
+  for n, value in StrSplit(values, "`n") {
+   ini[section][SubStr(value, 1, InStr(value, "=") - 1) ""] := SubStr(value, InStr(value, "=") +1)
   }
  }
  return ini
@@ -75,22 +97,23 @@ IniReadObject(path) {
 ;         If the <name> is already in use, the profile with that name will be rewritten
 ;         If <name> is not provided, the user will be prompted for a name
 saveWindowProfile(name:="") {
- if(!name) {
-  InputBox, name, Save Window Profile, Please input the name of the new Window Profile.,,,,,,Locale,, Default
-  if(ErrorLevel || !name) {
+ if(Type(name) != "String" || !name) {
+  userinput := InputBox("Please input the name of the new Window Profile.", "Save Window Profile")
+  if(userinput.result != "OK")
    return
-  }
+  name := userinput.Value
+  if(!name)
+   return
  }
- IniDelete, Windows\WindowProfiles.ini, %name%
- WinGet, i, List
- Loop, %i% {
-  window := "ahk_id " i%A_Index%
-  WinGetTitle, title, %window%
-  WinGet, exe, ProcessName, %window%
+ IniDelete inipath, name
+ for i, window in WinGetList() {
+  value := "ahk_id " window
+  title := WinGetTitle(value)
+  exe := "ahk_exe " WinGetProcessName(value)
   if(title) {
-   WinGetPos, x, y, w, h, %window%
-   value := concatenate(",, ", title " ahk_exe " exe, x, y, w, h)
-   IniWrite, %value%, Windows\WindowProfiles.ini, %name%, % StrReplace(title, "=", "-")
+   WinGetPos &x, &y, &w, &h, value
+   value := 
+   IniWrite ",, " title ",, " exe ",, " x ",, " y ",, " w ",, " h, inipath, name, StrReplace(title, "=", "-")
   }
  }
 }
@@ -100,42 +123,40 @@ saveWindowProfile(name:="") {
 ;  y - The y coordinate to place the menu
 ;      Both <x> and <y> must be present for either to be used
 manageWindowProfiles(x:="", y:="") {
+ global menus
  if(!(x && y)) {
-  MouseGetPos, x, y
+  MouseGetPos &x, &y
  }
- Menu, profilemenu, Add
- Menu, profilemenu, Delete
- Menu, profilemenu, Add, Window Profiles, doNothing
- Menu, profilemenu, Default, 1&
- act := Func("openWindowProfiles")
- Menu, profilemenu, Add, Open WindowProfiles.ini, %act%
- act := Func("saveWindowProfile").Bind("")
- Menu, profilemenu, Add, Save new Window Profile, %act%
- Menu, profilemenu, Add
- ini := IniReadObject("Windows\WindowProfiles.ini")
+ menus.windowprofiles := Menu()
+ menus.windowprofiles.Add()
+ menus.windowprofiles.Delete()
+ menus.windowprofiles.Add("Window Profiles", menus.call.bind(""))
+ menus.windowprofiles.Default := "1&"
+ menus.windowprofiles.Add("Open WindowProfiles.ini", menus.call.bind(openWindowProfiles, "__"))
+ menus.windowprofiles.Add("Save new Window Profile", menus.call.bind(saveWindowProfile, "__"))
+ menus.windowprofiles.Add()
+ ini := IniReadObject(inipath)
  for section, keys in ini {
-  name := "profilemenu" A_Index
-  act := Func("removeWindowProfileContents").Bind(section,, true, x, y)
-  Menu, %name%, Add
-  Menu, %name%, Delete
-  act := Func("activateWindowProfile").Bind(section)
-  Menu, %name%, Add, Activate Profile, %act%
-  Menu, %name%, Default, 1&
-  Menu, %name%, Add, Delete Profile, %act%
-  Menu, %name%, Add, Click any value below to delete it from the profile, doNothing
-  Menu, %name%, Add
+  i := A_Index
+  menus.windowprofiles%i% := Menu()
+  menus.windowprofiles%i%.Add()
+  menus.windowprofiles%i%.Delete()
+  menus.windowprofiles%i%.Add("Activate Profile", menus.call.bind(activateWindowProfile, section))
+  menus.windowprofiles%i%.Default := "1&"
+  menus.windowprofiles%i%.Add("Delete Profile", menus.call.bind(removeWindowProfileContents, [section,, true, x, y]))
+  menus.windowprofiles%i%.Add("Click any value below to delete it from the profile", menus.call.bind(""))
+  menus.windowprofiles%i%.Add()
   for key, value in keys {
-   act := Func("removeWindowProfileContents").Bind(section, key, true, x, y)
-   Menu, %name%, Add, %key%, %act%
+   menus.windowprofiles%i%.Add(key, menus.call.bind(removeWindowProfileContents, [section, key, true, x, y]))
   }
-  Menu, profilemenu, Add, %section%, :%name%
+  menus.windowprofiles.Add(section, menus.windowprofiles%i%)
  }
- Menu, profilemenu, Show, %x%, %y%
+ menus.windowprofiles.Show(x, y)
 }
 
 ; Opens the WindowProfiles.ini file
 openWindowProfiles() {
- Run "C:\Windows\Notepad.exe" "%A_WorkingDir%\Windows\WindowProfiles.ini"
+ Run '"C:\Windows\Notepad.exe" "' A_WorkingDir '\' inipath '"'
 }
 
 ; Removes a section or key of WindowProfiles.ini
@@ -147,9 +168,9 @@ openWindowProfiles() {
 ;                Both <x> and <y> must be present for either to be used
 removeWindowProfileContents(section:="", key:="", edit:=false, x:="", y:="") {
  if(key) {
-  IniDelete, Windows\WindowProfiles.ini, %section%, %key%
+  IniDelete inipath, section, key
  } else if(section) {
-  IniDelete, Windows\WindowProfiles.ini, %section%
+  IniDelete inipath, section
  }
  if(edit) {
   manageWindowProfiles(x, y)
@@ -159,7 +180,7 @@ removeWindowProfileContents(section:="", key:="", edit:=false, x:="", y:="") {
 ; Activates a given Window Profile.
 ;  profile - The name of the desired Window Profile to load.
 activateWindowProfile(profile) {
- ini := IniReadObject("Windows\WindowProfiles.ini")
+ ini := IniReadObject(inipath)
  for key, value in ini[profile] {
   value := StrSplit(value, ",, ")
   id := value[1]
@@ -167,7 +188,7 @@ activateWindowProfile(profile) {
   y := value[3]
   width := value[4]
   height := value[5]
-  WinMove, %id%,, x, y, width, height
+  WinMove x, y, width, height, id
  }
 }
 
@@ -177,42 +198,46 @@ activateWindowProfile(profile) {
 ;  return - An array containing the bounds of the monitor containing the active window.
 ;           The resulting array will have the following configuration: [x, y, width, height]
 activeWindowMonitorBounds(full:=false) {
- WinGetPos, x, y, width, height, A
+ WinGetPos &x, &y, &width, &height, "A"
  x += width/2
  y += height/2
- SysGet, monitorcount, MonitorCount
+ monitorcount := MonitorGetCount()
  monitor := 0
  if(monitorcount = 1) {
   monitor := 1
  } else {
   Loop %monitorcount% {
-   SysGet bounds, Monitor, %A_Index%
-   if(x >= boundsLeft && x <= boundsRight && y >= boundsTop && y <= boundsBottom) {
+   MonitorGet(A_index, &bleft, &btop, &bright, &bbottom)
+   if(x >= bleft && x <= bright && y >= btop && y <= bbottom) {
     monitor := A_index
     break
    }
   }
   if(monitor = 0) {
-   MouseGetPos, x, y
+   MouseGetPos &x, &y
    Loop %monitorcount% {
-    SysGet bounds, Monitor, %A_Index%
-    if(x >= boundsLeft && x <= boundsRight && y >= boundsTop && y <= boundsBottom) {
+    MonitorGet(A_index, &bleft, &btop, &bright, &bbottom)
+    if(x >= bleft && x <= bright && y >= btop && y <= bbottom) {
      monitor := A_index
      break
     }
    }
   }
   if(monitor = 0) {
-   SysGet, monitor, MonitorPrimary
+   monitor := MonitorGetPrimary()
   }
  }
+ bleft := 0
+ btop := 0
+ bright := 0
+ btop := 0
  if(full) {
-  SysGet, bounds, Monitor, %monitor%
+  MonitorGet(monitor, &bleft, &btop, &bright, &bbottom)
  } else {
-  SysGet, bounds, MonitorWorkArea, %monitor%
+  MonitorGetWorkArea(A_index, &bleft, &btop, &bright, &bbottom)
  }
- monitor := [boundsLeft, boundsTop, boundsRight-boundsLeft, boundsBottom-boundsTop]
- return %monitor%
+ monitor := [bleft, btop, bright-bleft, bbottom-btop]
+ return monitor
 }
 
 ; Moves the active window to a given position within the monitor which it resides. The window is kept within the monitor.
@@ -245,33 +270,26 @@ activeWindowMonitorBounds(full:=false) {
 ;            (Default == true)
 activeMoveTo(x:=-1, y:=-1, width:=-1, height:=-1, full:=false, margins:=true) {
  global margin
- WinGetPos, winx, winy, winwidth, winheight, A
+ WinGetPos &winx, &winy, &winwidth, &winheight, "A"
  bounds := 0
  if(full) {
   bounds := activeWindowMonitorBounds(true)
  } else {
   bounds := activeWindowMonitorBounds()
  }
- ; WinGet, style, Style, A
  winx+= winwidth/2
  winy+= winheight/2
  if(width >= 0 && width <= 1) {
   winwidth := bounds[3]*width
   if(WinActive("ahk_group browsers") && margins) {
-   winwidth += margin[1]*2
+   winwidth += margin[1]
   }
-  ; if((style & 0xC00000) && margins) {
-  ;  winwidth += margin[1]*2
-  ; }
  }
  if(height >= 0 && height <= 1) {
   winheight := bounds[4]*height
   if(WinActive("ahk_group browsers") && margins) {
-   winheight += margin[2]*2
+   winheight += margin[2]
   }
-  ; if((style & 0xC00000) && margins) {
-  ;  winheight += margin[2]*2
-  ; }
  }
  if(x >= 0 && x <= 1) {
   winx := bounds[1]+(bounds[3]*x)
@@ -285,7 +303,7 @@ activeMoveTo(x:=-1, y:=-1, width:=-1, height:=-1, full:=false, margins:=true) {
  }
  winx-= winwidth/2
  winy-= winheight/2
- WinMove, A,, winx, winy, winwidth, winheight
+ WinMove winx, winy, winwidth, winheight, "A"
 }
 
 ; Moves the active window by a specified amount of pixels.
@@ -294,10 +312,10 @@ activeMoveTo(x:=-1, y:=-1, width:=-1, height:=-1, full:=false, margins:=true) {
 ;  y - The amount of pixels to move the window vertically.
 ;      (Default = 0)
 activeMoveBy(x:=0, y:=0) {
- WinGetPos, winx, winy,,, A
+ WinGetPos &winx, &winy,,, "A"
  winx+= x
  winy+= y
- WinMove, A,, winx, winy
+ WinMove winx, winy,,, "A"
 }
 
 ; Resizes the active window by a specified amount.
@@ -314,7 +332,7 @@ activeMoveBy(x:=0, y:=0) {
 ;               This does nothing if <percentage> is false.
 ;               (Default = false)
 activeSizeBy(width:=0, height:=0, percent:=false, screen:=false) {
- WinGetPos, x, y, winwidth, winheight, A
+ WinGetPos &x, &y, &winwidth, &winheight, "A"
  if(percent) {
   if(screen) {
    bounds := activeWindowMonitorBounds()
@@ -332,47 +350,45 @@ activeSizeBy(width:=0, height:=0, percent:=false, screen:=false) {
  y -= height/2
  winwidth += width
  winheight += height
- WinMove, A,, x, y, winwidth, winheight
+ WinMove x, y, winwidth, winheight, "A"
 }
 
 ; Toggles Borderless Mode for the active window
 activeToggleBorderless() {
  global borderless
- WinGet, id, ID, A
+ id := WinGetID("A")
  if(borderless[id]) {
   style := borderless[id]
-  WinSet, Style, %style%, A
+  WinSetStyle style, "A"
   borderless.Delete(id)
  } else {
-  WinGet, style, Style, A
+  style := WinGetStyle("A")
   borderless[id] := style
-  WinSet, Style, -0xC00000, A ; WS_CAPTION  (title bar)
-  WinSet, Style, -0x800000, A ; WS_BORDER   (thin-line border)
-  WinSet, Style, -0x400000, A ; WS_DLGFRAME (dialog box border)
-  WinSet, Style, -0x40000, A  ; WS_SIZEBOX  (sizing border)
+  WinSetStyle "-0xC00000", "A" ; WS_CAPTION  (title bar)
+  WinSetStyle "-0x800000", "A" ; WS_BORDER   (thin-line border)
+  WinSetStyle "-0x400000", "A" ; WS_DLGFRAME (dialog box border)
+  WinSetStyle "-0x40000", "A"  ; WS_SIZEBOX  (sizing border)
  }
 }
 
 ; Toggles Transparency for the active window
 ;  prompt - A boolean value indicating whether the user should (true) or should not (false) be prompted for a custom transparency percentage
 activeToggleTransparency(prompt:=false) {
- transparency := 0
- WinGet, transparency, Transparent, A
- if(transparency) {
-  WinSet, Transparent, 255, A
-  WinSet, Transparent, Off, A
+ transparency := WinGetTransparent("A")
+ if(transparency != "" && transparency < 255) {
+  WinSetTransparent 255, "A"
+  WinSetTransparent "Off", "A"
  } else {
   if(prompt) {
-   InputBox, transparency, Set Window Transparency, Input a number from 0 to 100 to set the percentage of opacity.,, 300, 150,,, Locale,, 95
-   if(ErrorLevel) {
+   transparency := InputBox "Input a number from 0 to 100 to set the percentage of opacity.", "Set Window Transparency", "w300 h150", 85
+   if(transparency.Result != "OK")
     return
-   }
   } else {
    transparency := 50
   }
   if(transparency >= 0 && transparency <= 100) {
    transparency := (transparency/100)*255
-   WinSet, Transparent, %transparency%, A
+   WinSetTransparent transparency, "A"
   }
  }
 }
@@ -381,38 +397,42 @@ activeToggleTransparency(prompt:=false) {
 ; When active, everything except the active window will be hidden behind an entirely black GUI
 ;  soft - A boolean value indicating whether or not to enable Soft Theatre Mode
 ;         Soft Theatre Mode allows multiple windows to be in front of the generated GUI
+dark := { Hwnd: 0 }
+light := false
 toggleTheatreMode(soft:=false) {
  global dark
- if (not destroyGUI(dark)) {
+ global margin
+ if (!destroyGUI(dark)) {
   if(soft) {
-   Gui, New, +ToolWindow -Caption +LastFound +Hwnddark
+   dark := Gui("+ToolWindow -Caption +LastFound", "AutoHotkey :: Windows.ahk > GUI > Theatre Mode")
   } else {
-   Gui, New, +AlwaysOnTop +ToolWindow -Caption +LastFound +Hwnddark
-   WinSet, TransColor, 100100
-   WinGetActiveStats, title, w, h, x, y
+   dark := Gui("+AlwaysOnTop +ToolWindow -Caption +LastFound", "AutoHotkey :: Windows.ahk > GUI > Theatre Mode")
+   WinSetTransColor "100100", dark.Hwnd
+   WinGetPos &x, &y, &width, &height, "A"
    x += margin[1]
    y += margin[2]
-   w -= margin[1]*2
-   h -= margin[2]*2
-   Gui, %dark%:Add, Progress, x%x% y%y% w%w% h%h% c100100 background100100 Hwnddarkwindow, 100
+   width -= margin[1]*2
+   height -= margin[2]*2
+   dark.Add("Progress", "x" x " y" y " w" width " h" height " c100100 background100100 vwindow", 100)
   }
-  Gui, %dark%:Color, 000000
-  Gui, %dark%:Show, x0 y0 w%A_ScreenWidth% h%A_ScreenHeight% NoActivate, AutoHotkey :: Windows.ahk > GUI > Theatre Mode
+  dark.BackColor := "000000"
+  dark.Show("x0 y0 w" A_ScreenWidth " h" A_ScreenHeight " NoActivate")
  }
 }
 
 ; If the given gui exists, the gui is destroyed.
-;  ui      - The gui id of the gui to destroy.
+;  ui      - The gui to destroy.
 ;  returns - A boolean value indicating whether the given gui was (true) or was not (false) destroyed.
 destroyGUI(ui) {
- if(WinExist("ahk_id" ui)) {
-  Gui, %ui%:Destroy
-  WinGetActiveTitle, title
+ try {
+  WinExist(ui.Hwnd)
+  ui.Destroy()
   return true
  }
  return false
 }
 
+timedark := 0
 
 
 ; Hotkeys
@@ -469,14 +489,14 @@ destroyGUI(ui) {
 #!NumpadSub:: activeMoveTo(0.5, 0.5, 1, 1, true, false)
 
 ; Toggle "Always On Top" for the active window
-^#a::WinSet, AlwaysOnTop, Toggle, A
+^#a::WinSetAlwaysOnTop -1, "A"
 
 ; Toggle Borderless Mode for the active window and set it to 100% of the screen's size including the taskbar
 ; Ignores arbitrary margin adjustment
-^#!b::
+^#!b:: {
  activeToggleBorderless()
  activeMoveTo(0.5, 0.5, 1, 1, true)
-return
+}
 ; Toggle Borderless Mode for the active window
 ^#b::activeToggleBorderless()
 
@@ -486,15 +506,16 @@ return
 ^#!t::activeToggleTransparency(true)
 
 ; Toggle Windows display mode between "PC screen only" and "Duplicate"
-^#p::
+^#p:: {
+ global displaymode
  if(displaymode) {
-  Run, C:\Windows\System32\DisplaySwitch.exe /clone
+  Run "C:\Windows\System32\DisplaySwitch.exe /clone"
   displaymode := false
  } else {
-  Run, C:\Windows\System32\DisplaySwitch.exe /internal
+  Run "C:\Windows\System32\DisplaySwitch.exe /internal"
   displaymode := true
  }
-return
+}
 
 ; Enable Theatre Mode for the active window
 ; This makes the rest of the screen black
@@ -503,29 +524,35 @@ return
 ; Any number of windows can be on top of the black screen
 ^#!/::toggleTheatreMode(true)
 
-#IfWinActive AutoHotkey :: Windows.ahk > GUI > Theatre Mode
+#HotIf WinActive("AutoHotkey :: Windows.ahk > GUI > Theatre Mode")
  LButton up::destroyGUI(dark)
-#IfWinActive
-#IfWinExist AutoHotkey :: Windows.ahk > GUI > Theatre Mode
+#HotIf WinExist("AutoHotkey :: Windows.ahk > GUI > Theatre Mode")
  ~Delete::destroyGUI(dark)
- ~Pause::
-  GuiControlGet, darkwindowvisible, Visible, %darkwindow%
-  if(darkwindowvisible == 1) {
-   GuiControl, Hide, %darkwindow%
-  } else {
-   GuiControl, Show, %darkwindow%
+ ~^Pause:: {
+  boundsdark := activeWindowMonitorBounds()
+  boundsdarkx := (boundsdark[1] + (boundsdark[3] / 2)) - 150
+  boundsdarky := (boundsdark[2] + (boundsdark[4] / 2)) - 75
+  timedarkinput := InputBox("Input the number of seconds that you desire to hide the window.", "Time to Hide Window", "x" boundsdarkx " y" boundsdarky " w300 h150", 10)
+  if(timedarkinput.Result != "OK" || timedarkinput.Value <= 0)
+   return
+  timeddark := timedarkinput.Value*1000
+ }
+ ~Pause:: {
+  dark["window"].Visible := !dark["window"].Visible
+  if(timeddark > 0) {
+   Sleep timeddark
+   dark["window"].Visible := true
   }
-  return
- ~`::
+  timeddark := 0
+ }
+ ~`:: {
+  global light
   if(light) {
-   try Gui, %dark%:Color, 000000
+   dark.BackColor := "000000"
    light := false
   } else {
-   try Gui, %dark%:Color, FFFFFF
+   dark.BackColor := "FFFFFF"
    light := true
   }
-  return
-#IfWinExist
-
-doNothing:
-return
+ }
+#HotIf

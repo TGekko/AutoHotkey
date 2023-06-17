@@ -1,9 +1,9 @@
 #SingleInstance Ignore
-MouseClick, left, , , , , D
+MouseClick "left",,,,, "D"
 
 LButton::
 End::
-Pause::
- MouseClick, left, , , , , U
+Pause:: {
+ MouseClick "left",,,,, "U"
  ExitApp
-return
+}

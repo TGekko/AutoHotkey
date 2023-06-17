@@ -1,12 +1,11 @@
 #SingleInstance Ignore
-loop {
- MouseClick, left, , , , , D
- MouseClick, left, , , , , U
- Sleep, 16
- if (repeat = 1) {
-  ExitApp
- }
+repeat := true
+while(repeat) {
+ MouseClick "Left",,,,, "D"
+ MouseClick "Left",,,,, "U"
+ Sleep 16
 }
+ExitApp
 
-End::repeat := 1
-Pause::repeat := 1
+End::repeat := false
+Pause::repeat := false

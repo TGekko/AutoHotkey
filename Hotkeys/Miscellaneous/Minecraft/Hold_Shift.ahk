@@ -1,12 +1,10 @@
 #SingleInstance Ignore
-Send {Shift down}
+Send "{Shift down}"
 
 End::
-Pause::
- Send {Shift up}
+Pause:: {
+ Send "{Shift up}"
  ExitApp
-return
+}
 
-Shift::
- ExitApp
-return
+Shift::ExitApp

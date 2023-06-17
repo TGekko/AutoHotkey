@@ -3,28 +3,28 @@
 
 sendHotkey(value) {
  SendLevel 1
- SendInput %value%
+ SendInput value
  SendLevel 0
 }
 
 ; Borderlands 3
-#IfWinActive ahk_exe Borderlands3.exe
+#HotIf WinActive("ahk_exe Borderlands3.exe")
  F13::g ; Throw Grenade
  F14::c ; Switch Weapon Modes
  F15::v ; Primary Weapon Fire
  F16::f ; Action Skill
 
 ; Citra
-#IfWinActive ahk_exe citra-qt.exe
+#HotIf WinActive("ahk_exe citra-qt.exe")
  vk07::Home ; Go Home
 
 ; Fortnite
-#IfWinActive ahk_exe FortniteClient-Win64-Shipping.exe
+#HotIf WinActive("ahk_exe FortniteClient-Win64-Shipping.exe")
  F13::7 ; Augment
  F14::b ; Show Emote Menu
 
 ; Hades
-#IfWinActive ahk_exe Hades.exe
+#HotIf WinActive("ahk_exe Hades.exe")
  MButton::q ; Special
  F13::Space ; Dash
  F14::e     ; Interact
@@ -34,26 +34,47 @@ sendHotkey(value) {
  F18::b     ; Boon Info
  F19::c     ; Open Codex
  
+; Hogwarts Legacy
+#HotIf WinActive("ahk_exe HogwartsLegacy.exe")
+ F13::2 ; Spell Hotbar Slot 2
+ F14::3 ; Spell Hotbar Slot 3
+ F15::4 ; Spell Hotbar Slot 4
+ F16::1 ; Spell Hotbar Slot 1
 
 ; Minecraft
-#IfWinActive Minecraft
- F15::F1                                         ; Toggle Perspective
- F19::F1                                         ; Toggle Perspective
- !1::Run, Minecraft\Sword_and_Food.ahk           ; Swing Sword and Eat Food
- !Shift::Run, Miscellaneous\Minecraft\Hold_Shift ; Hold Shift
+#HotIf WinActive("Minecraft")
+ F15::F1                                          ; Toggle Perspective
+ F19::F1                                          ; Toggle Perspective
+ !1::Run "Minecraft\Sword_and_Food.ahk"           ; Swing Sword and Eat Food
+ !Shift::Run "Miscellaneous\Minecraft\Hold_Shift" ; Hold Shift
+
+ ; Sonic Adventure DX
+#HotIf WinActive("ahk_exe Sonic Adventure DX.exe")
+w::Up         ; Forward
+a::Left       ; Left
+s::Down       ; Backward
+d::Right      ; Right
+Space::s      ; Jump
+Left::q       ; Camera Left
+Right::e      ; Camera Right
+e::a          ; Action
+Down::a       ; Action
+Up::w         ; Look Around
+Backspace::d  ; Back
+Escape::Enter ; Pause
 
 ; Terraria
-#IfWinActive Terraria
- F13::m                                    ; Map
- !1::Run, Miscellaneous\Terraria\Honey.ahk ; Duplicate Honey
- !2::Run, Miscellaneous\Terraria\Lava.ahk  ; Duplicate Lava
+#HotIf WinActive("Terraria")
+ F13::m                                     ; Map
+ !1::Run "Miscellaneous\Terraria\Honey.ahk" ; Duplicate Honey
+ !2::Run "Miscellaneous\Terraria\Lava.ahk"  ; Duplicate Lava
 
 ; The Escapists 2
-#IfWinActive ahk_exe TheEscapists2.exe
- !1::Run, Miscellaneous\The Escapists 2\Strength.ahk ; Train Strength
+#HotIf WinActive("ahk_exe TheEscapists2.exe")
+ !1::Run "Miscellaneous\The Escapists 2\Strength.ahk" ; Train Strength
 
 ; ARK: Survival Evolved
-#IfWinActive ARK: Survival Evolved
+#HotIf WinActive("ARK: Survival Evolved")
  F13::1 ; Select Hotbar Slot 1
  F14::' ; Show Whistle Menu
  F15::[ ; Emote 1
@@ -63,7 +84,7 @@ sendHotkey(value) {
  F19::] ; Emote 2
 
 ; paint.net
-#IfWinActive ahk_exe paintdotnet.exe
+#HotIf WinActive("ahk_exe paintdotnet.exe")
  ^+z::SendHotkey("^y") ; Undo
 
-#IfWinActive
+#HotIf

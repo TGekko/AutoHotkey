@@ -1,9 +1,9 @@
 #SingleInstance Ignore
-MouseClick, right, , , , , D
+MouseClick "Right",,,,, "D"
 
 RButton::
 End::
-Pause::
- MouseClick, right, , , , , U
+Pause:: {
+ MouseClick "Right",,,,, "U"
  ExitApp
-return
+}

@@ -1,15 +1,14 @@
 #SingleInstance Ignore
+repeat := true
 
-loop {
- Send E
- Sleep, 50
- Send Q
- Sleep, 50
- if (repeat = 1) {
-  MouseClick, left
-  ExitApp
- }
+while(repeat) {
+ Send "E"
+ Sleep 50
+ Send "Q"
+ Sleep 50
 }
+MouseClick "Left"
+ExitApp
 
-End::repeat := 1
-Pause::repeat := 1
+End::repeat := false
+Pause::repeat := false

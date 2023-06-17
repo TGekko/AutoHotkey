@@ -1,8 +1,8 @@
-DetectHiddenWindows, On
-WinGet, List, List, ahk_class AutoHotkey
+DetectHiddenWindows true
+list := WinGetList("ahk_class AutoHotkey")
 scripts := ""
-Loop % List {
-   WinGetTitle, title, % "ahk_id" List%A_Index%
+for i, item in list {
+   title := WinGetTitle("ahk_id" item)
    scripts .=  (scripts ? "`r`n" : "") . RegExReplace(title, " - AutoHotkey v[\.0-9]+$")
 }
-MsgBox, % scripts
+msgBox scripts
