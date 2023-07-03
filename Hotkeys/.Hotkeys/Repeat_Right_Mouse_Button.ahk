@@ -1,11 +1,13 @@
 #SingleInstance Ignore
-repeat := true
-while(repeat) {
+
+Loop {
  MouseClick "Right",,,,, "D"
  MouseClick "Right",,,,, "U"
  Sleep 16
 }
-ExitApp
 
-End::repeat := false
-Pause::repeat := false
+Pause::
+End:: {
+ MouseClick "Right",,,,, "U"
+ ExitApp
+}

@@ -1,7 +1,6 @@
 #SingleInstance Ignore
-repeat := true
 
-while(repeat) {
+Loop {
  Loop 12 {
   Send "{A down}"
   Sleep 250
@@ -12,12 +11,12 @@ while(repeat) {
   Send "{D up}{S down}"
   Sleep 250
   Send "{S up}"
-  if(!repeat)
-   break 2
  }
- Sleep, 3000
+ Sleep 3000
 }
-ExitApp
 
-~*Pause::repeat := false
-~*End::repeat := false
+~*Pause::
+~*End:: {
+ Send "{W up}{A up}{S up}{D up}"
+ ExitApp
+}

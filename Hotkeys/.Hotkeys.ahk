@@ -109,7 +109,7 @@ for i, troubleshooter in troubleshooters {
 
 scripthotkeys := Map()
 
-scripthotkeys[".Hotkeys"] := [["Show Menu", "Win+Right Click", "#RButton"], 0, ["Hold Left Click", "Alt+9", "!9"], ["Hold Right Click", "Alt+0", "!0"], ["Repeat Left Click", "Alt+Shift+9", "!+9"], ["Repeat Right Click", "Alt+Shift+0", "!+0"], 0, ["Stop Running Hotkey", "Pause or End", "Pause"], 0, ["Move Mouse Up", "Alt+Up", "!Up"], ["Mouse Mouse Down", "Alt+Down", "!Down"], ["Mouse Mouse Left", "Alt+Left", "!Left"], ["Mouse Mouse Right", "Alt+Right", "!Right"], ["Left Click", "Alt+[", "![["], ["Right Click", "Alt+]", "!]]"], 0, ["Toggle Reticle", "Alt+Insert", "!Insert"], 0]
+scripthotkeys[".Hotkeys"] := [["Show Menu", "Win+Right Click", "#RButton"], 0, ["Hold Left Click", "Alt+9", "!9"], ["Hold Right Click", "Alt+0", "!0"], ["Repeat Left Click", "Alt+Shift+9", "!+9"], ["Repeat Right Click", "Alt+Shift+0", "!+0"], ["Move Constantly", "Alt+Shift+Backspace", "!+{Backspace}"], 0, ["Stop Running Hotkey", "Pause or End", "Pause"], 0, ["Move Mouse Up", "Alt+Up", "!Up"], ["Mouse Mouse Down", "Alt+Down", "!Down"], ["Mouse Mouse Left", "Alt+Left", "!Left"], ["Mouse Mouse Right", "Alt+Right", "!Right"], ["Left Click", "Alt+[", "![["], ["Right Click", "Alt+]", "!]]"], 0, ["Toggle Reticle", "Alt+Insert", "!Insert"], 0]
 
 scripthotkeys["Magicka"] := [["Show Spell Menu", "Alt+Right Click", "!{RButton}"], 0, ["Cast Charm", "Numpad 0", "{Numpad0}"], ["Cast Conflagration", "Numpad 1", "{Numpad1}"], ["Cast Confuse", "Numpad 2", "{Numpad2}"], ["Cast Corporealize", "Numpad 3", "{Numpad3}"], ["Cast Crash to Desktop", "Numpad 4", "{Numpad4}"], ["Cast Fear", "Numpad 5", "{Numpad5}"], ["Cast Invisibility", "Numpad 6", "{Numpad6}"], ["Cast Meteor Storm", "Numpad 7", "{Numpad7}"], ["Cast Raise Dead", "Numpad 8", "{Numpad8}"], ["Cast Summon Death", "Numpad 9", "{Numpad9}"], ["Cast Summon Elemental", "Numpad Add", "{NumpadAdd}"], ["Cast Thunder Storm", "Numpad Dot", "{NumpadDot}"], ["Cast Vortex", "Numpad Subtract", "{NumpadSub}"]]
 
@@ -124,7 +124,8 @@ scripthotkeys["Voicemeeter"] := [["Restart Audio Engine", "Control+Numpad Dot", 
 scripthotkeys["Windows"] := []
  scripthotkeys["Windows"].push(["Manage Window Profiles", "Control+Windows+\", "^#\"], ["Activate Window Profile: Default", "Control+Windows+Comma", "^#,"], 0)
  scripthotkeys["Windows"].push(["Center Active Window Horizontally", "Windows+Numpad 0", "#{Numpad0}"], ["Center Active Window", "Windows+Numpad Dot", "#{NumpadDot}"], ["Center Active Window Vertically", "Windows+Numpad Enter", "#{NumpadEnter}"], ["Expand Active Window to Fill Screen Horizontally", "Windows+Alt+Numpad 0", "#!{Numpad0}"], ["Expand Active Window to Fill Screen Vertically", "Windows+Alt+Numpad Enter", "#!{NumpadEnter}"], 0)
- scripthotkeys["Windows"].push(["Move Active Window and Size to 50% of the Screen", "-", ""], ["Bottom Left", "Windows+Numpad 1", "#{Numpad1}"], ["Bottom Center", "Windows+Numpad 2", "#{Numpad2}"], ["Bottom Right", "Windows+Numpad 3", "#{Numpad3}"], ["Center Left", "Windows+Numpad 4", "#{Numpad4}"], ["Center", "Windows+Numpad 5", "#{Numpad5}"], ["Center Right", "Windows+Numpad 6", "#{Numpad6}"], ["Top Left", "Windows+Numpad 7", "#{Numpad7}"], ["Top Center", "Windows+Numpad 8", "#{Numpad8}"], ["Top Right", "Windows+Numpad 9", "#{Numpad9}"], 0)
+ scripthotkeys["Windows"].push(["Move Active Window and Size to half of the Screen", "-", ""], ["Bottom Left", "Windows+Numpad 1", "#{Numpad1}"], ["Bottom Center", "Windows+Numpad 2", "#{Numpad2}"], ["Bottom Right", "Windows+Numpad 3", "#{Numpad3}"], ["Center Left", "Windows+Numpad 4", "#{Numpad4}"], ["Center", "Windows+Numpad 5", "#{Numpad5}"], ["Center Right", "Windows+Numpad 6", "#{Numpad6}"], ["Top Left", "Windows+Numpad 7", "#{Numpad7}"], ["Top Center", "Windows+Numpad 8", "#{Numpad8}"], ["Top Right", "Windows+Numpad 9", "#{Numpad9}"], 0)
+ scripthotkeys["Windows"].push(["Move Active Window and Size to one third of the Screen", "-", ""], ["Bottom Left", "Windows+Alt+Numpad 1", "#!{Numpad1}"], ["Bottom Center", "Windows+Alt+Numpad 2", "#!{Numpad2}"], ["Bottom Right", "Windows+Alt+Numpad 3", "#!{Numpad3}"], ["Center Left", "Windows+Alt+Numpad 4", "#!{Numpad4}"], ["Center", "Windows+Alt+Numpad 5", "#!{Numpad5}"], ["Center Right", "Windows+Alt+Numpad 6", "#!{Numpad6}"], ["Top Left", "Windows+Alt+Numpad 7", "#!{Numpad7}"], ["Top Center", "Windows+Alt+Numpad 8", "#!{Numpad8}"], ["Top Right", "Windows+Alt+Numpad 9", "#!{Numpad9}"], 0)
  scripthotkeys["Windows"].push(["Resize Active Window by +5% of the Screen", "Windows+Numpad Multiply", "#{NumpadMult}"], ["Resize Active Window by -5% of the Screen", "Windows+Numpad Divide", "#{NumpadDiv}"], ["Resize Active Window to Fill the Screen", "Windows+Numpad Subtract", "#{NumpadSub}"], ["Resize Active Window to Fill Screen && Taskbar", "Windows+Alt+Numpad Subtract", "#!{NumpadSub}"], 0)
  scripthotkeys["Windows"].push(["Move Active Window Up", "Control+Windows+Numpad 8", "^#{Numpad8}"], ["Move Active Window Right", "Control+Windows+Numpad 6", "^#{Numpad6}"], ["Move Active Window Down", "Control+Windows+Numpad 2", "^#{Numpad2}"], ["Move Active Window Left", "Control+Windows+Numpad 4", "^#{Numpad4}"], 0)
  scripthotkeys["Windows"].push(["Move Active Window To the Top of the Screen", "Control+Windows+Numpad Div", "^#{NumpadDiv}"], ["Move Active Window To the Right Side of the Screen", "Control+Windows+Numpad 9", "^#{Numpad9}"], ["Move Active Window To the Bottom of the Screen", "Control+Windows+Numpad 5", "^#{Numpad5}"], ["Move Active Window To the Left Side of the Screen", "Control+Windows+Numpad 7", "^#{Numpad7}"], ["Move Active Window to the Bottom of the Screen Ignoring the Taskbar", "Control+Windows+Numpad 0", "^#{Numpad0}"], 0)
@@ -146,6 +147,7 @@ scripthotkeys["Miscellaneous"] := []
  scripthotkeys["Miscellaneous"].push(["The Escapists 2", "-", ""], ["Train Strength", "Alt+1", "!1"], 0)
  scripthotkeys["Miscellaneous"].push(["ARK: Survival Evolved", "-", ""], ["Select Hotbar Slot 1", "F13", "1"], ["Show Whistle Menu", "F14", "``"], ["Emote 1", "F15", "["], ["Select Hotbar Slot 2", "F16", "0"], ["Drop Inventory Item", "F17", "o"], ["Unequip Hotbar Item", "F18", "q"], ["Emote 2", "F19", "]"], 0)
  scripthotkeys["Miscellaneous"].push(["Applications", "-", ""], 0)
+ scripthotkeys["Miscellaneous"].push(["Notepad", "-", ""], ["Undo", "Control+Shift+Z", "^+z"])
  scripthotkeys["Miscellaneous"].push(["paint.net", "-", ""], ["Undo", "Control+Shift+Z", "^+z"])
 
 for script in all {
@@ -196,6 +198,7 @@ loaded := true
 !0::Run ".Hotkeys\Hold_Right_Mouse_Button.ahk"
 !+9::Run ".Hotkeys\Repeat_Left_Mouse_Button.ahk"
 !+0::Run ".Hotkeys\Repeat_Right_Mouse_Button.ahk"
+!+Backspace::Run ".Hotkeys\Move_Constantly.ahk"
 
 ;!Up::DllCall("mouse_event", "UInt", 0x01, "UInt", 0, "UInt", -1)
 ;!Down::DllCall("mouse_event", "UInt", 0x01, "UInt", 0, "UInt", 1)
@@ -216,6 +219,7 @@ loaded := true
 }
 !] Up::Click "Right Up"
 #RButton::showMenu()
+#AppsKey::showMenu()
 
 !Insert::toggleReticle()
 

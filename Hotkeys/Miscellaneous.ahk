@@ -1,11 +1,11 @@
 #SingleInstance Force
 #NoTrayIcon
 
-sendHotkey(value) {
- SendLevel 1
- SendInput value
- SendLevel 0
-}
+;sendHotkey(value) {
+; SendLevel 1
+; SendInput value
+; SendLevel 0
+;}
 
 ; Borderlands 3
 #HotIf WinActive("ahk_exe Borderlands3.exe")
@@ -83,8 +83,12 @@ Escape::Enter ; Pause
  F18::q ; Unequip Hotbar Item
  F19::] ; Emote 2
 
+; Notepad
+#HotIf WinActive("ahk_exe Notepad.exe")
+ ^+z::^y ; Undo
+
 ; paint.net
 #HotIf WinActive("ahk_exe paintdotnet.exe")
- ^+z::SendHotkey("^y") ; Undo
+ ^+z::^y ; Undo
 
 #HotIf

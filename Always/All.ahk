@@ -3,4 +3,3 @@
 #Include "ClipboardRemoveQuotes.ahk"
 #Include "RWin.ahk"
 #Include "SendVol.ahk"
-#Include "SingleClick.ahk"

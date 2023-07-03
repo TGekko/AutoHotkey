@@ -1,13 +1,14 @@
 #SingleInstance Ignore
-repeat := true
 
-while (repeat) {
+Loop {
  Send "{LButton down}"
  Sleep 1600
  Send "{LButton up}""
  Sleep 1600
 }
-ExitApp
 
-~*Pause::repeat := false
-~*End::repeat := false
+~*Pause::
+~*End:: {
+ Send "{LButton up}"
+ ExitApp
+}

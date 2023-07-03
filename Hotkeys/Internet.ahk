@@ -33,6 +33,7 @@ light := false
  ~Delete::hide(dark)
  ~Pause::dark["window"].Visible := !dark["window"].Visible
  ~`:: {
+  global light
   if(light) {
    dark.BackColor := "000000"
    light := false

@@ -1,0 +1,23 @@
+// For use with Pixel Perfect. Replace h30 in both paths of the svg with h<(l)> and add a custom variable labeled: l
+
+for(var i = 0; i <= 300; i+=3) {
+ uservariables.l = i/10;
+ e.id('apply').click();
+ var img = e.create('img');
+ img.type = 'png';
+ img.i = i;
+ img.addEventListener('load', function() {
+  var ca = e.create('canvas');
+  ca.width = 256;
+  ca.height = 128;
+  ca.getContext('2d').drawImage(this, 0, 0, ca.width, ca.height);
+  var download = e.create('a');
+  download.download = 'BatteryOverlay'+(this.i/3 < 10 ? '00' : (this.i/3 < 100 ? '0' : ''))+(this.i/3)+'.'+this.type;
+  download.href = ca.toDataURL('image/'+(this.type=='ico' ? 'x-icon' : this.type=='jpg' ? 'jpeg' : this.type));
+  download.style.display = 'none';
+  e.body.appendChild(download);
+  download.click();
+  download.remove();
+ });
+ img.src = svgImg(e.tag('svg')[0].outerHTML);
+}

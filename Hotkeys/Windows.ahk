@@ -453,7 +453,7 @@ timedark := 0
 ; Expand Active Window to Fill Screen Vertically
 #!NumpadEnter::activeMoveTo(, 0.5,, 1)
 
-; Move window to numpad key position on the screen and scale to 50% of the screen size
+; Move window to numpad key position on the screen and scale to half of the screen size
 ; [Numpad5] represents the center of the screen
 #Numpad1::activeMoveTo(0.25, 0.75, 0.5, 0.5)
 #Numpad2::activeMoveTo(0.5, 0.75, 0.5, 0.5)
@@ -464,6 +464,17 @@ timedark := 0
 #Numpad7::activeMoveTo(0.25, 0.25, 0.5, 0.5)
 #Numpad8::activeMoveTo(0.5, 0.25, 0.5, 0.5)
 #Numpad9::activeMoveTo(0.75, 0.25, 0.5, 0.5)
+; Move window to numpad key position on the screen and scale to one third of the screen size
+; [Numpad5] represents the center of the screen
+#!Numpad1::activeMoveTo((1 / 6), (5 / 6), (1 / 3), (1 / 3))
+#!Numpad2::activeMoveTo((3 / 6), (5 / 6), (1 / 3), (1 / 3))
+#!Numpad3::activeMoveTo((5 / 6), (5 / 6), (1 / 3), (1 / 3))
+#!Numpad4::activeMoveTo((1 / 6), (3 / 6), (1 / 3), (1 / 3))
+#!Numpad5::activeMoveTo((3 / 6), (3 / 6), (1 / 3), (1 / 3))
+#!Numpad6::activeMoveTo((5 / 6), (3 / 6), (1 / 3), (1 / 3))
+#!Numpad7::activeMoveTo((1 / 6), (1 / 6), (1 / 3), (1 / 3))
+#!Numpad8::activeMoveTo((3 / 6), (1 / 6), (1 / 3), (1 / 3))
+#!Numpad9::activeMoveTo((5 / 6), (1 / 6), (1 / 3), (1 / 3))
 
 ; Resize active window by +5% of the monitor size
 #NumpadMult::activeSizeBy(0.05, 0.05, true)
