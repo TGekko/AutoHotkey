@@ -1,9 +1,9 @@
 #SingleInstance Force
 SetTitleMatchMode 2
 DetectHiddenWindows true
+CoordMode "Mouse", "Screen"
 SetNumLockState "AlwaysOn"
 loaded := false
-reticle := 0x0
 
 all := [".Hotkeys", 0, "Magicka", "Risk of Rain 2", "Valheim", 0, "Internet", "Voicemeeter", "Windows", 0, "Miscellaneous"]
 menus := {
@@ -109,7 +109,7 @@ for i, troubleshooter in troubleshooters {
 
 scripthotkeys := Map()
 
-scripthotkeys[".Hotkeys"] := [["Show Menu", "Win+Right Click", "#RButton"], 0, ["Hold Left Click", "Alt+9", "!9"], ["Hold Right Click", "Alt+0", "!0"], ["Repeat Left Click", "Alt+Shift+9", "!+9"], ["Repeat Right Click", "Alt+Shift+0", "!+0"], ["Move Constantly", "Alt+Shift+Backspace", "!+{Backspace}"], 0, ["Stop Running Hotkey", "Pause or End", "Pause"], 0, ["Move Mouse Up", "Alt+Up", "!Up"], ["Mouse Mouse Down", "Alt+Down", "!Down"], ["Mouse Mouse Left", "Alt+Left", "!Left"], ["Mouse Mouse Right", "Alt+Right", "!Right"], ["Left Click", "Alt+[", "![["], ["Right Click", "Alt+]", "!]]"], 0, ["Toggle Reticle", "Alt+Insert", "!Insert"], 0]
+scripthotkeys[".Hotkeys"] := [["Show Menu", "Win+Right Click", "#{RButton}"], 0, ["Hold Left Click", "Alt+9", "!9"], ["Hold Right Click", "Alt+0", "!0"], ["Repeat Left Click", "Alt+Shift+9", "!+9"], ["Repeat Right Click", "Alt+Shift+0", "!+0"], ["Move Constantly", "Alt+Shift+Backspace", "!+{Backspace}"], 0, ["Stop Running Hotkey", "Pause or End", "{Pause}"], 0, ["Move Mouse Up", "Alt+Up", "!{Up}"], ["Mouse Mouse Down", "Alt+Down", "!{Down}"], ["Mouse Mouse Left", "Alt+Left", "!{Left}"], ["Mouse Mouse Right", "Alt+Right", "!{Right}"], ["Left Click", "Alt+[", "!["], ["Right Click", "Alt+]", "!]"], 0, ["Toggle Reticle", "Alt+Insert", "!{Insert}"], ["Toggle Amplified Cursor", "Alt+Print Screen", "!{PrintScreen}"]]
 
 scripthotkeys["Magicka"] := [["Show Spell Menu", "Alt+Right Click", "!{RButton}"], 0, ["Cast Charm", "Numpad 0", "{Numpad0}"], ["Cast Conflagration", "Numpad 1", "{Numpad1}"], ["Cast Confuse", "Numpad 2", "{Numpad2}"], ["Cast Corporealize", "Numpad 3", "{Numpad3}"], ["Cast Crash to Desktop", "Numpad 4", "{Numpad4}"], ["Cast Fear", "Numpad 5", "{Numpad5}"], ["Cast Invisibility", "Numpad 6", "{Numpad6}"], ["Cast Meteor Storm", "Numpad 7", "{Numpad7}"], ["Cast Raise Dead", "Numpad 8", "{Numpad8}"], ["Cast Summon Death", "Numpad 9", "{Numpad9}"], ["Cast Summon Elemental", "Numpad Add", "{NumpadAdd}"], ["Cast Thunder Storm", "Numpad Dot", "{NumpadDot}"], ["Cast Vortex", "Numpad Subtract", "{NumpadSub}"]]
 
@@ -190,6 +190,9 @@ menus.tray.Add("Hotkey &Menu", menus.call.bind(showMenu, "__"))
 
 loaded := true
 
+reticle := 0x0
+locursor := 0x0
+
 
 
 ; Hotkeys
@@ -222,6 +225,16 @@ loaded := true
 #AppsKey::showMenu()
 
 !Insert::toggleReticle()
+!PrintScreen::{
+ try {
+  global locursor
+  WinExist(locursor.Hwnd)
+  SetTimer locursorUI, 0
+  locursor.Destroy()
+ } catch {
+  SetTimer locursorUI, 7
+ }
+}
 
 Pause:
  Send "{Pause}"
@@ -257,5 +270,22 @@ toggleReticle() {
   reticle.Add("Progress", "w4 h10 x" ((A_ScreenWidth / 2) -  2) " y" ((A_ScreenHeight / 2) +  5) " backgroundFFFFFF")
   reticle.Add("Progress", "w10 h4 x" ((A_ScreenWidth / 2) - 15) " y" ((A_ScreenHeight / 2) -  2) " backgroundFFFFFF")
   reticle.Show("x0 y0 w" A_ScreenWidth "  h" A_ScreenHeight " NoActivate")
+ }
+}
+
+locursorUI() {
+ MouseGetPos &x, &y
+ global locursor
+ p := 32
+ try {
+  WinExist(locursor.Hwnd)
+  locursor.Move(x - p, y - p)
+ } catch {
+  locursor := Gui("+AlwaysOnTop +ToolWindow -Caption -Disabled +E0x20 +LastFound -DPIScale", ".Hotkeys.ahk Locursor")
+  locursor.BackColor := "FF2222"
+  WinSetTransColor "100100 200", locursor.Hwnd
+  s := 128
+  locursor.Add("Picture", "x0 y0 w" s " h" s, ".Hotkeys\Locursor.png")
+  locursor.Show("x" (x - p) " y" (y - p) " w" s " h" s " NoActivate")
  }
 }
