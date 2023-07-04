@@ -241,11 +241,12 @@ modifyClipboard() {
 
 toggleReticle() {
  global reticle
- if(WinExist(reticle.Hwnd)) {
+ try {
+  WinExist(reticle.Hwnd)
   reticle.Destroy()
- } else {
+ } catch {
   reticle := Gui("+AlwaysOnTop +ToolWindow -Caption -Disabled +E0x20 +LastFound", ".Hotkeys.ahk Reticle")
-  reticle.BackColor("100100")
+  reticle.BackColor := "100100"
   WinSetTransColor "100100", reticle.Hwnd
   reticle.Add("Progress", "w6 h12 x" ((A_ScreenWidth / 2) -  3) " y" ((A_ScreenHeight / 2) - 16) " background000000")
   reticle.Add("Progress", "w12 h6 x" ((A_ScreenWidth / 2) +  4) " y" ((A_ScreenHeight / 2) -  3) " background000000")
