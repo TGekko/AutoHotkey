@@ -1,9 +1,9 @@
 #SingleInstance Force
 #NoTrayIcon
-SetTitleMatchMode 2
-GroupAdd "browsers", "ahk_exe chrome.exe"
-GroupAdd "browsers", "ahk_exe msedge.exe"
-GroupAdd "browsers", "ahk_exe firefox.exe"
+SetTitleMatchMode(2)
+GroupAdd("browsers", "ahk_exe chrome.exe")
+GroupAdd("browsers", "ahk_exe msedge.exe")
+GroupAdd("browsers", "ahk_exe firefox.exe")
 
 ; This accounts for Windows Aero invisible borders
 margin := [7, 4]
@@ -46,7 +46,7 @@ menus_call(function:="", parameters:="__", menuvariables*) {
 ;  return    - A delimited concatenation of the provided strings
 concatenate(delimiter:="", strings*) {
  result := ""
- for i, value in strings {
+ for(i, value in strings) {
   if(i > 1) {
    result .= delimiter
   }
@@ -82,10 +82,10 @@ StrMatchLen(value, match, fill:=" ") {
 ;              myvalue := myini["section"]["key"]
 IniReadObject(path) {
  ini := Map()
- for i, section in StrSplit(IniRead(path), "`n") {
+ for(i, section in StrSplit(IniRead(path), "`n")) {
   ini[section] := Map()
   values := IniRead(path, section)
-  for n, value in StrSplit(values, "`n") {
+  for(n, value in StrSplit(values, "`n")) {
    ini[section][SubStr(value, 1, InStr(value, "=") - 1) ""] := SubStr(value, InStr(value, "=") +1)
   }
  }
@@ -105,15 +105,15 @@ saveWindowProfile(name:="") {
   if(!name)
    return
  }
- IniDelete inipath, name
- for i, window in WinGetList() {
+ IniDelete(inipath, name)
+ for(i, window in WinGetList()) {
   value := "ahk_id " window
   title := WinGetTitle(value)
   exe := "ahk_exe " WinGetProcessName(value)
   if(title) {
-   WinGetPos &x, &y, &w, &h, value
+   WinGetPos(&x, &y, &w, &h, value)
    value := 
-   IniWrite ",, " title ",, " exe ",, " x ",, " y ",, " w ",, " h, inipath, name, StrReplace(title, "=", "-")
+   IniWrite(",, " title ",, " exe ",, " x ",, " y ",, " w ",, " h, inipath, name, StrReplace(title, "=", "-"))
   }
  }
 }
@@ -125,7 +125,7 @@ saveWindowProfile(name:="") {
 manageWindowProfiles(x:="", y:="") {
  global menus
  if(!(x && y)) {
-  MouseGetPos &x, &y
+  MouseGetPos(&x, &y)
  }
  menus.windowprofiles := Menu()
  menus.windowprofiles.Add()
@@ -136,7 +136,7 @@ manageWindowProfiles(x:="", y:="") {
  menus.windowprofiles.Add("Save new Window Profile", menus.call.bind(saveWindowProfile, "__"))
  menus.windowprofiles.Add()
  ini := IniReadObject(inipath)
- for section, keys in ini {
+ for(section, keys in ini) {
   i := A_Index
   menus.windowprofiles%i% := Menu()
   menus.windowprofiles%i%.Add()
@@ -146,7 +146,7 @@ manageWindowProfiles(x:="", y:="") {
   menus.windowprofiles%i%.Add("Delete Profile", menus.call.bind(removeWindowProfileContents, [section,, true, x, y]))
   menus.windowprofiles%i%.Add("Click any value below to delete it from the profile", menus.call.bind(""))
   menus.windowprofiles%i%.Add()
-  for key, value in keys {
+  for(key, value in keys) {
    menus.windowprofiles%i%.Add(key, menus.call.bind(removeWindowProfileContents, [section, key, true, x, y]))
   }
   menus.windowprofiles.Add(section, menus.windowprofiles%i%)
@@ -156,7 +156,7 @@ manageWindowProfiles(x:="", y:="") {
 
 ; Opens the WindowProfiles.ini file
 openWindowProfiles() {
- Run '"C:\Windows\Notepad.exe" "' A_WorkingDir '\' inipath '"'
+ Run('"C:\Windows\Notepad.exe" "' A_WorkingDir '\' inipath '"')
 }
 
 ; Removes a section or key of WindowProfiles.ini
@@ -168,9 +168,9 @@ openWindowProfiles() {
 ;                Both <x> and <y> must be present for either to be used
 removeWindowProfileContents(section:="", key:="", edit:=false, x:="", y:="") {
  if(key) {
-  IniDelete inipath, section, key
+  IniDelete(inipath, section, key)
  } else if(section) {
-  IniDelete inipath, section
+  IniDelete(inipath, section)
  }
  if(edit) {
   manageWindowProfiles(x, y)
@@ -181,14 +181,14 @@ removeWindowProfileContents(section:="", key:="", edit:=false, x:="", y:="") {
 ;  profile - The name of the desired Window Profile to load.
 activateWindowProfile(profile) {
  ini := IniReadObject(inipath)
- for key, value in ini[profile] {
+ for(key, value in ini[profile]) {
   value := StrSplit(value, ",, ")
   id := value[1]
   x := value[2]
   y := value[3]
   width := value[4]
   height := value[5]
-  WinMove x, y, width, height, id
+  WinMove(x, y, width, height, id)
  }
 }
 
@@ -198,7 +198,7 @@ activateWindowProfile(profile) {
 ;  return - An array containing the bounds of the monitor containing the active window.
 ;           The resulting array will have the following configuration: [x, y, width, height]
 activeWindowMonitorBounds(full:=false) {
- WinGetPos &x, &y, &width, &height, "A"
+ WinGetPos(&x, &y, &width, &height, "A")
  x += width/2
  y += height/2
  monitorcount := MonitorGetCount()
@@ -206,7 +206,7 @@ activeWindowMonitorBounds(full:=false) {
  if(monitorcount = 1) {
   monitor := 1
  } else {
-  Loop %monitorcount% {
+  Loop(monitorcount) {
    MonitorGet(A_index, &bleft, &btop, &bright, &bbottom)
    if(x >= bleft && x <= bright && y >= btop && y <= bbottom) {
     monitor := A_index
@@ -215,7 +215,7 @@ activeWindowMonitorBounds(full:=false) {
   }
   if(monitor = 0) {
    MouseGetPos &x, &y
-   Loop %monitorcount% {
+   Loop(monitorcount) {
     MonitorGet(A_index, &bleft, &btop, &bright, &bbottom)
     if(x >= bleft && x <= bright && y >= btop && y <= bbottom) {
      monitor := A_index
@@ -270,7 +270,7 @@ activeWindowMonitorBounds(full:=false) {
 ;            (Default == true)
 activeMoveTo(x:=-1, y:=-1, width:=-1, height:=-1, full:=false, margins:=true) {
  global margin
- WinGetPos &winx, &winy, &winwidth, &winheight, "A"
+ WinGetPos(&winx, &winy, &winwidth, &winheight, "A")
  bounds := 0
  if(full) {
   bounds := activeWindowMonitorBounds(true)
@@ -303,7 +303,7 @@ activeMoveTo(x:=-1, y:=-1, width:=-1, height:=-1, full:=false, margins:=true) {
  }
  winx-= winwidth/2
  winy-= winheight/2
- WinMove winx, winy, winwidth, winheight, "A"
+ WinMove(winx, winy, winwidth, winheight, "A")
 }
 
 ; Moves the active window by a specified amount of pixels.
@@ -312,10 +312,10 @@ activeMoveTo(x:=-1, y:=-1, width:=-1, height:=-1, full:=false, margins:=true) {
 ;  y - The amount of pixels to move the window vertically.
 ;      (Default = 0)
 activeMoveBy(x:=0, y:=0) {
- WinGetPos &winx, &winy,,, "A"
+ WinGetPos(&winx, &winy,,, "A")
  winx+= x
  winy+= y
- WinMove winx, winy,,, "A"
+ WinMove(winx, winy,,, "A")
 }
 
 ; Resizes the active window by a specified amount.
@@ -332,7 +332,7 @@ activeMoveBy(x:=0, y:=0) {
 ;               This does nothing if <percentage> is false.
 ;               (Default = false)
 activeSizeBy(width:=0, height:=0, percent:=false, screen:=false) {
- WinGetPos &x, &y, &winwidth, &winheight, "A"
+ WinGetPos(&x, &y, &winwidth, &winheight, "A")
  if(percent) {
   if(screen) {
    bounds := activeWindowMonitorBounds()
@@ -350,7 +350,7 @@ activeSizeBy(width:=0, height:=0, percent:=false, screen:=false) {
  y -= height/2
  winwidth += width
  winheight += height
- WinMove x, y, winwidth, winheight, "A"
+ WinMove(x, y, winwidth, winheight, "A")
 }
 
 ; Toggles Borderless Mode for the active window
@@ -359,15 +359,15 @@ activeToggleBorderless() {
  id := WinGetID("A")
  if(borderless[id]) {
   style := borderless[id]
-  WinSetStyle style, "A"
+  WinSetStyle(style, "A")
   borderless.Delete(id)
  } else {
   style := WinGetStyle("A")
   borderless[id] := style
-  WinSetStyle "-0xC00000", "A" ; WS_CAPTION  (title bar)
-  WinSetStyle "-0x800000", "A" ; WS_BORDER   (thin-line border)
-  WinSetStyle "-0x400000", "A" ; WS_DLGFRAME (dialog box border)
-  WinSetStyle "-0x40000", "A"  ; WS_SIZEBOX  (sizing border)
+  WinSetStyle("-0xC00000", "A") ; WS_CAPTION  (title bar)
+  WinSetStyle("-0x800000", "A") ; WS_BORDER   (thin-line border)
+  WinSetStyle("-0x400000", "A") ; WS_DLGFRAME (dialog box border)
+  WinSetStyle("-0x40000", "A")  ; WS_SIZEBOX  (sizing border)
  }
 }
 
@@ -376,19 +376,20 @@ activeToggleBorderless() {
 activeToggleTransparency(prompt:=false) {
  transparency := WinGetTransparent("A")
  if(transparency != "" && transparency < 255) {
-  WinSetTransparent 255, "A"
-  WinSetTransparent "Off", "A"
+  WinSetTransparent(255, "A")
+  WinSetTransparent("Off", "A")
  } else {
   if(prompt) {
-   transparency := InputBox "Input a number from 0 to 100 to set the percentage of opacity.", "Set Window Transparency", "w300 h150", 85
+   transparency := InputBox("Input a number from 0 to 100 to set the percentage of opacity.", "Set Window Transparency", "w300 h150", 85)
    if(transparency.Result != "OK")
     return
+   transparency := transparency.Value
   } else {
    transparency := 50
   }
   if(transparency >= 0 && transparency <= 100) {
-   transparency := (transparency/100)*255
-   WinSetTransparent transparency, "A"
+   transparency := Round((transparency/100)*255)
+   WinSetTransparent(transparency, "A")
   }
  }
 }
@@ -407,8 +408,8 @@ toggleTheatreMode(soft:=false) {
    dark := Gui("+ToolWindow -Caption +LastFound", "AutoHotkey :: Windows.ahk > GUI > Theatre Mode")
   } else {
    dark := Gui("+AlwaysOnTop +ToolWindow -Caption +LastFound", "AutoHotkey :: Windows.ahk > GUI > Theatre Mode")
-   WinSetTransColor "100100", dark.Hwnd
-   WinGetPos &x, &y, &width, &height, "A"
+   WinSetTransColor("100100", dark.Hwnd)
+   WinGetPos(&x, &y, &width, &height, "A")
    x += margin[1]
    y += margin[2]
    width -= margin[1]*2
@@ -500,7 +501,7 @@ timedark := 0
 #!NumpadSub:: activeMoveTo(0.5, 0.5, 1, 1, true, false)
 
 ; Toggle "Always On Top" for the active window
-^#a::WinSetAlwaysOnTop -1, "A"
+^#a::WinSetAlwaysOnTop(-1, "A")
 
 ; Toggle Borderless Mode for the active window and set it to 100% of the screen's size including the taskbar
 ; Ignores arbitrary margin adjustment
@@ -520,10 +521,10 @@ timedark := 0
 ^#p:: {
  global displaymode
  if(displaymode) {
-  Run "C:\Windows\System32\DisplaySwitch.exe /clone"
+  Run("C:\Windows\System32\DisplaySwitch.exe /clone")
   displaymode := false
  } else {
-  Run "C:\Windows\System32\DisplaySwitch.exe /internal"
+  Run("C:\Windows\System32\DisplaySwitch.exe /internal")
   displaymode := true
  }
 }
@@ -551,7 +552,7 @@ timedark := 0
  ~Pause:: {
   dark["window"].Visible := !dark["window"].Visible
   if(timeddark > 0) {
-   Sleep timeddark
+   Sleep(timeddark)
    dark["window"].Visible := true
   }
   timeddark := 0

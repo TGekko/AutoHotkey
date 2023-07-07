@@ -43,10 +43,10 @@
 
 ; Minecraft
 #HotIf WinActive("Minecraft")
- F15::F1                                          ; Toggle Perspective
- F19::F1                                          ; Toggle Perspective
- !1::Run "Minecraft\Sword_and_Food.ahk"           ; Swing Sword and Eat Food
- !Shift::Run "Miscellaneous\Minecraft\Hold_Shift" ; Hold Shift
+ F15::F1                                           ; Toggle Perspective
+ F19::F1                                           ; Toggle Perspective
+ !1::Run("Minecraft\Sword_and_Food.ahk")           ; Swing Sword and Eat Food
+ !Shift::Run("Miscellaneous\Minecraft\Hold_Shift") ; Hold Shift
 
  ; Sonic Adventure DX
 #HotIf WinActive("ahk_exe Sonic Adventure DX.exe")
@@ -65,13 +65,13 @@ Escape::Enter ; Pause
 
 ; Terraria
 #HotIf WinActive("Terraria")
- F13::m                                     ; Map
- !1::Run "Miscellaneous\Terraria\Honey.ahk" ; Duplicate Honey
- !2::Run "Miscellaneous\Terraria\Lava.ahk"  ; Duplicate Lava
+ F13::m                                      ; Map
+ !1::Run("Miscellaneous\Terraria\Honey.ahk") ; Duplicate Honey
+ !2::Run("Miscellaneous\Terraria\Lava.ahk")  ; Duplicate Lava
 
 ; The Escapists 2
 #HotIf WinActive("ahk_exe TheEscapists2.exe")
- !1::Run "Miscellaneous\The Escapists 2\Strength.ahk" ; Train Strength
+ !1::Run("Miscellaneous\The Escapists 2\Strength.ahk") ; Train Strength
 
 ; ARK: Survival Evolved
 #HotIf WinActive("ARK: Survival Evolved")

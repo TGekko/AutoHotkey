@@ -1,1 +1,1 @@
-NumLock:: WinSetAlwaysOnTop -1, "A"
+NumLock:: WinSetAlwaysOnTop(-1, "A")

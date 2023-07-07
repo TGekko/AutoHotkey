@@ -1,14 +1,14 @@
 #SingleInstance Ignore
 
-Loop {
- Send "{LButton down}"
- Sleep 1600
- Send "{LButton up}""
- Sleep 1600
+Loop() {
+ Send("{LButton down}")
+ Sleep(1600)
+ Send("{LButton up}")
+ Sleep(1600)
 }
 
 ~*Pause::
 ~*End:: {
- Send "{LButton up}"
+ Send("{LButton up}")
  ExitApp
 }

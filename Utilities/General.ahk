@@ -28,15 +28,15 @@ showMenu() {
  }
 }
 openFolder() {
- Run A_WorkingDir
+ Run(A_WorkingDir)
 }
 runWindowsTroubleshooter(troubleshooter) {
- Run "*RunAs " A_ComSpec " /c msdt.exe /id " troubleshooter,, "Hide"
+ Run("*RunAs " A_ComSpec " /c msdt.exe /id " troubleshooter,, "Hide")
 }
 
 menus.trouble := Menu()
 troubleshooters := [["&Internet Connection", "NetworkDiagnosticsWeb"], ["&Hardware and Devices", "DeviceDiagnostic"], ["Incoming &Connections", "NetworkDiagnosticsInbound"], ["&Microphone", "AudioRecordingDiagnostic"], ["&Network Adapter", "NetworkDiagnosticsNetworkAdapter"], ["&Playing Audio", "AudioPlaybackDiagnostic"], ["&Search and Indexing", "SearchDiagnostic"], ["&Windows Update", "WindowsUpdateDiagnostic"]]
-for i, troubleshooter in troubleshooters {
+for(i, troubleshooter in troubleshooters) {
  menus.trouble.Add(troubleshooter[1], menus.call.Bind(runWindowsTroubleshooter, troubleshooter[2]))
  if(i == 1) {
   menus.trouble.Default := "1&"

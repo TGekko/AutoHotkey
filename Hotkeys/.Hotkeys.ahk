@@ -1,8 +1,8 @@
 #SingleInstance Force
-SetTitleMatchMode 2
-DetectHiddenWindows true
-CoordMode "Mouse", "Screen"
-SetNumLockState "AlwaysOn"
+SetTitleMatchMode(2)
+DetectHiddenWindows(true)
+CoordMode("Mouse", "Screen")
+SetNumLockState("AlwaysOn")
 loaded := false
 
 all := [".Hotkeys", 0, "Magicka", "Risk of Rain 2", "Valheim", 0, "Internet", "Voicemeeter", "Windows", 0, "Miscellaneous"]
@@ -35,7 +35,7 @@ showMenu() {
  global loaded
  if(loaded) {
   global all
-  for i, item in all {
+  for(i, item in all) {
    if(item != 0) {
     path := A_WorkingDir "\" item ".ahk"
     if(WinExist(path)) {
@@ -45,33 +45,33 @@ showMenu() {
     }
    }
   }
-  menus.hotkeys.Show
+  menus.hotkeys.Show()
  }
 }
 startScript(name) {
- Run "*RunAs " name ".ahk"
+ Run("*RunAs " name ".ahk")
 }
 stopScript(name) {
  path := A_ScriptDir "\" name ".ahk"
- try WinClose path " ahk_class AutoHotkey"
+ try WinClose(path " ahk_class AutoHotkey")
 }
 editScript(name) {
- Run '"C:\Windows\Notepad.exe" "' A_WorkingDir '\' name '.ahk"'
+ Run('"C:\Windows\Notepad.exe" "' A_WorkingDir '\' name '.ahk"')
 }
 openFolder() {
- Run A_WorkingDir
+ Run(A_WorkingDir)
 }
 runWindowsTroubleshooter(troubleshooter) {
- Run "*RunAs " A_ComSpec "/c msdt.exe /id " troubleshooter,, "Hide"
+ Run("*RunAs " A_ComSpec "/c msdt.exe /id " troubleshooter,, "Hide")
 }
 sendHotkey(value) {
- SendLevel 1
- SendInput value
- SendLevel 0
+ SendLevel(1)
+ SendInput(value)
+ SendLevel(0)
 }
 exitAll(exitreason, exitcode) {
  global all
- for i, item in all {
+ for(i, item in all) {
   if(!(item = 0 || item = ".Hotkeys")) {
    stopScript(item)
   }
@@ -79,7 +79,7 @@ exitAll(exitreason, exitcode) {
 }
 OnExit exitAll
 
-for i, item in all {
+for(i, item in all) {
  if(item = 0) {
   menus.start.Add()
   menus.stop.Add()
@@ -99,7 +99,7 @@ for i, item in all {
 }
 
 troubleshooters := [["&Internet Connection", "NetworkDiagnosticsWeb"], ["&Hardware and Devices", "DeviceDiagnostic"], ["Incoming &Connections", "NetworkDiagnosticsInbound"], ["&Microphone", "AudioRecordingDiagnostic"], ["&Network Adapter", "NetworkDiagnosticsNetworkAdapter"], ["&Playing Audio", "AudioPlaybackDiagnostic"], ["&Search and Indexing", "SearchDiagnostic"], ["&Windows Update", "WindowsUpdateDiagnostic"]]
-for i, troubleshooter in troubleshooters {
+for(i, troubleshooter in troubleshooters) {
  menus.trouble.Add(troubleshooter[1], menus.call.bind(runWindowsTroubleshooter, troubleshooter[2]))
  if(i = 1) {
   menus.trouble.Default := "1&"
@@ -156,9 +156,9 @@ for script in all {
  } else {
   menus.scripts[script] := Menu()
   i := 1
-  Loop 2 {
+  Loop(2) {
    n := A_Index
-   for l, item in scripthotkeys[script] {
+   for(l, item in scripthotkeys[script]) {
     if(item == 0) {
      menus.scripts[script].Insert(i++ "&")
     } else {
@@ -197,30 +197,30 @@ locursor := 0x0
 
 ; Hotkeys
 
-!9::Run ".Hotkeys\Hold_Left_Mouse_Button.ahk"
-!0::Run ".Hotkeys\Hold_Right_Mouse_Button.ahk"
-!+9::Run ".Hotkeys\Repeat_Left_Mouse_Button.ahk"
-!+0::Run ".Hotkeys\Repeat_Right_Mouse_Button.ahk"
-!+Backspace::Run ".Hotkeys\Move_Constantly.ahk"
+!9::Run(".Hotkeys\Hold_Left_Mouse_Button.ahk")
+!0::Run(".Hotkeys\Hold_Right_Mouse_Button.ahk")
+!+9::Run(".Hotkeys\Repeat_Left_Mouse_Button.ahk")
+!+0::Run(".Hotkeys\Repeat_Right_Mouse_Button.ahk")
+!+Backspace::Run(".Hotkeys\Move_Constantly.ahk")
 
 ;!Up::DllCall("mouse_event", "UInt", 0x01, "UInt", 0, "UInt", -1)
 ;!Down::DllCall("mouse_event", "UInt", 0x01, "UInt", 0, "UInt", 1)
 ;!Left::DllCall("mouse_event", "UInt", 0x01, "UInt", -1, "UInt", 0)
 ;!Right::DllCall("mouse_event", "UInt", 0x01, "UInt", 1, "UInt", 0)
-!Up::MouseMove 0, -1, 0, "R"
-!Down::MouseMove 0, 1, 0, "R"
-!Left::MouseMove -1, 0, 0, "R"
-!Right::MouseMove 1, 0, 0, "R"
+!Up::MouseMove(0, -1, 0, "R")
+!Down::MouseMove(0, 1, 0, "R")
+!Left::MouseMove(-1, 0, 0, "R")
+!Right::MouseMove(1, 0, 0, "R")
 ![:: {
- Click "Down"
- KeyWait "LButton"
+ Click("Down")
+ KeyWait("LButton")
 }
-![ Up::Click "Up"
+![ Up::Click("Up")
 !]:: {
- Click "Right Down"
- KeyWait "RButton"
+ Click("Right Down")
+ KeyWait("RButton")
 }
-!] Up::Click "Right Up"
+!] Up::Click("Right Up")
 #RButton::showMenu()
 #AppsKey::showMenu()
 
@@ -229,15 +229,15 @@ locursor := 0x0
  try {
   global locursor
   WinExist(locursor.Hwnd)
-  SetTimer locursorUI, 0
+  SetTimer(locursorUI, 0)
   locursor.Destroy()
  } catch {
-  SetTimer locursorUI, 7
+  SetTimer(locursorUI, 7)
  }
 }
 
 Pause:
- Send "{Pause}"
+ Send("{Pause}")
 return
 
 
@@ -260,7 +260,7 @@ toggleReticle() {
  } catch {
   reticle := Gui("+AlwaysOnTop +ToolWindow -Caption -Disabled +E0x20 +LastFound", ".Hotkeys.ahk Reticle")
   reticle.BackColor := "100100"
-  WinSetTransColor "100100", reticle.Hwnd
+  WinSetTransColor("100100", reticle.Hwnd)
   reticle.Add("Progress", "w6 h12 x" ((A_ScreenWidth / 2) -  3) " y" ((A_ScreenHeight / 2) - 16) " background000000")
   reticle.Add("Progress", "w12 h6 x" ((A_ScreenWidth / 2) +  4) " y" ((A_ScreenHeight / 2) -  3) " background000000")
   reticle.Add("Progress", "w6 h12 x" ((A_ScreenWidth / 2) -  3) " y" ((A_ScreenHeight / 2) +  4) " background000000")
@@ -283,7 +283,7 @@ locursorUI() {
  } catch {
   locursor := Gui("+AlwaysOnTop +ToolWindow -Caption -Disabled +E0x20 +LastFound -DPIScale", ".Hotkeys.ahk Locursor")
   locursor.BackColor := "FF2222"
-  WinSetTransColor "100100 200", locursor.Hwnd
+  WinSetTransColor("100100 200", locursor.Hwnd)
   s := 128
   locursor.Add("Picture", "x0 y0 w" s " h" s, ".Hotkeys\Locursor.png")
   locursor.Show("x" (x - p) " y" (y - p) " w" s " h" s " NoActivate")

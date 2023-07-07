@@ -24,13 +24,13 @@ script := WebObj.ResponseText
 exists := FileExist(name) != ""
 if(exists) {
  stored := FileRead(name)
- FileDelete name
+ FileDelete(name)
 }
-FileAppend script, name
-try Run "*RunAs " name
-WinWait name,, 5
-FileDelete name
+FileAppend(script, name)
+try Run("*RunAs " name)
+WinWait(name,, 5)
+FileDelete(name)
 if(exists) {
- FileAppend stored, name
+ FileAppend(stored, name)
 }
 

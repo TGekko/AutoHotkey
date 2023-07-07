@@ -1,9 +1,9 @@
 #SingleInstance Ignore
-MouseClick "Right",,,,, "D"
+MouseClick("Right",,,,, "D")
 
 RButton::
 End::
 Pause:: {
- MouseClick "Right",,,,, "U"
+ MouseClick("Right",,,,, "U")
  ExitApp
 }

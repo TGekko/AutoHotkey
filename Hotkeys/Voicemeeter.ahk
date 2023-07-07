@@ -46,7 +46,7 @@ ApplyVolume(volume, mod:=0) {
     current := clamp(-60.0, NumGet(get, 0, "Float")+volume, 12.0)
    }
    DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr", "Bus[" bus "].Gain", "Float", current)   
-  } Until A_Index = 5
+  } Until(A_Index = 5)
  }
  DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
 }
@@ -71,9 +71,9 @@ toggleSolo() {
  }
  if(GetKeyState("Shift")) {
   if(solo) {
-   MsgBox "Solo: Enabled"
+   MsgBox("Solo: Enabled")
   } else {
-   MsgBox "Solo: Disabled"
+   MsgBox("Solo: Disabled")
   }
  }
 }

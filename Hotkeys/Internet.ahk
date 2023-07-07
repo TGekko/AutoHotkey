@@ -1,24 +1,23 @@
 #SingleInstance Force
 #NoTrayIcon
-GroupAdd "browsers", "ahk_exe chrome.exe"
-GroupAdd "browsers", "ahk_exe msedge.exe"
-GroupAdd "browsers", "ahk_exe firefox.exe"
+GroupAdd("browsers", "ahk_exe chrome.exe")
+GroupAdd("browsers", "ahk_exe msedge.exe")
+GroupAdd("browsers", "ahk_exe firefox.exe")
 dark := { Hwnd: 0 }
 light := false
 
 
 #HotIf WinActive("ahk_group browsers")
- ^Right::Send "{Right 17}"
- ^Left::Send "{Left 17}"
+ ^Right::Send("{Right 17}")
+ ^Left::Send("{Left 17}")
  ^+#/:: {
   global dark
-  if (!hide(dark)) {
-   
+  if(!hide(dark)) {
    dark := Gui("+AlwaysOnTop +ToolWindow -Caption +LastFound", "AutoHotkey :: Internet.ahk > GUI")
    dark.BackColor := "000000"
-   WinSetTransColor "100100", dark.Hwnd
-   WinGetPos &x, &y, &w, &h, "A"
-   WinMove x, y-56,,, "A"
+   WinSetTransColor("100100", dark.Hwnd)
+   WinGetPos(&x, &y, &w, &h, "A")
+   WinMove(x, y-56,,, "A")
    x += 10
    y += 57
    w -= 20
@@ -50,8 +49,8 @@ hide(ui) {
  try {
   WinExist(ui.Hwnd)
   ui.Destroy()
-  WinGetPos &x, &y, &w, &h, "A"
-  WinMove x, y+56,,, "A"
+  WinGetPos(&x, &y, &w, &h, "A")
+  WinMove(x, y+56,,, "A")
   return true
  }
  return false

@@ -1,6 +1,6 @@
 #SingleInstance Ignore
-Persistent
-InstallKeybdHook
+Persistent()
+InstallKeybdHook()
 
 ; Double click this script's tray icon to open its main window.
 ; Press the desired key.
