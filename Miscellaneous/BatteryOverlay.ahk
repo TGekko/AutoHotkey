@@ -21,6 +21,8 @@ charging := false
 state := 100
 update() {
  global inquiry
+ global charging
+ global state
  DllCall("GetSystemPowerStatus", "Ptr", inquiry)
  status := [NumGet(inquiry, 2, "UChar"), NumGet(inquiry, 1, "UChar")]
  charging := (state = status[1] ? charging : state < status[1])
@@ -29,7 +31,7 @@ update() {
  battery["progress"].Opt("c" (status[2] == 8 ? "66FF55" : (status[1] < 20 ? "FF5555" : "FFFFFF")))
  if(status[1] <= 50) {
   battery.Show("x" (A_ScreenWidth - 34) " y" (A_ScreenHeight - 22) " NoActivate")
- else {
+ } else {
   battery.Hide()
  }
  if(status[1] < 15 && status[2] != 8 && !charging) {

@@ -65,9 +65,15 @@ Escape::Enter ; Pause
 
 ; Terraria
 #HotIf WinActive("Terraria")
- F13::m                                      ; Map
- !1::Run("Miscellaneous\Terraria\Honey.ahk") ; Duplicate Honey
- !2::Run("Miscellaneous\Terraria\Lava.ahk")  ; Duplicate Lava
+ F13::m                                             ; Map
+ !1::Run("Miscellaneous\Terraria\Honey.ahk")        ; Duplicate Honey
+ !2::Run("Miscellaneous\Terraria\Lava.ahk")         ; Duplicate Lava
+ ~Up::   MouseMove(0, -A_ScreenHeight / 66, 0, "R") ; Move Cursor one square up
+ ~Down:: MouseMove(0, A_ScreenHeight / 66, 0, "R")  ; Move Cursor one square down
+ ~Left:: MouseMove(-A_ScreenHeight / 66, 0, 0, "R") ; Move Cursor one square left
+ ~Right::MouseMove(A_ScreenHeight / 66, 0, 0, "R")  ; Move Cursor one square right
+ ~Numpad0::LButton                                  ; Left Click
+ ~Numpad1::RButton                                  ; Right Click
 
 ; The Escapists 2
 #HotIf WinActive("ahk_exe TheEscapists2.exe")

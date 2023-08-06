@@ -1,7 +1,7 @@
 #SingleInstance Ignore
 
 move := ["A", "W", "D", "S"]
-Loop() {
+Loop {
  for i, l in move {
   Send("{" move[i] " down}")
   Sleep(125)

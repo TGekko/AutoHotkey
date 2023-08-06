@@ -1,6 +1,6 @@
 #SingleInstance Ignore
 
-Loop() {
+Loop {
  MouseClick("Left",,,,, "D")
  MouseClick("Left",,,,, "U")
  Sleep 16

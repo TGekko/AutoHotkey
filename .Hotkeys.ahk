@@ -10,6 +10,7 @@ menus := {
  hotkeys: Menu(),
  start: Menu(),
  stop: Menu(),
+ stoplistall: Menu(),
  edits: Menu(),
  trouble: Menu(),
  list: Menu(),
@@ -51,18 +52,17 @@ showMenu() {
 startScript(name) {
  Run("*RunAs " name ".ahk")
 }
-stopScript(name) {
- path := A_ScriptDir "\" name ".ahk"
- try WinClose(path " ahk_class AutoHotkey")
+stopScript(name, path := true) {
+ try WinClose((path ? A_ScriptDir "\" name ".ahk" : name) " ahk_class AutoHotkey")
 }
 editScript(name) {
- Run('"C:\Windows\Notepad.exe" "' A_WorkingDir '\' name '.ahk"')
+ Run('"C:\Users\ty-88\AppData\Local\Programs\Microsoft VS Code\Code.exe" "' A_WorkingDir '\' name '.ahk"')
 }
 openFolder() {
  Run(A_WorkingDir)
 }
 runWindowsTroubleshooter(troubleshooter) {
- Run("*RunAs " A_ComSpec "/c msdt.exe /id " troubleshooter,, "Hide")
+ Run("*RunAs " A_ComSpec " /c msdt.exe /id " troubleshooter,, "Hide")
 }
 sendHotkey(value) {
  SendLevel(1)
@@ -98,6 +98,18 @@ for(i, item in all) {
  }
 }
 
+menus.stop.Add()
+menus.stop.Add("List All Running Scripts", menus.call.bind(stopListAll, "__"))
+stopListAll() {
+ menus.stoplistall.Delete()
+ list := WinGetList("ahk_class AutoHotkey")
+ for(item in list) {
+  title := WinGetTitle("ahk_id " item)
+  menus.stoplistall.Add(RegExReplace(title, " - AutoHotkey v[\.0-9]+$"), menus.call.bind(stopScript, [title, false]))
+ }
+ menus.stoplistall.Show()
+}
+
 troubleshooters := [["&Internet Connection", "NetworkDiagnosticsWeb"], ["&Hardware and Devices", "DeviceDiagnostic"], ["Incoming &Connections", "NetworkDiagnosticsInbound"], ["&Microphone", "AudioRecordingDiagnostic"], ["&Network Adapter", "NetworkDiagnosticsNetworkAdapter"], ["&Playing Audio", "AudioPlaybackDiagnostic"], ["&Search and Indexing", "SearchDiagnostic"], ["&Windows Update", "WindowsUpdateDiagnostic"]]
 for(i, troubleshooter in troubleshooters) {
  menus.trouble.Add(troubleshooter[1], menus.call.bind(runWindowsTroubleshooter, troubleshooter[2]))
@@ -123,32 +135,31 @@ scripthotkeys["Voicemeeter"] := [["Restart Audio Engine", "Control+Numpad Dot", 
 
 scripthotkeys["Windows"] := []
  scripthotkeys["Windows"].push(["Manage Window Profiles", "Control+Windows+\", "^#\"], ["Activate Window Profile: Default", "Control+Windows+Comma", "^#,"], 0)
- scripthotkeys["Windows"].push(["Center Active Window Horizontally", "Windows+Numpad 0", "#{Numpad0}"], ["Center Active Window", "Windows+Numpad Dot", "#{NumpadDot}"], ["Center Active Window Vertically", "Windows+Numpad Enter", "#{NumpadEnter}"], ["Expand Active Window to Fill Screen Horizontally", "Windows+Alt+Numpad 0", "#!{Numpad0}"], ["Expand Active Window to Fill Screen Vertically", "Windows+Alt+Numpad Enter", "#!{NumpadEnter}"], 0)
- scripthotkeys["Windows"].push(["Move Active Window and Size to half of the Screen", "-", ""], ["Bottom Left", "Windows+Numpad 1", "#{Numpad1}"], ["Bottom Center", "Windows+Numpad 2", "#{Numpad2}"], ["Bottom Right", "Windows+Numpad 3", "#{Numpad3}"], ["Center Left", "Windows+Numpad 4", "#{Numpad4}"], ["Center", "Windows+Numpad 5", "#{Numpad5}"], ["Center Right", "Windows+Numpad 6", "#{Numpad6}"], ["Top Left", "Windows+Numpad 7", "#{Numpad7}"], ["Top Center", "Windows+Numpad 8", "#{Numpad8}"], ["Top Right", "Windows+Numpad 9", "#{Numpad9}"], 0)
- scripthotkeys["Windows"].push(["Move Active Window and Size to one third of the Screen", "-", ""], ["Bottom Left", "Windows+Alt+Numpad 1", "#!{Numpad1}"], ["Bottom Center", "Windows+Alt+Numpad 2", "#!{Numpad2}"], ["Bottom Right", "Windows+Alt+Numpad 3", "#!{Numpad3}"], ["Center Left", "Windows+Alt+Numpad 4", "#!{Numpad4}"], ["Center", "Windows+Alt+Numpad 5", "#!{Numpad5}"], ["Center Right", "Windows+Alt+Numpad 6", "#!{Numpad6}"], ["Top Left", "Windows+Alt+Numpad 7", "#!{Numpad7}"], ["Top Center", "Windows+Alt+Numpad 8", "#!{Numpad8}"], ["Top Right", "Windows+Alt+Numpad 9", "#!{Numpad9}"], 0)
- scripthotkeys["Windows"].push(["Resize Active Window by +5% of the Screen", "Windows+Numpad Multiply", "#{NumpadMult}"], ["Resize Active Window by -5% of the Screen", "Windows+Numpad Divide", "#{NumpadDiv}"], ["Resize Active Window to Fill the Screen", "Windows+Numpad Subtract", "#{NumpadSub}"], ["Resize Active Window to Fill Screen && Taskbar", "Windows+Alt+Numpad Subtract", "#!{NumpadSub}"], 0)
- scripthotkeys["Windows"].push(["Move Active Window Up", "Control+Windows+Numpad 8", "^#{Numpad8}"], ["Move Active Window Right", "Control+Windows+Numpad 6", "^#{Numpad6}"], ["Move Active Window Down", "Control+Windows+Numpad 2", "^#{Numpad2}"], ["Move Active Window Left", "Control+Windows+Numpad 4", "^#{Numpad4}"], 0)
- scripthotkeys["Windows"].push(["Move Active Window To the Top of the Screen", "Control+Windows+Numpad Div", "^#{NumpadDiv}"], ["Move Active Window To the Right Side of the Screen", "Control+Windows+Numpad 9", "^#{Numpad9}"], ["Move Active Window To the Bottom of the Screen", "Control+Windows+Numpad 5", "^#{Numpad5}"], ["Move Active Window To the Left Side of the Screen", "Control+Windows+Numpad 7", "^#{Numpad7}"], ["Move Active Window to the Bottom of the Screen Ignoring the Taskbar", "Control+Windows+Numpad 0", "^#{Numpad0}"], 0)
- scripthotkeys["Windows"].push(["Toggle Active Window Always On Top", "Control+Windows+A", "^#a"], ["Toggle Active Window Borderless Mode", "Control+Windows+B", "^#b"], ["Toggle Active Window Borderless Fullscreen", "Control+Windows+Alt+B", "^#!b"], 0)
- scripthotkeys["Windows"].push(["Toggle Window Transparency (50%)", "Control+Windows+T", "^#t"], ["Toggle Window Transparency (Custom)", "Control+Windows+Alt+T", "^#!t"], 0)
+ scripthotkeys["Windows"].push("Center or Expand Active Window", ["Center Active Window Horizontally", "Windows+Numpad 0", "#{Numpad0}"], ["Center Active Window", "Windows+Numpad Dot", "#{NumpadDot}"], ["Center Active Window Vertically", "Windows+Numpad Enter", "#{NumpadEnter}"], ["Expand Active Window to Fill Screen Horizontally", "Windows+Alt+Numpad 0", "#!{Numpad0}"], ["Expand Active Window to Fill Screen Vertically", "Windows+Alt+Numpad Enter", "#!{NumpadEnter}"], -1)
+ scripthotkeys["Windows"].push("Move Active Window and Size to half of the Screen", ["Bottom Left", "Windows+Numpad 1", "#{Numpad1}"], ["Bottom Center", "Windows+Numpad 2", "#{Numpad2}"], ["Bottom Right", "Windows+Numpad 3", "#{Numpad3}"], ["Center Left", "Windows+Numpad 4", "#{Numpad4}"], ["Center", "Windows+Numpad 5", "#{Numpad5}"], ["Center Right", "Windows+Numpad 6", "#{Numpad6}"], ["Top Left", "Windows+Numpad 7", "#{Numpad7}"], ["Top Center", "Windows+Numpad 8", "#{Numpad8}"], ["Top Right", "Windows+Numpad 9", "#{Numpad9}"], -1)
+ scripthotkeys["Windows"].push("Move Active Window and Size to one third of the Screen", ["Bottom Left", "Windows+Alt+Numpad 1", "#!{Numpad1}"], ["Bottom Center", "Windows+Alt+Numpad 2", "#!{Numpad2}"], ["Bottom Right", "Windows+Alt+Numpad 3", "#!{Numpad3}"], ["Center Left", "Windows+Alt+Numpad 4", "#!{Numpad4}"], ["Center", "Windows+Alt+Numpad 5", "#!{Numpad5}"], ["Center Right", "Windows+Alt+Numpad 6", "#!{Numpad6}"], ["Top Left", "Windows+Alt+Numpad 7", "#!{Numpad7}"], ["Top Center", "Windows+Alt+Numpad 8", "#!{Numpad8}"], ["Top Right", "Windows+Alt+Numpad 9", "#!{Numpad9}"], -1)
+ scripthotkeys["Windows"].push("Resize Active Window", ["Resize Active Window by +5% of the Screen", "Windows+Numpad Multiply", "#{NumpadMult}"], ["Resize Active Window by -5% of the Screen", "Windows+Numpad Divide", "#{NumpadDiv}"], ["Resize Active Window to Fill the Screen", "Windows+Numpad Subtract", "#{NumpadSub}"], ["Resize Active Window to Fill Screen && Taskbar", "Windows+Alt+Numpad Subtract", "#!{NumpadSub}"], -1)
+ scripthotkeys["Windows"].push("Move Window", ["Move Active Window Up", "Control+Windows+Numpad 8", "^#{Numpad8}"], ["Move Active Window Right", "Control+Windows+Numpad 6", "^#{Numpad6}"], ["Move Active Window Down", "Control+Windows+Numpad 2", "^#{Numpad2}"], ["Move Active Window Left", "Control+Windows+Numpad 4", "^#{Numpad4}"], -1)
+ scripthotkeys["Windows"].push("Move Window to the Screen's Edge", ["Move Active Window To the Top of the Screen", "Control+Windows+Numpad Div", "^#{NumpadDiv}"], ["Move Active Window To the Right Side of the Screen", "Control+Windows+Numpad 9", "^#{Numpad9}"], ["Move Active Window To the Bottom of the Screen", "Control+Windows+Numpad 5", "^#{Numpad5}"], ["Move Active Window To the Left Side of the Screen", "Control+Windows+Numpad 7", "^#{Numpad7}"], ["Move Active Window to the Bottom of the Screen Ignoring the Taskbar", "Control+Windows+Numpad 0", "^#{Numpad0}"], -1)
+ scripthotkeys["Windows"].push("Affect the Active Window", ["Toggle Active Window Always On Top", "Control+Windows+A", "^#a"], ["Toggle Active Window Borderless Mode", "Control+Windows+B", "^#b"], ["Toggle Active Window Borderless Fullscreen", "Control+Windows+Alt+B", "^#!b"], ["Toggle Window Transparency (50%)", "Control+Windows+T", "^#t"], ["Toggle Window Transparency (Custom)", "Control+Windows+Alt+T", "^#!t"], -1, 0)
  scripthotkeys["Windows"].push(["Toggle Display Projection Mode (PC screen only or Duplicate)", "Control+Windows+P", "^#9"], 0)
- scripthotkeys["Windows"].push(["Toggle Theatre Mode", "Control+Windows+Forward Slash", "^#/"], ["Toggle Soft Theatre Mode", "Control+Windows+Alt+Forward Slash", "^#!/"], 0)
- scripthotkeys["Windows"].push(["When Theatre Mode is Active", "- ", ""], ["Disable Theatre Mode", "Delete", "{Delete}"], ["Hide Active Window (Excluding Soft Theatre Mode)", "Pause", "{Pause}"], ["Toggle Light Mode", "Backquote", "``"])
+ scripthotkeys["Windows"].push(["Toggle Theatre Mode", "Control+Windows+Forward Slash", "^#/"], ["Toggle Soft Theatre Mode", "Control+Windows+Alt+Forward Slash", "^#!/"])
+ scripthotkeys["Windows"].push("When Theatre Mode is Active", ["Disable Theatre Mode", "Delete", "{Delete}"], ["Hide Active Window (Excluding Soft Theatre Mode)", "Pause", "{Pause}"], ["Toggle Light Mode", "Backquote", "``"], -1, 0)
+ scripthotkeys["Windows"].push("Adjust Volume", ["Set Volume to 0%", "Control+0 or Control+Numpad 0", "^0"], ["Set Volume to 10%", "Control+1 or Control+Numpad 1", "^1"], ["Set Volume to 20%", "Control+2 or Control+Numpad 2", "^2"], ["Set Volume to 30%", "Control+3 or Control+Numpad 3", "^3"], ["Set Volume to 40%", "Control+4 or Control+Numpad 4", "^4"], ["Set Volume to 50%", "Control+5 or Control+Numpad 5", "^5"], ["Set Volume to 60%", "Control+6 or Control+Numpad 6", "^6"], ["Set Volume to 70%", "Control+7 or Control+Numpad 7", "^7"], ["Set Volume to 80%", "Control+8 or Control+Numpad 8", "^8"], ["Set Volume to 90%", "Control+9 or Control+Numpad 9", "^9"], ["Set Volume to 100%", "Control+/ or Control+Numpad *", "^/"], ["Increase Volume by 2%", "Control+= or Control+Numpad +", "^="], ["Decrease Volume by 2%", "Control+- or Control+Numpad -", "^-"], -1, 0)
+ scripthotkeys["Windows"].push(["Remove Clipboard Quotes", "Pause & Delete", "{Pause down}{Delete}{Pause up}"], ["Right Windows Key", "Apps Key", "{AppsKey}"])
 
 scripthotkeys["Miscellaneous"] := []
- scripthotkeys["Miscellaneous"].push(["Games", "-", ""], 0)
- scripthotkeys["Miscellaneous"].push(["Borderlands 3", "-", ""], ["Throw Grenade", "F13", "{F13}"], ["Switch Weapon Modes", "F14", "{F14}"], ["Primary Weapon Fire", "F15", "{F15}"], ["Action Skill", "F16", "{F16}"], 0)
- scripthotkeys["Miscellaneous"].push(["Citra", "-", ""], ["Go Home", "Controller Home", "{vk07}"], 0)
- scripthotkeys["Miscellaneous"].push(["Fortnite", "-", ""], ["Augment", "F13", "{F13}"], ["Show Emote Menu", "F14", "{F14}"], 0)
- scripthotkeys["Miscellaneous"].push(["Hades", "-", ""], ["Special", "MButton", "{MButton}"], ["Dash", "F13", "{F13}"], ["Interact", "F14", "{F14}"], ["Call", "F15", "{F15}"], ["Reload", "F16", "{F16}"], ["Summon", "F17", "{F17}"], ["Boon Info", "F18", "{F18}"], ["Open Codex", "F19", "{F19}"], 0)
- scripthotkeys["Miscellaneous"].push(["Minecraft", "-", ""], ["Swing Sword and Eat Food", "Alt+1", "!1"], ["Hold Shift", "Alt+Shift", "!{Shift}"], 0)
- scripthotkeys["Miscellaneous"].push(["Sonic Adventure DX", "-", ""], ["Forward", "W", "w"], ["Left", "A", "a"], ["Backward", "S", "s"], ["Right", "D", "d"], ["Jump", "Space", "{Space}"], ["Camera Left", "Left Arrow", "{Left}"], ["Camera Right", "Right Arrow", "{Right}"], ["Action", "E or Down", "e"], ["Look Around", "Up", "{Up}"], ["Back", "Backspace", "{Backspace}"], ["Pause", "Escape or Enter", "{Escape}"], 0)
- scripthotkeys["Miscellaneous"].push(["Terraria", "-", ""], ["Map", "F13", "{F13}"], ["Duplicate Honey", "Alt+1", "!1"], ["Duplicate Lava", "Alt+2", "!2"], 0)
- scripthotkeys["Miscellaneous"].push(["The Escapists 2", "-", ""], ["Train Strength", "Alt+1", "!1"], 0)
- scripthotkeys["Miscellaneous"].push(["ARK: Survival Evolved", "-", ""], ["Select Hotbar Slot 1", "F13", "1"], ["Show Whistle Menu", "F14", "``"], ["Emote 1", "F15", "["], ["Select Hotbar Slot 2", "F16", "0"], ["Drop Inventory Item", "F17", "o"], ["Unequip Hotbar Item", "F18", "q"], ["Emote 2", "F19", "]"], 0)
- scripthotkeys["Miscellaneous"].push(["Applications", "-", ""], 0)
- scripthotkeys["Miscellaneous"].push(["Notepad", "-", ""], ["Undo", "Control+Shift+Z", "^+z"])
- scripthotkeys["Miscellaneous"].push(["paint.net", "-", ""], ["Undo", "Control+Shift+Z", "^+z"])
+ scripthotkeys["Miscellaneous"].push("Borderlands 3", ["Throw Grenade", "F13", "{F13}"], ["Switch Weapon Modes", "F14", "{F14}"], ["Primary Weapon Fire", "F15", "{F15}"], ["Action Skill", "F16", "{F16}"], -1)
+ scripthotkeys["Miscellaneous"].push("Citra", ["Go Home", "Controller Home", "{vk07}"], -1)
+ scripthotkeys["Miscellaneous"].push("Fortnite", ["Augment", "F13", "{F13}"], ["Show Emote Menu", "F14", "{F14}"], -1)
+ scripthotkeys["Miscellaneous"].push("Hades", ["Special", "MButton", "{MButton}"], ["Dash", "F13", "{F13}"], ["Interact", "F14", "{F14}"], ["Call", "F15", "{F15}"], ["Reload", "F16", "{F16}"], ["Summon", "F17", "{F17}"], ["Boon Info", "F18", "{F18}"], ["Open Codex", "F19", "{F19}"], -1)
+ scripthotkeys["Miscellaneous"].push("Minecraft", ["Swing Sword and Eat Food", "Alt+1", "!1"], ["Hold Shift", "Alt+Shift", "!{Shift}"], -1)
+ scripthotkeys["Miscellaneous"].push("Sonic Adventure DX", ["Forward", "W", "w"], ["Left", "A", "a"], ["Backward", "S", "s"], ["Right", "D", "d"], ["Jump", "Space", "{Space}"], ["Camera Left", "Left Arrow", "{Left}"], ["Camera Right", "Right Arrow", "{Right}"], ["Action", "E or Down", "e"], ["Look Around", "Up", "{Up}"], ["Back", "Backspace", "{Backspace}"], ["Pause", "Escape or Enter", "{Escape}"], -1)
+ scripthotkeys["Miscellaneous"].push("Terraria", ["Map", "F13", "{F13}"], ["Duplicate Honey", "Alt+1", "!1"], ["Duplicate Lava", "Alt+2", "!2"], -1)
+ scripthotkeys["Miscellaneous"].push("The Escapists 2", ["Train Strength", "Alt+1", "!1"], -1)
+ scripthotkeys["Miscellaneous"].push("ARK: Survival Evolved", ["Select Hotbar Slot 1", "F13", "1"], ["Show Whistle Menu", "F14", "``"], ["Emote 1", "F15", "["], ["Select Hotbar Slot 2", "F16", "0"], ["Drop Inventory Item", "F17", "o"], ["Unequip Hotbar Item", "F18", "q"], ["Emote 2", "F19", "]"], -1, 0)
+ scripthotkeys["Miscellaneous"].push("Notepad", ["Undo", "Control+Shift+Z", "^+z"], -1)
+ scripthotkeys["Miscellaneous"].push("paint.net", ["Undo", "Control+Shift+Z", "^+z"], -1)
 
 for script in all {
  if(script == 0) {
@@ -156,13 +167,37 @@ for script in all {
  } else {
   menus.scripts[script] := Menu()
   i := 1
+  superi := 0
   Loop(2) {
    n := A_Index
+   scriptmenu := script
+   subbreak := false
    for(l, item in scripthotkeys[script]) {
-    if(item == 0) {
-     menus.scripts[script].Insert(i++ "&")
+    if(item == -1) {
+     scriptmenu := script
+     i := superi
+     superi := 0
+    } else if(item == 0) {
+     menus.scripts[scriptmenu].Insert(i++ "&")
+     if(superi != 0)
+      menus.scripts[scriptmenu "+"]++
+    } else if(Type(item) = "string") {
+     try {
+      Type(menus.scripts[script l])
+      subbreak := true
+     } catch {
+      menus.scripts[script l] := Menu()
+      menus.scripts[script l "+"] := 1 
+     }
+     menus.scripts[script].Insert(i++ "&", n == 1 ? item : "-", n == 1 ? menus.scripts[script l] : menus.call.bind("", "__"), (n == 2 && l == 1 ? "+Break" : ""))
+     scriptmenu := script l
+     superi := i
+     i := menus.scripts[script l "+"]
     } else {
-     menus.scripts[script].Insert(i++ "&", item[n], menus.call.bind(sendHotkey, item[3]), (n == 2 && l == 1 ? "+Break" : ""))
+     menus.scripts[scriptmenu].Insert(i++ "&", item[n], menus.call.bind(sendHotkey, item[3]), ((n == 2 && l == 1) || subbreak ? "+Break" : ""))
+     subbreak := false
+     if(superi != 0)
+      menus.scripts[scriptmenu "+"]++
     }
    }
   }

@@ -188,7 +188,7 @@ activateWindowProfile(profile) {
   y := value[3]
   width := value[4]
   height := value[5]
-  WinMove(x, y, width, height, id)
+  try WinMove(x, y, width, height, id)
  }
 }
 
@@ -443,6 +443,34 @@ timedark := 0
 ; Activate Window Profile: Default
 ^#,::activateWindowProfile("Default")
 
+; Adjust Volume
+^0::SoundSetVolume(0)
+^1::SoundSetVolume(10)
+^2::SoundSetVolume(20)
+^3::SoundSetVolume(30)
+^4::SoundSetVolume(40)
+^5::SoundSetVolume(50)
+^6::SoundSetVolume(60)
+^7::SoundSetVolume(70)
+^8::SoundSetVolume(80)
+^9::SoundSetVolume(90)
+^\::SoundSetVolume(100)
+^=::SoundSetVolume("+2")
+^-::SoundSetVolume("-2")
+^Numpad0::SoundSetVolume(0)
+^Numpad1::SoundSetVolume(10)
+^Numpad2::SoundSetVolume(20)
+^Numpad3::SoundSetVolume(30)
+^Numpad4::SoundSetVolume(40)
+^Numpad5::SoundSetVolume(50)
+^Numpad6::SoundSetVolume(60)
+^Numpad7::SoundSetVolume(70)
+^Numpad8::SoundSetVolume(80)
+^Numpad9::SoundSetVolume(90)
+^NumpadMult::SoundSetVolume(100)
+^NumpadAdd::SoundSetVolume("+2")
+^NumpadSub::SoundSetVolume("-2")
+
 ; Center active window horizontally
 #Numpad0::activeMoveTo(0.5)
 ; Center active window
@@ -502,6 +530,7 @@ timedark := 0
 
 ; Toggle "Always On Top" for the active window
 ^#a::WinSetAlwaysOnTop(-1, "A")
+NumLock:: WinSetAlwaysOnTop(-1, "A")
 
 ; Toggle Borderless Mode for the active window and set it to 100% of the screen's size including the taskbar
 ; Ignores arbitrary margin adjustment
@@ -527,6 +556,28 @@ timedark := 0
   Run("C:\Windows\System32\DisplaySwitch.exe /internal")
   displaymode := true
  }
+}
+
+; Remove quotation marks from the contents of the clipboard
+~Pause & Delete:: {
+ if(ClipWait, 2) {
+  A_Clipboard := StrReplace(A_Clipboard, '"')
+ }
+}
+
+; Remap the AppsKey to the Right Windows key
+AppsKey:: {
+ Send("{RWin Down}")
+ KeyWait("AppsKey")
+ Send("{RWin Up}")
+}
+^AppsKey:: {
+ Send("{Control Down}")
+ Send("{RWin Down}")
+ KeyWait("AppsKey")
+ Send("{RWin Up}")
+ KeyWait("Control")
+ Send("{Control Up}")
 }
 
 ; Enable Theatre Mode for the active window
