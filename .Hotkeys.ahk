@@ -171,21 +171,19 @@ for script in all {
   menus.scriptlist.Add()
  } else {
   menus.scripts[script] := Menu()
-  i := 1
-  superi := 0
+  i := [1]
   Loop(2) {
    n := A_Index
-   scriptmenu := script
+   scriptmenu := [script]
    subbreak := false
    for(l, item in scripthotkeys[script]) {
     if(item == -1) {
-     scriptmenu := script
-     i := superi
-     superi := 0
+     scriptmenu.RemoveAt(1)
+     i.RemoveAt(1)
     } else if(item == 0) {
-     menus.scripts[scriptmenu].Insert(i++ "&")
-     if(superi != 0)
-      menus.scripts[scriptmenu "+"]++
+     menus.scripts[scriptmenu[1]].Insert(i[1]++ "&")
+     if(i.Length > 1)
+      menus.scripts[scriptmenu[1] "+"]++
     } else if(Type(item) = "string") {
      try {
       Type(menus.scripts[script l])
@@ -194,15 +192,14 @@ for script in all {
       menus.scripts[script l] := Menu()
       menus.scripts[script l "+"] := 1 
      }
-     menus.scripts[script].Insert(i++ "&", n == 1 ? item : "-", n == 1 ? menus.scripts[script l] : menus.call.bind("", "__"), (n == 2 && l == 1 ? "+Break" : ""))
-     scriptmenu := script l
-     superi := i
-     i := menus.scripts[script l "+"]
+     menus.scripts[script].Insert(i[1]++ "&", n == 1 ? item : "-", n == 1 ? menus.scripts[script l] : menus.call.bind("", "__"), (n == 2 && l == 1 ? "+Break" : ""))
+     scriptmenu.InsertAt(1, script l)
+     i.InsertAt(1, menus.scripts[script l "+"])
     } else {
-     menus.scripts[scriptmenu].Insert(i++ "&", item[n], menus.call.bind(sendHotkey, item[3]), ((n == 2 && l == 1) || subbreak ? "+Break" : ""))
+     menus.scripts[scriptmenu[1]].Insert(i[1]++ "&", item[n], menus.call.bind(sendHotkey, item[3]), ((n == 2 && l == 1) || subbreak ? "+Break" : ""))
      subbreak := false
-     if(superi != 0)
-      menus.scripts[scriptmenu "+"]++
+     if(i.Length > 1)
+      menus.scripts[scriptmenu[1] "+"]++
     }
    }
   }
