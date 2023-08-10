@@ -1,6 +1,6 @@
 #SingleInstance Ignore
 
-Loop() {
+Loop {
  Send("{Space down}{Space up}")
  Sleep(100)
  Send("{Space down}{Space up}")

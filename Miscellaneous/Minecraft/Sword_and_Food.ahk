@@ -1,7 +1,7 @@
 #SingleInstance Ignore
 
 MouseClick("Right",,,,, "D")
-Loop() {
+Loop {
  MouseClick("Left")
  Sleep(650)
 }

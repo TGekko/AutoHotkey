@@ -1,6 +1,6 @@
 #SingleInstance Ignore
 
-Loop() {
+Loop {
  Loop(12) {
   Send("{A down}")
   Sleep(250)

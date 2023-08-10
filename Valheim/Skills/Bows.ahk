@@ -1,6 +1,6 @@
 #SingleInstance Ignore
 
-Loop() {
+Loop {
  Send("{LButton down}")
  Sleep(1600)
  Send("{LButton up}")

@@ -1,6 +1,6 @@
 #SingleInstance Ignore
 
-Loop() {
+Loop {
  Send "E"
  Sleep 50
  Send "Q"

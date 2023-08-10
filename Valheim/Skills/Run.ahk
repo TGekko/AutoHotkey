@@ -1,6 +1,6 @@
 #SingleInstance Ignore
 
-Loop() {
+Loop {
  Send("{Shift down}")
  Loop(12) {
   Send("{A down}")

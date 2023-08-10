@@ -2,7 +2,7 @@
 
 MouseClick "Left"
 Sleep 1500
-Loop() {
+Loop {
  MouseClick "Left",,,,, "D"
  Sleep 250
  MouseClick "Left",,,,, "U"
