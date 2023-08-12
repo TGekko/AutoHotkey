@@ -558,13 +558,6 @@ NumLock:: WinSetAlwaysOnTop(-1, "A")
  }
 }
 
-; Remove quotation marks from the contents of the clipboard
-~Pause & Delete:: {
- if(ClipWait, 2) {
-  A_Clipboard := StrReplace(A_Clipboard, '"')
- }
-}
-
 ; Remap the AppsKey to the Right Windows key
 AppsKey:: {
  Send("{RWin Down}")

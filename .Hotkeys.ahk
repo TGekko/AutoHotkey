@@ -15,6 +15,7 @@ menus := {
  trouble: Menu(),
  list: Menu(),
  scriptlist: Menu(),
+ clip: Menu(),
  scripts: Map(),
  tray: A_TrayMenu,
  call: menus_call
@@ -56,7 +57,11 @@ stopScript(name, path := true) {
  try WinClose((path ? A_ScriptDir "\" name ".ahk" : name) " ahk_class AutoHotkey")
 }
 editScript(name) {
- Run('"C:\Users\ty-88\AppData\Local\Programs\Microsoft VS Code\Code.exe" "' A_WorkingDir '\' name '.ahk"')
+ try {
+  Run('"' A_AppData '\..\Local\Programs\Microsoft VS Code\Code.exe" "' A_WorkingDir '\' name '.ahk"')
+ } catch {
+  Run('"C:\Windows\Notepad.exe" "' A_WorkingDir '\' name '.ahk"')
+ }
 }
 openFolder() {
  Run(A_WorkingDir)
@@ -102,6 +107,8 @@ menus.stop.Add()
 menus.stop.Add("List All Running Scripts", menus.call.bind(stopListAll, "__"))
 stopListAll() {
  menus.stoplistall.Delete()
+ menus.stoplistall.Add("Stop Script", menus.call.bind(""))
+ menus.stoplistall.Add()
  list := WinGetList("ahk_class AutoHotkey")
  for(item in list) {
   title := WinGetTitle("ahk_id " item)
@@ -151,7 +158,7 @@ scripthotkeys["Windows"] := []
  scripthotkeys["Windows"].push(["Toggle Theatre Mode", "Control+Windows+Forward Slash", "^#/"], ["Toggle Soft Theatre Mode", "Control+Windows+Alt+Forward Slash", "^#!/"])
  scripthotkeys["Windows"].push("When Theatre Mode is Active", ["Disable Theatre Mode", "Delete", "{Delete}"], ["Hide Active Window (Excluding Soft Theatre Mode)", "Pause", "{Pause}"], ["Toggle Light Mode", "Backquote", "``"], -1, 0)
  scripthotkeys["Windows"].push("Adjust Volume", ["Set Volume to 0%", "Control+0 or Control+Numpad 0", "^0"], ["Set Volume to 10%", "Control+1 or Control+Numpad 1", "^1"], ["Set Volume to 20%", "Control+2 or Control+Numpad 2", "^2"], ["Set Volume to 30%", "Control+3 or Control+Numpad 3", "^3"], ["Set Volume to 40%", "Control+4 or Control+Numpad 4", "^4"], ["Set Volume to 50%", "Control+5 or Control+Numpad 5", "^5"], ["Set Volume to 60%", "Control+6 or Control+Numpad 6", "^6"], ["Set Volume to 70%", "Control+7 or Control+Numpad 7", "^7"], ["Set Volume to 80%", "Control+8 or Control+Numpad 8", "^8"], ["Set Volume to 90%", "Control+9 or Control+Numpad 9", "^9"], ["Set Volume to 100%", "Control+/ or Control+Numpad *", "^/"], ["Increase Volume by 2%", "Control+= or Control+Numpad +", "^="], ["Decrease Volume by 2%", "Control+- or Control+Numpad -", "^-"], -1, 0)
- scripthotkeys["Windows"].push(["Remove Clipboard Quotes", "Pause & Delete", "{Pause down}{Delete}{Pause up}"], ["Right Windows Key", "Apps Key", "{AppsKey}"])
+ scripthotkeys["Windows"].push(["Right Windows Key", "Apps Key", "{AppsKey}"])
 
 scripthotkeys["Miscellaneous"] := []
  scripthotkeys["Miscellaneous"].push("Borderlands 3", ["Throw Grenade", "F13", "{F13}"], ["Switch Weapon Modes", "F14", "{F14}"], ["Primary Weapon Fire", "F15", "{F15}"], ["Action Skill", "F16", "{F16}"], -1)
@@ -176,36 +183,43 @@ for script in all {
    n := A_Index
    scriptmenu := [script]
    subbreak := false
-   for(l, item in scripthotkeys[script]) {
-    if(item == -1) {
-     scriptmenu.RemoveAt(1)
-     i.RemoveAt(1)
-    } else if(item == 0) {
-     menus.scripts[scriptmenu[1]].Insert(i[1]++ "&")
-     if(i.Length > 1)
-      menus.scripts[scriptmenu[1] "+"]++
-    } else if(Type(item) = "string") {
-     try {
-      Type(menus.scripts[script l])
-      subbreak := true
-     } catch {
-      menus.scripts[script l] := Menu()
-      menus.scripts[script l "+"] := 1 
+   try {
+    for(l, item in scripthotkeys[script]) {
+     if(item == -1) {
+      scriptmenu.RemoveAt(1)
+      i.RemoveAt(1)
+     } else if(item == 0) {
+      menus.scripts[scriptmenu[1]].Insert(i[1]++ "&")
+      if(i.Length > 1)
+       menus.scripts[scriptmenu[1] "+"]++
+     } else if(Type(item) = "string") {
+      try {
+       Type(menus.scripts[script l])
+       subbreak := true
+      } catch {
+       menus.scripts[script l] := Menu()
+       menus.scripts[script l "+"] := 1 
+      }
+      menus.scripts[script].Insert(i[1]++ "&", n == 1 ? item : "-", n == 1 ? menus.scripts[script l] : menus.call.bind(""), (n == 2 && l == 1 ? "+Break" : ""))
+      scriptmenu.InsertAt(1, script l)
+      i.InsertAt(1, menus.scripts[script l "+"])
+     } else {
+      menus.scripts[scriptmenu[1]].Insert(i[1]++ "&", item[n], menus.call.bind(sendHotkey, item[3]), ((n == 2 && l == 1) || subbreak ? "+Break" : ""))
+      subbreak := false
+      if(i.Length > 1)
+       menus.scripts[scriptmenu[1] "+"]++
      }
-     menus.scripts[script].Insert(i[1]++ "&", n == 1 ? item : "-", n == 1 ? menus.scripts[script l] : menus.call.bind("", "__"), (n == 2 && l == 1 ? "+Break" : ""))
-     scriptmenu.InsertAt(1, script l)
-     i.InsertAt(1, menus.scripts[script l "+"])
-    } else {
-     menus.scripts[scriptmenu[1]].Insert(i[1]++ "&", item[n], menus.call.bind(sendHotkey, item[3]), ((n == 2 && l == 1) || subbreak ? "+Break" : ""))
-     subbreak := false
-     if(i.Length > 1)
-      menus.scripts[scriptmenu[1] "+"]++
     }
    }
   }
   menus.scriptlist.Add(script (script == ".Hotkeys" ? ".ahk" : ""), menus.scripts[script])
  }
 }
+
+menus.clip.Add("Modify Text", menus.call.bind(modifyClipboard, "__"))
+menus.clip.Add()
+menus.clip.Add("Remove Quotation Marks", menus.call.bind(clipboardReplace, ['"']))
+menus.clip.Add("Replace Line Breaks with Commas", menus.call.bind(clipboardReplace, ["`n", ","]))
 
 menus.hotkeys.Add("&.Hotkeys.ahk", menus.tray)
 menus.hotkeys.Default := "1&"
@@ -214,7 +228,7 @@ menus.hotkeys.Add("Windows &Troubleshooters", menus.trouble)
 menus.hotkeys.Add("&Network Adapter", menus.call.bind(runWindowsTroubleshooter, "NetworkDiagnosticsNetworkAdapter"))
 menus.hotkeys.Add()
 menus.hotkeys.Add("Script &Hotkeys", menus.scriptlist)
-menus.hotkeys.Add("Modify &Clipboard", menus.call.bind(modifyClipboard, "__"))
+menus.hotkeys.Add("Modify &Clipboard", menus.clip)
 menus.hotkeys.Add("Toggle &Reticle", menus.call.bind(toggleReticle, "__"))
 menus.hotkeys.Add()
 menus.hotkeys.Add("&Start Script", menus.start)
@@ -287,6 +301,10 @@ modifyClipboard() {
   if(clipmod.Result := "OK")
    A_Clipboard := clipmod.Value
  }
+}
+
+clipboardReplace(that, with:="") {
+ try A_Clipboard := StrReplace(A_Clipboard, that, with)
 }
 
 toggleReticle() {
