@@ -272,7 +272,7 @@ locursor := 0x0
  KeyWait("RButton")
 }
 !] Up::Click("Right Up")
-#RButton::showMenu()
+#RButton up::showMenu()
 #AppsKey::showMenu()
 
 !Insert::toggleReticle()
