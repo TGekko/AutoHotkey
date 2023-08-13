@@ -51,7 +51,7 @@ showMenu() {
  }
 }
 startScript(name) {
- Run("*RunAs " name ".ahk")
+ Run('*RunAs "' A_AhkPath '" "' name '.ahk"')
 }
 stopScript(name, path := true) {
  try WinClose((path ? A_ScriptDir "\" name ".ahk" : name) " ahk_class AutoHotkey")
