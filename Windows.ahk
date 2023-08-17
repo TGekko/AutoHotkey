@@ -531,6 +531,10 @@ timedark := 0
 ; Toggle "Always On Top" for the active window
 ^#a::WinSetAlwaysOnTop(-1, "A")
 NumLock:: WinSetAlwaysOnTop(-1, "A")
+; Keep the active window on bottom and hide it from the taskbar
+^#+a::DllCall("SetParent", "Ptr", WinGetID("A"), "Ptr", WinGetID("ahk_class WorkerW", "FolderView"))
+; Set the active window's parent to the desktop -- useful for allowing windows forcibly kept on bottom to move again
+^#!a::Dllcall("SetParent", "Ptr", WinGetID("A"), "Ptr", 0)
 
 ; Toggle Borderless Mode for the active window and set it to 100% of the screen's size including the taskbar
 ; Ignores arbitrary margin adjustment
@@ -545,6 +549,13 @@ NumLock:: WinSetAlwaysOnTop(-1, "A")
 ^#t::activeToggleTransparency()
 ; Prompt for window transparency percentage
 ^#!t::activeToggleTransparency(true)
+; Prompt for window transparency color
+^#+t:: {
+ active := WinGetID("A")
+ input := InputBox("Input the AutoHotkey color value for the color which should be transparent in this window (`"Off`" disables transparency).", "Set Window Transparency Color",, "000000")
+ if(input.Result = "OK")
+  try WinSetTransColor(input.Value, active)
+}
 
 ; Toggle Windows display mode between "PC screen only" and "Duplicate"
 ^#p:: {
