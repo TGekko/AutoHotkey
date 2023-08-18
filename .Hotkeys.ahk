@@ -67,7 +67,8 @@ openFolder() {
  Run(A_WorkingDir)
 }
 runWindowsTroubleshooter(troubleshooter) {
- Run("*RunAs " A_ComSpec " /c msdt.exe /id " troubleshooter,, "Hide")
+ ;Run("*RunAs " A_ComSpec " /c msdt.exe /id " troubleshooter,, "Hide")
+ Run("*RunAs " A_ComSpec " /c start ms-contact-support://" (SubStr(troubleshooter, 1, 1) = "+" ? "?ActivationType=" SubStr(troubleshooter, 2) "&invoker=Emerald" : "smc-to-emerald/" troubleshooter),, "Hide")
 }
 sendHotkey(value) {
  SendLevel(1)
@@ -117,7 +118,8 @@ stopListAll() {
  menus.stoplistall.Show()
 }
 
-troubleshooters := [["&Internet Connection", "NetworkDiagnosticsWeb"], ["&Hardware and Devices", "DeviceDiagnostic"], ["Incoming &Connections", "NetworkDiagnosticsInbound"], ["&Microphone", "AudioRecordingDiagnostic"], ["&Network Adapter", "NetworkDiagnosticsNetworkAdapter"], ["&Playing Audio", "AudioPlaybackDiagnostic"], ["&Search and Indexing", "SearchDiagnostic"], ["&Windows Update", "WindowsUpdateDiagnostic"]]
+;troubleshooters := [["&Internet Connection", "NetworkDiagnosticsWeb"], ["&Hardware and Devices", "DeviceDiagnostic"], ["Incoming &Connections", "NetworkDiagnosticsInbound"], ["&Microphone", "AudioRecordingDiagnostic"], ["&Network Adapter", "NetworkDiagnosticsNetworkAdapter"], ["&Playing Audio", "AudioPlaybackDiagnostic"], ["&Search and Indexing", "SearchDiagnostic"], ["&Windows Update", "WindowsUpdateDiagnostic"]]
+troubleshooters := [["&Network and Internet", "+NetworkDiagnostics"], ["&Audio", "AudioTroubleshooter"], ["Background &Intelligent Transfer Service", "BITSTroubleshooter"], ["&Bluetooth", "BluetoothTroubleshooter"], ["&Camera", "CameraTroubleshooter"], ["&Printer", "PrinterTroubleshooter"], ["Pro&gram Compatibility", "ProgramCompatTroubleshooter"], ["&Video Playback", "VideoPlaybackTroubleshooter"], ["Windows &Media Player", "WMPTroubleshooter"], ["&Windows Update", "WindowsUpdateTroubleshooter"]]
 for(i, troubleshooter in troubleshooters) {
  menus.trouble.Add(troubleshooter[1], menus.call.bind(runWindowsTroubleshooter, troubleshooter[2]))
  if(i = 1) {
@@ -225,7 +227,7 @@ menus.hotkeys.Add("&.Hotkeys.ahk", menus.tray)
 menus.hotkeys.Default := "1&"
 menus.hotkeys.Add()
 menus.hotkeys.Add("Windows &Troubleshooters", menus.trouble)
-menus.hotkeys.Add("&Network Adapter", menus.call.bind(runWindowsTroubleshooter, "NetworkDiagnosticsNetworkAdapter"))
+menus.hotkeys.Add("&Network and Internet", menus.call.bind(runWindowsTroubleshooter, "NetworkAndInternetTroubleshooter"))
 menus.hotkeys.Add()
 menus.hotkeys.Add("Script &Hotkeys", menus.scriptlist)
 menus.hotkeys.Add("Modify &Clipboard", menus.clip)
