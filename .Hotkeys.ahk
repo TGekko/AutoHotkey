@@ -87,7 +87,7 @@ exitAll(exitreason, exitcode) {
   stopScript(item)
  }
 }
-OnExit exitAll
+OnExit(exitAll)
 
 for(i, item in all) {
  if(item = 0) {

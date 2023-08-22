@@ -1,4 +1,9 @@
-#SingleInstance Ignore
+#SingleInstance Force
+
+exit(exitreason, exitcode) {
+ MouseClick("Right",,,,, "U")
+}
+OnExit(exit)
 
 id := WinGetID("A")
 Loop {
@@ -11,6 +16,5 @@ Loop {
 
 Pause::
 End:: {
- MouseClick("Right",,,,, "U")
  ExitApp
 }

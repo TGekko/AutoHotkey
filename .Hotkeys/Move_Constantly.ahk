@@ -1,4 +1,4 @@
-#SingleInstance Ignore
+#SingleInstance Force
 
 id := WinGetID("A")
 moves := ["a", "w", "d", "s"]
