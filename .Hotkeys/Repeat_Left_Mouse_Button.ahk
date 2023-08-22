@@ -1,8 +1,11 @@
 #SingleInstance Ignore
 
+id := WinGetID("A")
 Loop {
- MouseClick("Left",,,,, "D")
- MouseClick("Left",,,,, "U")
+ if(WinActive(id)) {
+  MouseClick("Left",,,,, "D")
+  MouseClick("Left",,,,, "U")
+ }
  Sleep 16
 }
 

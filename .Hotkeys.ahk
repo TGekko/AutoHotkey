@@ -77,10 +77,14 @@ sendHotkey(value) {
 }
 exitAll(exitreason, exitcode) {
  global all
- for(i, item in all) {
+ stop := [".Hotkeys\Hold_Left_Mouse_Button", ".Hotkeys\Hold_Right_Mouse_Button", ".Hotkeys\Move_Constantly", ".Hotkeys\Repeat_Left_Mouse_Button", ".Hotkeys\Repeat_Right_Mouse_Button"]
+ for(item in all) {
   if(!(item = 0 || item = ".Hotkeys")) {
    stopScript(item)
   }
+ }
+ for(item in stop) {
+  stopScript(item)
  }
 }
 OnExit exitAll
@@ -232,6 +236,7 @@ menus.hotkeys.Add()
 menus.hotkeys.Add("Script &Hotkeys", menus.scriptlist)
 menus.hotkeys.Add("Modify &Clipboard", menus.clip)
 menus.hotkeys.Add("Toggle &Reticle", menus.call.bind(toggleReticle, "__"))
+menus.hotkeys.Add("Stop &Active Thread", menus.call.bind(SendHotkey, "Pause"))
 menus.hotkeys.Add()
 menus.hotkeys.Add("&Start Script", menus.start)
 menus.hotkeys.Add("Sto&p Script", menus.stop)
