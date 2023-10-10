@@ -18,10 +18,10 @@ light := false
    WinSetTransColor("100100", dark.Hwnd)
    WinGetPos(&x, &y, &w, &h, "A")
    WinMove(x, y-56,,, "A")
-   x += 13
-   y += 57
-   w -= 26
-   h -= 125
+   x += 14
+   y += 58
+   w -= 28
+   h -= 127
    dark.Add("Progress", "x" x " y" y " w" w " h" h " c100100 background100100 vwindow", 100)
    dark.Show("x0 y0 w" A_ScreenWidth " h" A_ScreenHeight " NoActivate")
   }
