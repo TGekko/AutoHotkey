@@ -1,8 +1,8 @@
 #SingleInstance Force
 #NoTrayIcon
-GroupAdd("browsers", "ahk_exe chrome.exe")
-GroupAdd("browsers", "ahk_exe msedge.exe")
-GroupAdd("browsers", "ahk_exe firefox.exe")
+#Include "Common.ahk"
+for(name in GetSetting('Internet Executables', true))
+ GroupAdd("browsers", "ahk_exe " name)
 dark := { Hwnd: 0 }
 light := false
 

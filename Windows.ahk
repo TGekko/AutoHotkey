@@ -14,8 +14,12 @@ borderless := Map()
 ; This contains a boolean value which indicates which display mode was toggled last (true == "PC screen only", false == "Duplicate")
 displaymode := true
 
-; This is the file path which leads to the Window Profiles .ini file
-inipath := "Windows\WindowProfiles.ini"
+; This stores the file path which leads to the Window Profiles .ini file in the variable inipath -- creating the file if it does not exist
+if(!DirExist(A_AppData '\.Hotkeys'))
+ DirCreate(A_AppData '\.Hotkeys')
+inipath := A_AppData '\.Hotkeys\WindowProfiles.ini'
+if(!FileExist(inipath))
+ FileAppend(FileRead('Windows\WindowProfiles.ini'), inipath)
 
 ; A custom object used to store menues and apply custom functions to menus
 menus := {
@@ -156,7 +160,7 @@ manageWindowProfiles(x:="", y:="") {
 
 ; Opens the WindowProfiles.ini file
 openWindowProfiles() {
- Run('"C:\Windows\Notepad.exe" "' A_WorkingDir '\' inipath '"')
+ Run('Notepad.exe "' inipath '"')
 }
 
 ; Removes a section or key of WindowProfiles.ini

@@ -5,6 +5,13 @@ CoordMode("Mouse", "Screen")
 SetNumLockState("AlwaysOn")
 loaded := false
 
+#Include "Common.ahk"
+SetSetting([
+ ["Internet Executables", "chrome.exe, msedge.exe, firefox.exe"],
+ ["Script Editor", A_AppData '\..\Local\Programs\Microsoft VS Code\Code.exe'],
+ ["Windows",, "11"]
+],, false)
+
 all := [".Hotkeys", 0, "Magicka", "Risk of Rain 2", "Valheim", 0, "Internet", "Voicemeeter", "Windows", 0, "Miscellaneous"]
 menus := {
  hotkeys: Menu(),
@@ -58,7 +65,7 @@ stopScript(name, path := true) {
 }
 editScript(name) {
  try {
-  Run('"' A_AppData '\..\Local\Programs\Microsoft VS Code\Code.exe" "' A_WorkingDir '\' name '.ahk"')
+  Run('"' GetSetting('Script Editor') '" "' A_WorkingDir '\' name '.ahk"')
  } catch {
   Run('"C:\Windows\Notepad.exe" "' A_WorkingDir '\' name '.ahk"')
  }
@@ -67,8 +74,11 @@ openFolder() {
  Run(A_WorkingDir)
 }
 runWindowsTroubleshooter(troubleshooter) {
- ;Run("*RunAs " A_ComSpec " /c msdt.exe /id " troubleshooter,, "Hide")
- Run("*RunAs " A_ComSpec " /c start ms-contact-support://" (SubStr(troubleshooter, 1, 1) = "+" ? "?ActivationType=" SubStr(troubleshooter, 2) "&invoker=Emerald" : "smc-to-emerald/" troubleshooter),, "Hide")
+ version := GetSetting('Windows')
+ if(version = 10)
+  Run("*RunAs " A_ComSpec " /c msdt.exe /id " troubleshooter,, "Hide")
+ else if(version = 11)
+  Run("*RunAs " A_ComSpec " /c start ms-contact-support://" (SubStr(troubleshooter, 1, 1) = "+" ? "?ActivationType=" SubStr(troubleshooter, 2) "&invoker=Emerald" : "smc-to-emerald/" troubleshooter),, "Hide")
 }
 sendHotkey(value) {
  SendLevel(1)
@@ -228,13 +238,14 @@ menus.clip.Add("Remove Quotation Marks", menus.call.bind(clipboardReplace, ['"']
 menus.clip.Add("Replace Line Breaks with Commas", menus.call.bind(clipboardReplace, ["`n", ","]))
 
 menus.hotkeys.Add("&.Hotkeys.ahk", menus.tray)
+menus.hotkeys.Add("&Customize", menus.call.bind(Run, A_AppData '\.Hotkeys')) ; 'Notepad.exe "' A_Temp '\.Hotkeys\settings"'))
 menus.hotkeys.Default := "1&"
 menus.hotkeys.Add()
 menus.hotkeys.Add("Windows &Troubleshooters", menus.trouble)
 menus.hotkeys.Add("&Network and Internet", menus.call.bind(runWindowsTroubleshooter, "NetworkAndInternetTroubleshooter"))
 menus.hotkeys.Add()
 menus.hotkeys.Add("Script &Hotkeys", menus.scriptlist)
-menus.hotkeys.Add("Modify &Clipboard", menus.clip)
+menus.hotkeys.Add("&Modify Clipboard", menus.clip)
 menus.hotkeys.Add("Toggle &Reticle", menus.call.bind(toggleReticle, "__"))
 menus.hotkeys.Add("Stop &Active Thread", menus.call.bind(SendHotkey, "Pause"))
 menus.hotkeys.Add()
