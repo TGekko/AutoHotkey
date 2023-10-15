@@ -272,14 +272,15 @@ locursor := 0x0
 !+0::Run(".Hotkeys\Repeat_Right_Mouse_Button.ahk")
 !+Backspace::Run(".Hotkeys\Move_Constantly.ahk")
 
-;!Up::DllCall("mouse_event", "UInt", 0x01, "UInt", 0, "UInt", -1)
-;!Down::DllCall("mouse_event", "UInt", 0x01, "UInt", 0, "UInt", 1)
-;!Left::DllCall("mouse_event", "UInt", 0x01, "UInt", -1, "UInt", 0)
-;!Right::DllCall("mouse_event", "UInt", 0x01, "UInt", 1, "UInt", 0)
-!Up::MouseMove(0, -1, 0, "R")
-!Down::MouseMove(0, 1, 0, "R")
-!Left::MouseMove(-1, 0, 0, "R")
-!Right::MouseMove(1, 0, 0, "R")
+; Using DllCall is more reliable in games.
+!Up::DllCall("mouse_event", "UInt", 0x01, "UInt", 0, "UInt", -1)
+!Down::DllCall("mouse_event", "UInt", 0x01, "UInt", 0, "UInt", 1)
+!Left::DllCall("mouse_event", "UInt", 0x01, "UInt", -1, "UInt", 0)
+!Right::DllCall("mouse_event", "UInt", 0x01, "UInt", 1, "UInt", 0)
+;!Up::MouseMove(0, -1, 0, "R")
+;!Down::MouseMove(0, 1, 0, "R")
+;!Left::MouseMove(-1, 0, 0, "R")
+;!Right::MouseMove(1, 0, 0, "R")
 ![:: {
  Click("Down")
  KeyWait("LButton")
