@@ -117,7 +117,7 @@ saveWindowProfile(name:="") {
   if(title) {
    WinGetPos(&x, &y, &w, &h, value)
    value := 
-   IniWrite(",, " title ",, " exe ",, " x ",, " y ",, " w ",, " h, inipath, name, StrReplace(title, "=", "-"))
+   IniWrite(title " " exe ",, " x ",, " y ",, " w ",, " h, inipath, name, StrReplace(title, "=", "-"))
   }
  }
 }
@@ -440,6 +440,48 @@ destroyGUI(ui) {
 
 timedark := 0
 
+toTray(win := 'A') {
+ id := WinGetID(win)
+ path := A_Temp '\' WinGetTitle(id) '.' id '.ahk'
+ try FileDelete(path)
+ FileAppend('
+ (
+  #SingleInstance Force
+  if(A_Args.Length < 1)
+   ExitApp
+  id := "ahk_id " A_Args[1]
+  DetectHiddenWindows(true)
+  Persistent(true)
+  TraySetIcon(WinGetProcessPath(id),, true)
+  A_IconTip := WinGetTitle(id)
+  call(functions*) {
+   for(item in functions)
+    if(Type(item) = "Func" || Type(item) = "BoundFunc")
+     item()
+  }
+  tryFunc(functions*) {
+   for(item in functions)
+    try call(item)
+  }
+  OnExit((z*) => WinShow(id))
+  setTray(title := A_IconTip) {
+   A_TrayMenu.Delete()
+   A_TrayMenu.Add("Show Window: " A_IconTip, (z*) => WinClose(A_ScriptHwnd))
+   A_TrayMenu.Add()
+   A_TrayMenu.Add("Change Tray Title", (z*) => tryFunc((() => A_IconTip := InputBox("Please input a new title.", "Change Tray Title: " A_IconTip,, A_IconTip).Value), setTray))
+   A_TrayMenu.Add("Change Tray Icon", (z*) => tryFunc(TraySetIcon(FileSelect(1,, "Select Tray Icon: " A_IconTip, "*.ico; *.exe; *.jpg; *.png; *.dll; *.cpl; *.cur; *.ani; *.scr"),, true)))
+   A_TrayMenu.Add("Hide Menu", (z*) => {})
+   A_TrayMenu.Add()
+   A_TrayMenu.Add("Exit", (z*) => call(OnExit.bind((z*) => WinClose(id)), WinClose.bind(A_ScriptHwnd)))
+  }
+  setTray()
+  WinHide(id)
+ )', path)
+ Run('"' path '" "' id '"')
+ Sleep(200)
+ FileDelete(path)
+}
+
 
 ; Hotkeys
 
@@ -532,6 +574,9 @@ timedark := 0
 #NumpadSub:: activeMoveTo(0.5, 0.5, 1, 1)
 ; Set window to 100% of the screen's size including the taskbar
 #!NumpadSub:: activeMoveTo(0.5, 0.5, 1, 1, true, false)
+
+; Minimize the active window to the system tray
+#Backspace::toTray()
 
 ; Toggle "Always On Top" for the active window
 ^#a::WinSetAlwaysOnTop(-1, "A")

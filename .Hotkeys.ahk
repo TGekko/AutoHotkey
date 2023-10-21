@@ -25,19 +25,6 @@ menus := {
  clip: Menu(),
  scripts: Map(),
  tray: A_TrayMenu,
- call: menus_call
-}
-menus_call(function:="", parameters:="__", menuvariables*) {
- if(function == "")
-  return
- if(parameters == "__") {
-  function()
-  return
- }
- if(Type(parameters) != "Array") {
-  parameters := [parameters]
- }
- function(parameters*)
 }
 
 showMenu() {
@@ -85,7 +72,7 @@ sendHotkey(value) {
  SendInput(value)
  SendLevel(0)
 }
-exitAll(exitreason, exitcode) {
+exitAll() {
  global all
  stop := [".Hotkeys\Hold_Left_Mouse_Button", ".Hotkeys\Hold_Right_Mouse_Button", ".Hotkeys\Move_Constantly", ".Hotkeys\Repeat_Left_Mouse_Button", ".Hotkeys\Repeat_Right_Mouse_Button"]
  for(item in all) {
@@ -97,7 +84,7 @@ exitAll(exitreason, exitcode) {
   stopScript(item)
  }
 }
-OnExit(exitAll)
+OnExit((z*) => exitAll())
 
 for(i, item in all) {
  if(item = 0) {
@@ -105,9 +92,9 @@ for(i, item in all) {
   menus.stop.Add()
   menus.edits.Add()
  } else {
-  menus.start.Add(item, menus.call.bind(startScript, item))
-  menus.stop.Add(item, menus.call.bind(stopScript, item))
-  menus.edits.Add(item, menus.call.bind(editScript, item))
+  menus.start.Add(item, ((z*) => startScript(z[1])).bind(item))
+  menus.stop.Add(item, ((z*) => stopScript(z[1])).bind(item))
+  menus.edits.Add(item, ((z*) => editScript(z[1])).bind(item))
   if(i > 1) {
    startScript(item)
   } else {
@@ -119,15 +106,15 @@ for(i, item in all) {
 }
 
 menus.stop.Add()
-menus.stop.Add("List All Running Scripts", menus.call.bind(stopListAll, "__"))
+menus.stop.Add("List All Running Scripts", (z*) => stopListAll())
 stopListAll() {
  menus.stoplistall.Delete()
- menus.stoplistall.Add("Stop Script", menus.call.bind(""))
+ menus.stoplistall.Add("Stop all .Hotkeys.ahk scripts other than .Hotkeys.ahk", (z*) => exitAll())
  menus.stoplistall.Add()
  list := WinGetList("ahk_class AutoHotkey")
  for(item in list) {
   title := WinGetTitle("ahk_id " item)
-  menus.stoplistall.Add(RegExReplace(title, " - AutoHotkey v[\.0-9]+$"), menus.call.bind(stopScript, [title, false]))
+  menus.stoplistall.Add(RegExReplace(title, " - AutoHotkey v[\.0-9]+$"), ((z*) => stopScript("ahk_id " z[1], false)).bind(item))
  }
  menus.stoplistall.Show()
 }
@@ -135,7 +122,7 @@ stopListAll() {
 ;troubleshooters := [["&Internet Connection", "NetworkDiagnosticsWeb"], ["&Hardware and Devices", "DeviceDiagnostic"], ["Incoming &Connections", "NetworkDiagnosticsInbound"], ["&Microphone", "AudioRecordingDiagnostic"], ["&Network Adapter", "NetworkDiagnosticsNetworkAdapter"], ["&Playing Audio", "AudioPlaybackDiagnostic"], ["&Search and Indexing", "SearchDiagnostic"], ["&Windows Update", "WindowsUpdateDiagnostic"]]
 troubleshooters := [["&Network and Internet", "+NetworkDiagnostics"], ["&Audio", "AudioTroubleshooter"], ["Background &Intelligent Transfer Service", "BITSTroubleshooter"], ["&Bluetooth", "BluetoothTroubleshooter"], ["&Camera", "CameraTroubleshooter"], ["&Printer", "PrinterTroubleshooter"], ["Pro&gram Compatibility", "ProgramCompatTroubleshooter"], ["&Video Playback", "VideoPlaybackTroubleshooter"], ["Windows &Media Player", "WMPTroubleshooter"], ["&Windows Update", "WindowsUpdateTroubleshooter"]]
 for(i, troubleshooter in troubleshooters) {
- menus.trouble.Add(troubleshooter[1], menus.call.bind(runWindowsTroubleshooter, troubleshooter[2]))
+ menus.trouble.Add(troubleshooter[1], ((z*) => runWindowsTroubleshooter(z[1])).bind(troubleshooter[2]))
  if(i = 1) {
   menus.trouble.Default := "1&"
   menus.trouble.Add()
@@ -169,7 +156,7 @@ scripthotkeys["Windows"] := []
  scripthotkeys["Windows"].push("Resize Active Window", ["Resize Active Window by +5% of the Screen", "Windows+Numpad Multiply", "#{NumpadMult}"], ["Resize Active Window by -5% of the Screen", "Windows+Numpad Divide", "#{NumpadDiv}"], ["Resize Active Window to Fill the Screen", "Windows+Numpad Subtract", "#{NumpadSub}"], ["Resize Active Window to Fill Screen && Taskbar", "Windows+Alt+Numpad Subtract", "#!{NumpadSub}"], -1)
  scripthotkeys["Windows"].push("Move Window", ["Move Active Window Up", "Control+Windows+Numpad 8", "^#{Numpad8}"], ["Move Active Window Right", "Control+Windows+Numpad 6", "^#{Numpad6}"], ["Move Active Window Down", "Control+Windows+Numpad 2", "^#{Numpad2}"], ["Move Active Window Left", "Control+Windows+Numpad 4", "^#{Numpad4}"], -1)
  scripthotkeys["Windows"].push("Move Window to the Screen's Edge", ["Move Active Window To the Top of the Screen", "Control+Windows+Numpad Div", "^#{NumpadDiv}"], ["Move Active Window To the Right Side of the Screen", "Control+Windows+Numpad 9", "^#{Numpad9}"], ["Move Active Window To the Bottom of the Screen", "Control+Windows+Numpad 5", "^#{Numpad5}"], ["Move Active Window To the Left Side of the Screen", "Control+Windows+Numpad 7", "^#{Numpad7}"], ["Move Active Window to the Bottom of the Screen Ignoring the Taskbar", "Control+Windows+Numpad 0", "^#{Numpad0}"], -1)
- scripthotkeys["Windows"].push("Affect the Active Window", ["Toggle Active Window Always On Top", "Control+Windows+A", "^#a"], ["Set Active Window Always On Bottom & Hide From Taskbar", "Control+Windows+Shift+A", "^#+a"], ["Set Active Window Parent to the Desktop (Remove From Always On Bottom)", "Control+Windows+Alt+A", "^#!a"], ["Toggle Active Window Borderless Mode", "Control+Windows+B", "^#b"], ["Toggle Active Window Borderless Fullscreen", "Control+Windows+Alt+B", "^#!b"], ["Toggle Window Transparency (50%)", "Control+Windows+T", "^#t"], ["Toggle Window Transparency (Custom)", "Control+Windows+Alt+T", "^#!t"], ["Set Window Transparency Color", "Control+Windows+Shift+T", "^#+t"], -1, 0)
+ scripthotkeys["Windows"].push("Affect the Active Window", ["Minimize Active Window to System Tray", "Windows+Backspace", "#{Backspace}"], ["Toggle Active Window Always On Top", "Control+Windows+A", "^#a"], ["Set Active Window Always On Bottom & Hide From Taskbar", "Control+Windows+Shift+A", "^#+a"], ["Set Active Window Parent to the Desktop (Remove From Always On Bottom)", "Control+Windows+Alt+A", "^#!a"], ["Toggle Active Window Borderless Mode", "Control+Windows+B", "^#b"], ["Toggle Active Window Borderless Fullscreen", "Control+Windows+Alt+B", "^#!b"], ["Toggle Window Transparency (50%)", "Control+Windows+T", "^#t"], ["Toggle Window Transparency (Custom)", "Control+Windows+Alt+T", "^#!t"], ["Set Window Transparency Color", "Control+Windows+Shift+T", "^#+t"], -1, 0)
  scripthotkeys["Windows"].push(["Toggle Display Projection Mode (PC screen only or Duplicate)", "Control+Windows+P", "^#9"], 0)
  scripthotkeys["Windows"].push(["Toggle Theatre Mode", "Control+Windows+Forward Slash", "^#/"], ["Toggle Soft Theatre Mode", "Control+Windows+Alt+Forward Slash", "^#!/"])
  scripthotkeys["Windows"].push("When Theatre Mode is Active", ["Disable Theatre Mode", "Delete", "{Delete}"], ["Hide Active Window (Excluding Soft Theatre Mode)", "Pause", "{Pause}"], ["Toggle Light Mode", "Backquote", "``"], -1, 0)
@@ -216,11 +203,11 @@ for script in all {
        menus.scripts[script l] := Menu()
        menus.scripts[script l "+"] := 1 
       }
-      menus.scripts[script].Insert(i[1]++ "&", n == 1 ? item : "-", n == 1 ? menus.scripts[script l] : menus.call.bind(""), (n == 2 && l == 1 ? "+Break" : ""))
+      menus.scripts[script].Insert(i[1]++ "&", n == 1 ? item : "-", n == 1 ? menus.scripts[script l] : (z*) => {}, (n == 2 && l == 1 ? "+Break" : ""))
       scriptmenu.InsertAt(1, script l)
       i.InsertAt(1, menus.scripts[script l "+"])
      } else {
-      menus.scripts[scriptmenu[1]].Insert(i[1]++ "&", item[n], menus.call.bind(sendHotkey, item[3]), ((n == 2 && l == 1) || subbreak ? "+Break" : ""))
+      menus.scripts[scriptmenu[1]].Insert(i[1]++ "&", item[n], ((z*) => sendHotkey(z[1])).bind(item[3]), ((n == 2 && l == 1) || subbreak ? "+Break" : ""))
       subbreak := false
       if(i.Length > 1)
        menus.scripts[scriptmenu[1] "+"]++
@@ -232,30 +219,30 @@ for script in all {
  }
 }
 
-menus.clip.Add("Modify Text", menus.call.bind(modifyClipboard, "__"))
+menus.clip.Add("Modify Text", (z*) => modifyClipboard())
 menus.clip.Add()
-menus.clip.Add("Remove Quotation Marks", menus.call.bind(clipboardReplace, ['"']))
-menus.clip.Add("Replace Line Breaks with Commas", menus.call.bind(clipboardReplace, ["`n", ","]))
+menus.clip.Add("Remove Quotation Marks", (z*) => clipboardReplace('"'))
+menus.clip.Add("Replace Line Breaks with Commas", (z*) => clipboardReplace("`n", ","))
 
 menus.hotkeys.Add("&.Hotkeys.ahk", menus.tray)
-menus.hotkeys.Add("&Customize", menus.call.bind(Run, A_AppData '\.Hotkeys')) ; 'Notepad.exe "' A_Temp '\.Hotkeys\settings"'))
+menus.hotkeys.Add("&Customize", (z*) => Run('Notepad.exe "' A_AppData '\.Hotkeys\settings"'))
 menus.hotkeys.Default := "1&"
 menus.hotkeys.Add()
 menus.hotkeys.Add("Windows &Troubleshooters", menus.trouble)
-menus.hotkeys.Add("&Network and Internet", menus.call.bind(runWindowsTroubleshooter, "NetworkAndInternetTroubleshooter"))
+menus.hotkeys.Add("&Network and Internet", (z*) => runWindowsTroubleshooter("NetworkAndInternetTroubleshooter"))
 menus.hotkeys.Add()
 menus.hotkeys.Add("Script &Hotkeys", menus.scriptlist)
 menus.hotkeys.Add("&Modify Clipboard", menus.clip)
-menus.hotkeys.Add("Toggle &Reticle", menus.call.bind(toggleReticle, "__"))
-menus.hotkeys.Add("Stop &Active Thread", menus.call.bind(SendHotkey, "Pause"))
+menus.hotkeys.Add("Toggle &Reticle", (z*) => toggleReticle())
+menus.hotkeys.Add("Stop &Active Thread", (z*) => SendHotkey("Pause"))
 menus.hotkeys.Add()
 menus.hotkeys.Add("&Start Script", menus.start)
 menus.hotkeys.Add("Sto&p Script", menus.stop)
 menus.hotkeys.Add("&Edit Script", menus.edits)
 
 menus.tray.Add()
-menus.tray.Add("Open Hotkey &Folder", menus.call.bind(openFolder, "__"))
-menus.tray.Add("Hotkey &Menu", menus.call.bind(showMenu, "__"))
+menus.tray.Add("Open Hotkey &Folder", (z*) => openFolder())
+menus.tray.Add("Hotkey &Menu", (z*) => showMenu())
 
 loaded := true
 
