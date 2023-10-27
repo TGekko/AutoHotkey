@@ -9,10 +9,11 @@ loaded := false
 SetSetting([
  ["Internet Executables", "chrome.exe, msedge.exe, firefox.exe"],
  ["Script Editor", A_AppData '\..\Local\Programs\Microsoft VS Code\Code.exe'],
+ ["Transparent Windows", ""],
  ["Windows",, "11"]
 ],, false)
 
-all := [".Hotkeys", 0, "Magicka", "Risk of Rain 2", "Valheim", 0, "Internet", "Voicemeeter", "Windows", 0, "Miscellaneous"]
+all := [".Hotkeys", 0, "Magicka", "Risk of Rain 2", "Valheim", 0, "Internet", "Voicemeeter", "Windows", 0, "Miscellaneous", "Window Events"]
 menus := {
  hotkeys: Menu(),
  start: Menu(),
