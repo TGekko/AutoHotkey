@@ -21,7 +21,7 @@ totray.push('The Esteemed - Valheim Server ahk_exe WindowsTerminal.exe')
 for(item in totray)
  Run('C:\Users\TGekko\Documents\AutoHotkey\Windows\ToTray.ahk "' item '" "wait"')
 
-; Wiat for the items in [hide] to exist, then hide them
+; Wait for the items in [hide] to exist, then hide them
 for(i, item in hide) {
  path := A_Temp '\.Hotkeys.Custom_Startup.Hide.' i '.ahk'
  try FileDelete(path)
