@@ -31,16 +31,18 @@ tryFunc(functions*) {
 OnExit((z*) => WinShow(id))
 
 setTray(title := A_IconTip) {
- A_TrayMenu.Delete()
- A_TrayMenu.Add("Show Window: " A_IconTip, (z*) => WinClose(A_ScriptHwnd))
- A_TrayMenu.Add()
- A_TrayMenu.Add("Change Tray Title", (z*) => tryFunc(
+ submenu := Menu()
+ submenu.Add("Change Tray Title", (z*) => tryFunc(
   (() => A_IconTip := InputBox("Please input a new title.", "Change Tray Title: " A_IconTip,, A_IconTip).Value),
   setTray
  ))
- A_TrayMenu.Add("Change Tray Icon", (z*) => tryFunc(
+ submenu.Add("Change Tray Icon", (z*) => tryFunc(
   TraySetIcon(FileSelect(1,, "Select Tray Icon: " A_IconTip, "*.ico; *.exe; *.jpg; *.png; *.dll; *.cpl; *.cur; *.ani; *.scr"),, true)
  ))
+ A_TrayMenu.Delete()
+ A_TrayMenu.Add(A_IconTip, submenu)
+ A_TrayMenu.Add()
+ A_TrayMenu.Add("Show Window", (z*) => WinClose(A_ScriptHwnd))
  A_TrayMenu.Add("Hide Menu", (z*) => {})
  A_TrayMenu.Add()
  A_TrayMenu.Add("Exit", (z*) => call(
