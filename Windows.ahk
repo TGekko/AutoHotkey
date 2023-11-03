@@ -390,7 +390,7 @@ activeToggleTransparency(prompt:=false) {
     return
    transparency := transparency.Value
   } else {
-   transparency := 50
+   transparency := 85
   }
   if(transparency >= 0 && transparency <= 100) {
    transparency := Round((transparency/100)*255)
