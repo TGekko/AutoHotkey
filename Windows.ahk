@@ -1,6 +1,7 @@
 #SingleInstance Force
 #NoTrayIcon
 SetTitleMatchMode(2)
+#include "Common.ahk"
 GroupAdd("browsers", "ahk_exe chrome.exe")
 GroupAdd("browsers", "ahk_exe msedge.exe")
 GroupAdd("browsers", "ahk_exe firefox.exe")
@@ -444,6 +445,33 @@ toTray(win := 'A') {
  Run('Windows\ToTray.ahk "' win '"')
 }
 
+ProcessToggle(wintitle := 'A') {
+ if(ProcessIsSuspended(wintitle))
+  ProcessResume(wintitle)
+ else
+  ProcessSuspend(wintitle)
+}
+ProcessIsSuspended(wintitle := 'A') {
+ for(thread in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Thread WHERE ProcessHandle = " WinGetPID(wintitle)))
+  if(thread.ThreadWaitReason != 5)
+   return false
+ return true
+}
+ProcessSuspend(wintitle := 'A') {
+ process := DllCall("OpenProcess", "uInt", 0x1F0FFF, "Int", 0, "Int", WinGetPID(wintitle))
+ if(process) {
+  DllCall("ntdll.dll\NtSuspendProcess", "Int", process)
+  DllCall("CloseHandle", "Int", process)
+ }
+}
+ProcessResume(wintitle := 'A') {
+ process := DllCall("OpenProcess", "uInt", 0x1F0FFF, "Int", 0, "Int", WinGetPID(wintitle))
+ if(process) {
+  DllCall("ntdll.dll\NtResumeProcess", "Int", process)
+  DllCall("CloseHandle", "Int", process)
+ }
+}
+
 
 ; Hotkeys
 
@@ -539,6 +567,8 @@ toTray(win := 'A') {
 
 ; Minimize the active window to the system tray
 #Backspace::toTray()
+; Suspend the process of the active window
+^#Backspace::ProcessToggle()
 
 ; Toggle "Always On Top" for the active window
 ^#a::WinSetAlwaysOnTop(-1, "A")

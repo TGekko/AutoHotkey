@@ -70,3 +70,30 @@ SetSetting(which := '', to := '', overwrite := true) {
   return true
  return false
 }
+
+; Returns
+;  The location of the first found value if [any] [values] are in [array]
+;  The location of the first found value if [any] [title] in [array] returns a window id that matches an id in [values].
+;  0 if no value is found.
+; [values] can be a single, non-array item if desired.
+includes(array, values, any:=true, title:=false) {
+ if(Type(values) != "Array")
+  values := [values]
+ first := 0
+ matches := 0
+ for(i, avalue in array) {
+  for(vvalue in values) {
+   try {
+    if(avalue == vvalue || (title && WinGetID(avalue) = vvalue)) {
+     if(first = 0)
+      first := i
+     matches++
+     if(any || matches == values.Length)
+      return first
+     break
+    }
+   }
+  }
+ }
+ return 0
+}
