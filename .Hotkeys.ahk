@@ -6,12 +6,12 @@ SetNumLockState("AlwaysOn")
 loaded := false
 
 #Include "Common.ahk"
-SetSetting([
+defaultsettings := [
  ["Internet Executables", "chrome.exe, msedge.exe, firefox.exe"],
  ["Script Editor", A_AppData '\..\Local\Programs\Microsoft VS Code\Code.exe'],
  ["Transparent Windows", ""],
  ["Windows",, "11"]
-],, false)
+]
 
 all := [".Hotkeys", 0, "Magicka", "Risk of Rain 2", "Valheim", 0, "Internet", "Voicemeeter", "Windows", 0, "Miscellaneous", "Window Events"]
 menus := {
@@ -46,7 +46,7 @@ showMenu() {
  }
 }
 startScript(name) {
- Run('*RunAs "' A_AhkPath '" "' name '.ahk"')
+ Run('"' A_AhkPath '" "' name '.ahk"')
 }
 stopScript(name, path := true) {
  try WinClose((path ? A_ScriptDir "\" name ".ahk" : name) " ahk_class AutoHotkey")
@@ -64,9 +64,9 @@ openFolder() {
 runWindowsTroubleshooter(troubleshooter) {
  version := GetSetting('Windows')
  if(version = 10)
-  Run("*RunAs " A_ComSpec " /c msdt.exe /id " troubleshooter,, "Hide")
+  Run(A_ComSpec " /c msdt.exe /id " troubleshooter,, "Hide")
  else if(version = 11)
-  Run("*RunAs " A_ComSpec " /c start ms-contact-support://" (SubStr(troubleshooter, 1, 1) = "+" ? "?ActivationType=" SubStr(troubleshooter, 2) "&invoker=Emerald" : "smc-to-emerald/" troubleshooter),, "Hide")
+  Run(A_ComSpec " /c start ms-contact-support://" (SubStr(troubleshooter, 1, 1) = "+" ? "?ActivationType=" SubStr(troubleshooter, 2) "&invoker=Emerald" : "smc-to-emerald/" troubleshooter),, "Hide")
 }
 sendHotkey(value) {
  SendLevel(1)
@@ -87,27 +87,6 @@ exitAll() {
 }
 OnExit((z*) => exitAll())
 
-for(i, item in all) {
- if(item = 0) {
-  menus.start.Add()
-  menus.stop.Add()
-  menus.edits.Add()
- } else {
-  menus.start.Add(item, ((z*) => startScript(z[1])).bind(item))
-  menus.stop.Add(item, ((z*) => stopScript(z[1])).bind(item))
-  menus.edits.Add(item, ((z*) => editScript(z[1])).bind(item))
-  if(i > 1) {
-   startScript(item)
-  } else {
-   menus.start.Default := "1&"
-   menus.stop.Default := "1&"
-   menus.edits.Default := "1&"
-  }
- }
-}
-
-menus.stop.Add()
-menus.stop.Add("List All Running Scripts", (z*) => stopListAll())
 stopListAll() {
  menus.stoplistall.Delete()
  menus.stoplistall.Add("Stop all .Hotkeys.ahk scripts other than .Hotkeys.ahk", (z*) => exitAll())
@@ -136,19 +115,12 @@ for(i, troubleshooter in troubleshooters) {
 ; 0            == Dividing Line
 ; ["", "", ""] == ["Left menu item", "Right menu item", "Hotkey to Send when selected"]
 scripthotkeys := Map()
-
 scripthotkeys[".Hotkeys"] := [["Show Menu", "Win+Right Click", "#{RButton}"], 0, ["Hold Left Click", "Alt+9", "!9"], ["Hold Right Click", "Alt+0", "!0"], ["Repeat Left Click", "Alt+Shift+9", "!+9"], ["Repeat Right Click", "Alt+Shift+0", "!+0"], ["Move Constantly", "Alt+Shift+Backspace", "!+{Backspace}"], 0, ["Stop Running Hotkey", "Pause or End", "{Pause}"], 0, ["Move Mouse Up", "Alt+Up", "!{Up}"], ["Mouse Mouse Down", "Alt+Down", "!{Down}"], ["Mouse Mouse Left", "Alt+Left", "!{Left}"], ["Mouse Mouse Right", "Alt+Right", "!{Right}"], ["Left Click", "Alt+[", "!["], ["Right Click", "Alt+]", "!]"], 0, ["Toggle Reticle", "Alt+Insert", "!{Insert}"], ["Toggle Amplified Cursor", "Alt+Print Screen", "!{PrintScreen}"]]
-
 scripthotkeys["Magicka"] := [["Show Spell Menu", "Alt+Right Click", "!{RButton}"], 0, ["Cast Charm", "Numpad 0", "{Numpad0}"], ["Cast Conflagration", "Numpad 1", "{Numpad1}"], ["Cast Confuse", "Numpad 2", "{Numpad2}"], ["Cast Corporealize", "Numpad 3", "{Numpad3}"], ["Cast Crash to Desktop", "Numpad 4", "{Numpad4}"], ["Cast Fear", "Numpad 5", "{Numpad5}"], ["Cast Invisibility", "Numpad 6", "{Numpad6}"], ["Cast Meteor Storm", "Numpad 7", "{Numpad7}"], ["Cast Raise Dead", "Numpad 8", "{Numpad8}"], ["Cast Summon Death", "Numpad 9", "{Numpad9}"], ["Cast Summon Elemental", "Numpad Add", "{NumpadAdd}"], ["Cast Thunder Storm", "Numpad Dot", "{NumpadDot}"], ["Cast Vortex", "Numpad Subtract", "{NumpadSub}"]]
-
 scripthotkeys["Risk of Rain 2"] := [["Show Item Reference", "Left Control", "{LControl}"], ["Show Help", "Right Control", "{RControl}"]]
-
 scripthotkeys["Valheim"] := [["Press E 10 times", "Alt+E", "!e"], ["Scroll Through Hotbar", "Alt+Scroll", ""], ["Move Mouse", "Arrow Keys", ""], ["Left Click", "Backslash", "\"], 0, ["Train Bow", "Alt+1", "!1"], ["Train Jump", "Alt+2", "!2"], ["Train Run", "Alt+3", "!3"], ["Train Sneak", "Alt+4", "!4"], ["Train Sword", "Alt+5", "!5"]]
-
 scripthotkeys["Internet"] := [["Skip Forward 17 times", "Control+Right", "^{Right}"], ["Skip Backward 17 times", "Control+Left", "^{Left}"], ["Toggle Browser Theatre Mode", "Control+Shift+Windows+Forward Slash", "^!#/"], 0, ["Theatre - Disable Theatre Mode", "Delete", "{Delete}"], ["Theatre - Toggle Light Mode", "Backquote", "``"], ["Theatre - Hide Browser", "Pause", "{Pause}"]]
-
 scripthotkeys["Voicemeeter"] := [["Restart Audio Engine", "Control+Numpad Dot", "^{NumpadDot}"], 0, ["Increase Volume by 2%", "Control+Numpad Add", "^{NumpadAdd}"], ["Decrease Volume by 2%", "Control+Numpad Subtract", "^{NumpadSub}"], ["Increase Non-Auxiliary Volume by 2%", "Control+Shift+Numpad Add", "^+{NumpadAdd}"], ["Decrease Non-Auxiliary Volume by 2%", "Control+Shift+Numpad Subtract", "^!{NumpadSub}"], 0, ["Set Volume to 0%", "Control+Numpad 0", "^{Numpad0}"], ["Set Volume to 10%", "Control+Numpad 1", "^{Numpad1}"], ["Set Volume to 20%", "Control+Numpad 2", "^{Numpad2}"], ["Set Volume to 30%", "Control+Numpad 3", "^{Numpad3}"], ["Set Volume to 40%", "Control+Numpad 4", "^{Numpad4}"], ["Set Volume to 50%", "Control+Numpad 5", "^{Numpad5}"], ["Set Volume to 60%", "Control+Numpad 6", "^{Numpad6}"], ["Set Volume to 70%", "Control+Numpad 7", "^{Numpad7}"], ["Set Volume to 80%", "Control+Numpad 8", "^{Numpad8}"], ["Set Volume to 90%", "Control+Numpad 9", "^{Numpad9}"], ["Set Volume to 100%", "Control+Numpad Multiply", "^{NumpadMult}"], 0, ["Toggle Solo Mode", "Control+Numpad Divide", "^{NumpadDiv}"], ["Toggle Solo Mode With Message", "Control+Shift+Numpad Divide", "^!{NumpadDiv}"]]
-
 scripthotkeys["Windows"] := []
  scripthotkeys["Windows"].push(["Manage Window Profiles", "Control+Windows+\", "^#\"], ["Activate Window Profile: Default", "Control+Windows+Comma", "^#,"], 0)
  scripthotkeys["Windows"].push("Center or Expand Active Window", ["Center Active Window Horizontally", "Windows+Numpad 0", "#{Numpad0}"], ["Center Active Window", "Windows+Numpad Dot", "#{NumpadDot}"], ["Center Active Window Vertically", "Windows+Numpad Enter", "#{NumpadEnter}"], ["Expand Active Window to Fill Screen Horizontally", "Windows+Alt+Numpad 0", "#!{Numpad0}"], ["Expand Active Window to Fill Screen Vertically", "Windows+Alt+Numpad Enter", "#!{NumpadEnter}"], -1)
@@ -163,7 +135,6 @@ scripthotkeys["Windows"] := []
  scripthotkeys["Windows"].push("When Theatre Mode is Active", ["Disable Theatre Mode", "Delete", "{Delete}"], ["Hide Active Window (Excluding Soft Theatre Mode)", "Pause", "{Pause}"], ["Toggle Light Mode", "Backquote", "``"], -1, 0)
  scripthotkeys["Windows"].push("Adjust Volume", ["Set Volume to 0%", "Control+0 or Control+Numpad 0", "^0"], ["Set Volume to 10%", "Control+1 or Control+Numpad 1", "^1"], ["Set Volume to 20%", "Control+2 or Control+Numpad 2", "^2"], ["Set Volume to 30%", "Control+3 or Control+Numpad 3", "^3"], ["Set Volume to 40%", "Control+4 or Control+Numpad 4", "^4"], ["Set Volume to 50%", "Control+5 or Control+Numpad 5", "^5"], ["Set Volume to 60%", "Control+6 or Control+Numpad 6", "^6"], ["Set Volume to 70%", "Control+7 or Control+Numpad 7", "^7"], ["Set Volume to 80%", "Control+8 or Control+Numpad 8", "^8"], ["Set Volume to 90%", "Control+9 or Control+Numpad 9", "^9"], ["Set Volume to 100%", "Control+/ or Control+Numpad *", "^/"], ["Increase Volume by 2%", "Control+= or Control+Numpad +", "^="], ["Decrease Volume by 2%", "Control+- or Control+Numpad -", "^-"], -1, 0)
  scripthotkeys["Windows"].push(["Right Windows Key", "Apps Key", "{AppsKey}"])
-
 scripthotkeys["Miscellaneous"] := []
  scripthotkeys["Miscellaneous"].push("Borderlands 3", ["Throw Grenade", "F13", "{F13}"], ["Switch Weapon Modes", "F14", "{F14}"], ["Primary Weapon Fire", "F15", "{F15}"], ["Action Skill", "F16", "{F16}"], -1)
  scripthotkeys["Miscellaneous"].push("Citra", ["Go Home", "Controller Home", "{vk07}"], -1)
@@ -177,57 +148,14 @@ scripthotkeys["Miscellaneous"] := []
  scripthotkeys["Miscellaneous"].push("Notepad", ["Undo", "Control+Shift+Z", "^+z"], -1)
  scripthotkeys["Miscellaneous"].push("paint.net", ["Undo", "Control+Shift+Z", "^+z"], -1)
 
-for script in all {
- if(script == 0) {
-  menus.scriptlist.Add()
- } else {
-  menus.scripts[script] := Menu()
-  i := [1]
-  Loop(2) {
-   n := A_Index
-   scriptmenu := [script]
-   subbreak := false
-   try {
-    for(l, item in scripthotkeys[script]) {
-     if(item == -1) {
-      scriptmenu.RemoveAt(1)
-      i.RemoveAt(1)
-     } else if(item == 0) {
-      menus.scripts[scriptmenu[1]].Insert(i[1]++ "&")
-      if(i.Length > 1)
-       menus.scripts[scriptmenu[1] "+"]++
-     } else if(Type(item) = "string") {
-      try {
-       Type(menus.scripts[script l])
-       subbreak := true
-      } catch {
-       menus.scripts[script l] := Menu()
-       menus.scripts[script l "+"] := 1 
-      }
-      menus.scripts[script].Insert(i[1]++ "&", n == 1 ? item : "-", n == 1 ? menus.scripts[script l] : (z*) => {}, (n == 2 && l == 1 ? "+Break" : ""))
-      scriptmenu.InsertAt(1, script l)
-      i.InsertAt(1, menus.scripts[script l "+"])
-     } else {
-      menus.scripts[scriptmenu[1]].Insert(i[1]++ "&", item[n], ((z*) => sendHotkey(z[1])).bind(item[3]), ((n == 2 && l == 1) || subbreak ? "+Break" : ""))
-      subbreak := false
-      if(i.Length > 1)
-       menus.scripts[scriptmenu[1] "+"]++
-     }
-    }
-   }
-  }
-  menus.scriptlist.Add(script (script == ".Hotkeys" ? ".ahk" : ""), menus.scripts[script])
- }
-}
-
 menus.clip.Add("Modify Text", (z*) => modifyClipboard())
 menus.clip.Add()
 menus.clip.Add("Remove Quotation Marks", (z*) => clipboardReplace('"'))
 menus.clip.Add("Replace Line Breaks with Commas", (z*) => clipboardReplace("`n", ","))
 
 menus.hotkeys.Add("&.Hotkeys.ahk", menus.tray)
-menus.hotkeys.Add("&Customize", (z*) => Run('Notepad.exe "' A_AppData '\.Hotkeys\settings"'))
 menus.hotkeys.Default := "1&"
+menus.hotkeys.Add("&Customize", (z*) => Run('Notepad.exe "' A_AppData '\.Hotkeys\settings"'))
 menus.hotkeys.Add()
 menus.hotkeys.Add("Windows &Troubleshooters", menus.trouble)
 menus.hotkeys.Add("&Network and Internet", (z*) => runWindowsTroubleshooter("NetworkAndInternetTroubleshooter"))
@@ -245,10 +173,82 @@ menus.tray.Add()
 menus.tray.Add("Open Hotkey &Folder", (z*) => openFolder())
 menus.tray.Add("Hotkey &Menu", (z*) => showMenu())
 
-loaded := true
-
 reticle := 0x0
 locursor := 0x0
+
+begin() {
+ global
+ SetSetting(defaultsettings,, false)
+
+ for(i, item in all) {
+  if(item = 0) {
+   menus.start.Add()
+   menus.stop.Add()
+   menus.edits.Add()
+  } else {
+   menus.start.Add(item, ((z*) => startScript(z[1])).bind(item))
+   menus.stop.Add(item, ((z*) => stopScript(z[1])).bind(item))
+   menus.edits.Add(item, ((z*) => editScript(z[1])).bind(item))
+   if(i > 1) {
+    startScript(item)
+   } else {
+    menus.start.Default := "1&"
+    menus.stop.Default := "1&"
+    menus.edits.Default := "1&"
+   }
+  }
+ }
+ menus.stop.Add()
+ menus.stop.Add("List All Running Scripts", (z*) => stopListAll())
+ 
+ for(script in all) {
+  if(script == 0) {
+   menus.scriptlist.Add()
+  } else if(scripthotkeys.has(script)) {
+   menus.scripts[script] := Menu()
+   i := [1]
+   Loop(2) {
+    n := A_Index
+    scriptmenu := [script]
+    subbreak := false
+    try {
+     for(l, item in scripthotkeys[script]) {
+      if(item == -1) {
+       scriptmenu.RemoveAt(1)
+       i.RemoveAt(1)
+      } else if(item == 0) {
+       menus.scripts[scriptmenu[1]].Insert(i[1]++ "&")
+       if(i.Length > 1)
+        menus.scripts[scriptmenu[1] "+"]++
+      } else if(Type(item) = "string") {
+       try {
+        Type(menus.scripts[script l])
+        subbreak := true
+       } catch {
+        menus.scripts[script l] := Menu()
+        menus.scripts[script l "+"] := 1 
+       }
+       menus.scripts[script].Insert(i[1]++ "&", n == 1 ? item : "-", n == 1 ? menus.scripts[script l] : (z*) => {}, (n == 2 && l == 1 ? "+Break" : ""))
+       scriptmenu.InsertAt(1, script l)
+       i.InsertAt(1, menus.scripts[script l "+"])
+      } else {
+       menus.scripts[scriptmenu[1]].Insert(i[1]++ "&", item[n], ((z*) => sendHotkey(z[1])).bind(item[3]), ((n == 2 && l == 1) || subbreak ? "+Break" : ""))
+       subbreak := false
+       if(i.Length > 1)
+        menus.scripts[scriptmenu[1] "+"]++
+      }
+     }
+    }
+   }
+   menus.scriptlist.Add(script (script == ".Hotkeys" ? ".ahk" : ""), menus.scripts[script])
+  } else {
+   menus.scriptlist.Add(script, (z*) => {})
+  }
+ }
+ loaded := true
+}
+
+begin()
 
 
 
