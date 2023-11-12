@@ -22,28 +22,6 @@ inipath := A_AppData '\.Hotkeys\WindowProfiles.ini'
 if(!FileExist(inipath))
  FileAppend(FileRead('Windows\WindowProfiles.ini'), inipath)
 
-; A custom object used to store menues and apply custom functions to menus
-menus := {
- tray: A_TrayMenu,
- call: menus_call
-}
-; Use menus.%name%.Add("Item", menus.call.bind(function, [parameters])) to add a custom function to an item
-;  If there is only one desired parameter that is not an array, it can be passed directly instead of being passed in an array
-;  If there are no desired parameters, you must pass "__" in the place of the parameters
-;  If there is no desired function, pass an empty string in place of the function
-menus_call(function:="", parameters:="__", menuvariables*) {
- if(function == "")
-  return
- if(parameters == "__") {
-  function()
-  return
- }
- if(Type(parameters) != "Array") {
-  parameters := [parameters]
- }
- function(parameters*)
-}
-
 ; Joins any number of strings separated by a given delimiter
 ;  delimiter - The string that will appear between the supplied strings
 ;              (Default == "")
@@ -128,35 +106,34 @@ saveWindowProfile(name:="") {
 ;  y - The y coordinate to place the menu
 ;      Both <x> and <y> must be present for either to be used
 manageWindowProfiles(x:="", y:="") {
- global menus
  if(!(x && y)) {
   MouseGetPos(&x, &y)
  }
- menus.windowprofiles := Menu()
- menus.windowprofiles.Add()
- menus.windowprofiles.Delete()
- menus.windowprofiles.Add("Window Profiles", menus.call.bind(""))
- menus.windowprofiles.Default := "1&"
- menus.windowprofiles.Add("Open WindowProfiles.ini", menus.call.bind(openWindowProfiles, "__"))
- menus.windowprofiles.Add("Save new Window Profile", menus.call.bind(saveWindowProfile, "__"))
- menus.windowprofiles.Add()
+ windowprofiles := Menu()
+ windowprofiles.Add()
+ windowprofiles.Delete()
+ windowprofiles.Add("Window Profiles", (z*) => {})
+ windowprofiles.Default := "1&"
+ windowprofiles.Add("Open WindowProfiles.ini", (z*) => openWindowProfiles())
+ windowprofiles.Add("Save new Window Profile", (z*) => saveWindowProfile())
+ windowprofiles.Add()
  ini := IniReadObject(inipath)
  for(section, keys in ini) {
   i := A_Index
-  menus.windowprofiles%i% := Menu()
-  menus.windowprofiles%i%.Add()
-  menus.windowprofiles%i%.Delete()
-  menus.windowprofiles%i%.Add("Activate Profile", menus.call.bind(activateWindowProfile, section))
-  menus.windowprofiles%i%.Default := "1&"
-  menus.windowprofiles%i%.Add("Delete Profile", menus.call.bind(removeWindowProfileContents, [section,, true, x, y]))
-  menus.windowprofiles%i%.Add("Click any value below to delete it from the profile", menus.call.bind(""))
-  menus.windowprofiles%i%.Add()
+  windowprofile := Menu()
+  windowprofile.Add()
+  windowprofile.Delete()
+  windowprofile.Add("Activate Profile", ((z*) => activateWindowProfile(z[1])).bind(section))
+  windowprofile.Default := "1&"
+  windowprofile.Add("Delete Profile", ((z*) => removeWindowProfileContents(z[1],, true, z[2], z[3])).bind(section, x, y))
+  windowprofile.Add("Click any value below to delete it from the profile", (z*) => {})
+  windowprofile.Add()
   for(key, value in keys) {
-   menus.windowprofiles%i%.Add(key, menus.call.bind(removeWindowProfileContents, [section, key, true, x, y]))
+   windowprofile.Add(key, ((z*) => removeWindowProfileContents(z[1], z[2], true, z[3], z[4])).bind(section, key, x, y))
   }
-  menus.windowprofiles.Add(section, menus.windowprofiles%i%)
+  windowprofiles.Add(section, windowprofile)
  }
- menus.windowprofiles.Show(x, y)
+ windowprofiles.Show(x, y)
 }
 
 ; Opens the WindowProfiles.ini file
@@ -552,6 +529,11 @@ ProcessResume(wintitle := 'A') {
 ^#Numpad6::activeMoveBy(1)
 ^#Numpad2::activeMoveBy(, 1)
 ^#Numpad4::activeMoveBy(-1)
+; Move window by 10 pixels in the direction of the numpad key with relation to [Numpad5]
+^!#Numpad8::activeMoveBy(, -10)
+^!#Numpad6::activeMoveBy(10)
+^!#Numpad2::activeMoveBy(, 10)
+^!#Numpad4::activeMoveBy(-10)
 ; Move window to the screen's edge in the direction of the numpad key with relation to [Numpad8]
 ^#NumpadDiv::activeMoveTo(, 0)
 ^#Numpad9::activeMoveTo(1)
