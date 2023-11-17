@@ -8,6 +8,7 @@ loaded := false
 #Include "Common.ahk"
 defaultsettings := [
  ["Internet Executables", "chrome.exe, msedge.exe, firefox.exe"],
+ ["Menu Hotkey Delay", 0],
  ["Script Editor", A_AppData '\..\Local\Programs\Microsoft VS Code\Code.exe'],
  ["Transparent Windows", ""],
  ["Windows",, "11"]
@@ -69,6 +70,7 @@ runWindowsTroubleshooter(troubleshooter) {
   Run(A_ComSpec " /c start ms-contact-support://" (SubStr(troubleshooter, 1, 1) = "+" ? "?ActivationType=" SubStr(troubleshooter, 2) "&invoker=Emerald" : "smc-to-emerald/" troubleshooter),, "Hide")
 }
 sendHotkey(value) {
+ try Sleep(GetSetting('Menu Hotkey Delay') * 1000)
  SendLevel(1)
  SendInput(value)
  SendLevel(0)
