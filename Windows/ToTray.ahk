@@ -28,7 +28,12 @@ tryFunc(functions*) {
   try call(item)
 }
 
-OnExit((z*) => WinShow(id))
+beforeExit(z*) {
+ global
+ if(WinExist(id))
+  WinShow(id)
+}
+OnExit(beforeExit)
 
 setTray(title := A_IconTip) {
  submenu := Menu()
