@@ -140,7 +140,7 @@ scripthotkeys["Windows"] := []
 scripthotkeys["Miscellaneous"] := []
  scripthotkeys["Miscellaneous"].push("Borderlands 3", ["Throw Grenade", "F13", "{F13}"], ["Switch Weapon Modes", "F14", "{F14}"], ["Primary Weapon Fire", "F15", "{F15}"], ["Action Skill", "F16", "{F16}"], -1)
  scripthotkeys["Miscellaneous"].push("Citra", ["Go Home", "Controller Home", "{vk07}"], -1)
- scripthotkeys["Miscellaneous"].push("Fortnite", ["Augment", "F13", "{F13}"], ["Show Emote Menu", "F14", "{F14}"], -1)
+ scripthotkeys["Miscellaneous"].push("Fortnite", ["Augment", "F13", "{F13}"], ["Show Emote Menu", "F14", "{F14}"], 0, ["Left Click", "[", "{[}"], ["Right Click", "]", "{]}"], ["Move Mouse Up", "Up Arrow", "{Up}"], ["Move Mouse Down", "Down Arrow", "{Down}"], ["Move Mouse Left", "Left Arrow", "{Left}"], ["Move Mouse Right", "Right Arrow", "{Right}"], -1)
  scripthotkeys["Miscellaneous"].push("Hades", ["Special", "MButton", "{MButton}"], ["Dash", "F13", "{F13}"], ["Interact", "F14", "{F14}"], ["Call", "F15", "{F15}"], ["Reload", "F16", "{F16}"], ["Summon", "F17", "{F17}"], ["Boon Info", "F18", "{F18}"], ["Open Codex", "F19", "{F19}"], -1)
  scripthotkeys["Miscellaneous"].push("Minecraft", ["Swing Sword and Eat Food", "Alt+1", "!1"], ["Hold Shift", "Alt+Shift", "!{Shift}"], -1)
  scripthotkeys["Miscellaneous"].push("Sonic Adventure DX", ["Forward", "W", "w"], ["Left", "A", "a"], ["Backward", "S", "s"], ["Right", "D", "d"], ["Jump", "Space", "{Space}"], ["Camera Left", "Left Arrow", "{Left}"], ["Camera Right", "Right Arrow", "{Right}"], ["Action", "E or Down", "e"], ["Look Around", "Up", "{Up}"], ["Back", "Backspace", "{Backspace}"], ["Pause", "Escape or Enter", "{Escape}"], -1)
