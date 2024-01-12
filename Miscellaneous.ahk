@@ -20,14 +20,15 @@
 
 ; Fortnite
 #HotIf WinActive("ahk_exe FortniteClient-Win64-Shipping.exe")
- *Up::DllCall("mouse_event", "UInt", 0x01, "UInt", 0, "UInt", -1)
- *Down::DllCall("mouse_event", "UInt", 0x01, "UInt", 0, "UInt", 1)
- *Left::DllCall("mouse_event", "UInt", 0x01, "UInt", -1, "UInt", 0)
- *Right::DllCall("mouse_event", "UInt", 0x01, "UInt", 1, "UInt", 0)
+ +Up::DllCall("mouse_event", "UInt", 0x01, "UInt", 0, "UInt", -1)
+ +Down::DllCall("mouse_event", "UInt", 0x01, "UInt", 0, "UInt", 1)
+ +Left::DllCall("mouse_event", "UInt", 0x01, "UInt", -1, "UInt", 0)
+ +Right::DllCall("mouse_event", "UInt", 0x01, "UInt", 1, "UInt", 0)
  *[::LButton
  *]::RButton
  F13::7 ; Augment
  F14::b ; Show Emote Menu
+ +=::Send("{w down}")
 
 ; Hades
 #HotIf WinActive("ahk_exe Hades.exe")
@@ -46,6 +47,16 @@
  F14::3 ; Spell Hotbar Slot 3
  F15::4 ; Spell Hotbar Slot 4
  F16::1 ; Spell Hotbar Slot 1
+
+; Lethal Company
+#HotIf WinActive("Lethal Company")
+ Numpad0::Send("Switch{Enter}")
+ Numpad1::Send("Scan{Enter}")
+ Numpad2::Send("Moons{Enter}")
+ Numpad3::Send("Store{Enter}")
+ NumpadAdd::Send("Deny{Enter}")
+ NumpadEnter::Send("Confirm{Enter}")
+ NumpadDot::Send("View Monitor{Enter}")
 
 ; Minecraft
 #HotIf WinActive("Minecraft")

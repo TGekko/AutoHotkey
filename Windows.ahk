@@ -419,7 +419,7 @@ destroyGUI(ui) {
 timedark := 0
 
 toTray(win := 'A') {
- Run('Windows\ToTray.ahk "' win '"')
+ Run('"' A_AhkPath '" "Windows\ToTray.ahk" "' win '"')
 }
 
 ProcessToggle(wintitle := 'A') {
