@@ -49,7 +49,7 @@
  F16::1 ; Spell Hotbar Slot 1
 
 ; Lethal Company
-#HotIf WinActive("Lethal Company")
+#HotIf WinActive("ahk_exe Lethal Company.exe")
  Numpad0::Send("Switch{Enter}")
  Numpad1::Send("Scan{Enter}")
  Numpad2::Send("Moons{Enter}")

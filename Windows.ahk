@@ -355,6 +355,7 @@ activeToggleBorderless() {
 
 ; Toggles Transparency for the active window
 ;  prompt - A boolean value indicating whether the user should (true) or should not (false) be prompted for a custom transparency percentage
+;   prompt can also be set to a number from 0-100 to set the transparency manually
 activeToggleTransparency(prompt:=false) {
  id := WinGetID("A")
  transparency := WinGetTransparent(id)
@@ -362,7 +363,10 @@ activeToggleTransparency(prompt:=false) {
   WinSetTransparent(255, id)
   WinSetTransparent("Off", id)
  } else {
-  if(prompt) {
+  if(IsNumber(prompt)) {
+   transparency := prompt
+   prompt := false
+  } else if(prompt) {
    transparency := InputBox("Input a number from 0 to 100 to set the percentage of opacity.", "Set Window Transparency", "w300 h150", 85)
    if(transparency.Result != "OK")
     return
@@ -579,6 +583,14 @@ NumLock:: WinSetAlwaysOnTop(-1, "A")
  input := InputBox("Input the AutoHotkey color value for the color which should be transparent in this window (`"Off`" disables transparency).", "Set Window Transparency Color",, "000000")
  if(input.Result = "OK")
   try WinSetTransColor(input.Value, active)
+}
+; Toggle clickthrough
+^#x::WinSetExStyle("^0x20", "A")
+; Toggle always on top, clickthrough, and transparency
+^#!x:: {
+ WinSetAlwaysOnTop(-1, "A")
+ WinSetExStyle("^0x20", "A")
+ activeToggleTransparency(50)
 }
 
 ; Toggle Windows display mode between "PC screen only" and "Duplicate"
