@@ -48,6 +48,7 @@ setTray(title := A_IconTip) {
  A_TrayMenu.Add(A_IconTip, submenu)
  A_TrayMenu.Add()
  A_TrayMenu.Add("Show Window", (z*) => WinClose(A_ScriptHwnd))
+ A_TrayMenu.Default:= "Show Window"
  A_TrayMenu.Add("Hide Menu", (z*) => {})
  A_TrayMenu.Add()
  A_TrayMenu.Add("Exit", (z*) => call(

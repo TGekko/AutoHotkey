@@ -65,6 +65,10 @@
  !1::Run("Minecraft\Sword_and_Food.ahk")           ; Swing Sword and Eat Food
  !Shift::Run("Miscellaneous\Minecraft\Hold_Shift") ; Hold Shift
 
+ ; Palworld
+ #HotIf WinActive("ahk_exe Palworld-Win64-Shipping.exe")
+  F13::o
+
  ; Sonic Adventure DX
 #HotIf WinActive("ahk_exe Sonic Adventure DX.exe")
 w::Up         ; Forward
