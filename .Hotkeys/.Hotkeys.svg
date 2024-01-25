@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+ <defs>
+  <linearGradient id="gradient"
+    gradientTransform="rotate(60)"
+    transform-origin="0.5 0.5">
+   <stop offset=" 5%  " stop-color="hsl(200 100% 50%)"/>
+   <stop offset="27.5%" stop-color="hsl(100 100% 50%)"/>
+   <stop offset="50%  " stop-color="hsl(60 100% 50%)"/>
+   <stop offset="70%  " stop-color="hsl(30 100% 50%)"/>
+   <stop offset="80%  " stop-color="hsl(20 100% 60%)"/>
+   <stop offset="100% " stop-color="hsl(300 100% 65%)"/>
+  </linearGradient>
+ </defs>
+ <path
+   fill="url(#gradient)" stroke-width="8" stroke="transparent"
+   d="m10,4
+      q0,-4 16,-4q4,0 4,16v20q0,4 16,4h20q4,0 4,-16v-20
+      q0,-4 16,-4q4,0 4,16v80q0,4 -16,4 -4,0 -4,-16v-20
+      q0,-4 -16,-4h-20q-4,0 -4,16v20q0,4 -16,4 -4,0 -4,-16z
+      m9,5v82h2v-40h58v40h2v-82h-2v40h-58v-40z"/>
+</svg>

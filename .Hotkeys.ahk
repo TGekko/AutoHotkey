@@ -172,6 +172,7 @@ menus.hotkeys.Add("&Start Script", menus.start)
 menus.hotkeys.Add("Sto&p Script", menus.stop)
 menus.hotkeys.Add("&Edit Script", menus.edits)
 
+TraySetIcon('.Hotkeys\.Hotkeys.png',, true)
 menus.tray.Insert("7&", "Open &Folder", (z*) => openFolder())
 menus.tray.Insert("1&")
 menus.tray.Insert("1&", "Hotkey &Menu", (z*) => showMenu())
