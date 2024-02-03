@@ -15,17 +15,66 @@ else {
 if(!WinExist(id))
  ExitApp
 
-TraySetIcon(WinGetProcessPath(id),, true)
-A_IconTip := WinGetTitle(id)
+inipath := A_AppData '\.Hotkeys\ToTray.ini'
+#Include "Windows.ini.ahk"
+
+icon := WinGetProcessPath(id)
+title := WinGetTitle(id)
+section := title " ahk_exe " WinGetProcessName(id)
+ini := IniReadObject(inipath)
+if(ini.Has(section)) {
+ title := ini[section]['title']
+ icon := ini[section]['icon']
+}
+ini := 0
+TraySetIcon(icon,, true)
+A_IconTip := title
+
+; Saves the user's defined title and icon for this window
+saveTray(delete := false) {
+ global icon
+ global title
+ global section
+ IniDelete(inipath, section)
+ if(!delete) {
+  IniWrite(title, inipath, section, 'title')
+  IniWrite(icon, inipath, section, 'icon')
+ }
+}
 
 call(functions*) {
  for(item in functions)
   if(Type(item) = "Func" || Type(item) = "BoundFunc")
    item()
 }
-tryFunc(functions*) {
- for(item in functions)
-  try call(item)
+setTitle() {
+ global title
+ newtitle := InputBox("Please input a new title.", "Change Tray Title: " A_IconTip,, A_IconTip)
+ if(newtitle.Result = 'OK') {
+  title := newtitle.Value
+  A_IconTip := title
+  saveTray()
+  setTray()
+ }
+}
+setIcon() {
+ global icon
+ file := FileSelect(1,, "Select Tray Icon: " A_IconTip, "*.ico; *.exe; *.jpg; *.png; *.dll; *.cpl; *.cur; *.ani; *.scr")
+ if(file != '') {
+  icon := file
+  saveTray()
+  TraySetIcon(icon,, true)
+ }
+}
+resetTray() {
+ global icon
+ global title
+ icon := WinGetProcessPath(id)
+ title := WinGetTitle(id)
+ TraySetIcon(icon,, true)
+ A_IconTip := title
+ saveTray(true)
+ setTray()
 }
 
 beforeExit(z*) {
@@ -35,15 +84,14 @@ beforeExit(z*) {
 }
 OnExit(beforeExit)
 
-setTray(title := A_IconTip) {
+setTray() {
+ global title
  submenu := Menu()
- submenu.Add("Change Tray Title", (z*) => tryFunc(
-  (() => A_IconTip := InputBox("Please input a new title.", "Change Tray Title: " A_IconTip,, A_IconTip).Value),
-  setTray
- ))
- submenu.Add("Change Tray Icon", (z*) => tryFunc(
-  TraySetIcon(FileSelect(1,, "Select Tray Icon: " A_IconTip, "*.ico; *.exe; *.jpg; *.png; *.dll; *.cpl; *.cur; *.ani; *.scr"),, true)
- ))
+ submenu.Add("Change Tray Title", (z*) => setTitle())
+ submenu.Add("Change Tray Icon", (z*) => setIcon())
+ submenu.Add()
+ submenu.Add("Reset Tray", (z*) => resetTray())
+ submenu.Add("View Saved Applications", (z*) => openIni())
  A_TrayMenu.Delete()
  A_TrayMenu.Add(A_IconTip, submenu)
  A_TrayMenu.Add()

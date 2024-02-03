@@ -15,64 +15,14 @@ borderless := Map()
 ; This contains a boolean value which indicates which display mode was toggled last (true == "PC screen only", false == "Duplicate")
 displaymode := true
 
-; This stores the file path which leads to the Window Profiles .ini file in the variable inipath -- creating the file if it does not exist
-if(!DirExist(A_AppData '\.Hotkeys'))
- DirCreate(A_AppData '\.Hotkeys')
 inipath := A_AppData '\.Hotkeys\WindowProfiles.ini'
-if(!FileExist(inipath))
- FileAppend(FileRead('Windows\WindowProfiles.ini'), inipath)
+#Include "Windows\Windows.ini.ahk"
 
-; Joins any number of strings separated by a given delimiter
-;  delimiter - The string that will appear between the supplied strings
-;              (Default == "")
-;  strings*  - Any number of strings or numbers to be combined
-;  return    - A delimited concatenation of the provided strings
-concatenate(delimiter:="", strings*) {
- result := ""
- for(i, value in strings) {
-  if(i > 1) {
-   result .= delimiter
-  }
-  result .= value
- }
- return result
-}
-
-; Makes a string match the length of another string
-; An ideal use for this would be to match number length:
-;    StrMatchLen(4, 122, 0) == "004"
-;  value  - The value to change
-;  match  - The value to match the length of
-;  fill   - The character to add to the start of <value> if match is longer than value
-;           Only the first character of this string will be used
-;  return - A string containing the contents of <value> up to the length of <match>
-StrMatchLen(value, match, fill:=" ") {
- value .= ""
- match .= ""
- fill := SubStr(fill "", 1, 1)
- while(StrLen(value) < StrLen(match)) {
-  value := fill . value
- }
- value := SubStr(value, 1, StrLen(match))
- return value
-}
-
-; Reads an ini file and returns it as an object
-;  path    - The path to the desired ini file
-;  return  - An object which matches the sections and their key value pairs in the specified ini section
-;            To access a "section" and "key" in the resulting object, use the following:
-;              myini := IniReadObject(mypath)
-;              myvalue := myini["section"]["key"]
-IniReadObject(path) {
- ini := Map()
- for(i, section in StrSplit(IniRead(path), "`n")) {
-  ini[section] := Map()
-  values := IniRead(path, section)
-  for(n, value in StrSplit(values, "`n")) {
-   ini[section][SubStr(value, 1, InStr(value, "=") - 1) ""] := SubStr(value, InStr(value, "=") +1)
-  }
- }
- return ini
+; Calls all functions passed to it
+call(functions*) {
+ for(item in functions)
+  if(Type(item) = "Func" || Type(item) = "BoundFunc")
+   item()
 }
 
 ; Saves the open window's positions and focus order as a Window Profile
@@ -114,7 +64,7 @@ manageWindowProfiles(x:="", y:="") {
  windowprofiles.Delete()
  windowprofiles.Add("Window Profiles", (z*) => {})
  windowprofiles.Default := "1&"
- windowprofiles.Add("Open WindowProfiles.ini", (z*) => openWindowProfiles())
+ windowprofiles.Add("Open WindowProfiles.ini", (z*) => openIni())
  windowprofiles.Add("Save new Window Profile", (z*) => saveWindowProfile())
  windowprofiles.Add()
  ini := IniReadObject(inipath)
@@ -125,38 +75,15 @@ manageWindowProfiles(x:="", y:="") {
   windowprofile.Delete()
   windowprofile.Add("Activate Profile", ((z*) => activateWindowProfile(z[1])).bind(section))
   windowprofile.Default := "1&"
-  windowprofile.Add("Delete Profile", ((z*) => removeWindowProfileContents(z[1],, true, z[2], z[3])).bind(section, x, y))
+  windowprofile.Add("Delete Profile", ((z*) => call(removeIniContents(z[1]), manageWindowProfiles(z[2], z[3]))).bind(section, x, y))
   windowprofile.Add("Click any value below to delete it from the profile", (z*) => {})
   windowprofile.Add()
   for(key, value in keys) {
-   windowprofile.Add(key, ((z*) => removeWindowProfileContents(z[1], z[2], true, z[3], z[4])).bind(section, key, x, y))
+   windowprofile.Add(key, ((z*) => call(removeIniContents(z[1], z[2]), manageWindowProfiles(z[3], z[4]))).bind(section, key, x, y))
   }
   windowprofiles.Add(section, windowprofile)
  }
  windowprofiles.Show(x, y)
-}
-
-; Opens the WindowProfiles.ini file
-openWindowProfiles() {
- Run('Notepad.exe "' inipath '"')
-}
-
-; Removes a section or key of WindowProfiles.ini
-;  section     - The section to remove if no <key> is provided
-;  key         - The key to remove from <section>
-;  edit        - A boolean value indicating whether or not to call manageWindowProfiles()
-;  x           - The x coordinate to pass to manageWindowProfiles()
-;  y           - The y coordinate to pass to manageWindowProfiles()
-;                Both <x> and <y> must be present for either to be used
-removeWindowProfileContents(section:="", key:="", edit:=false, x:="", y:="") {
- if(key) {
-  IniDelete(inipath, section, key)
- } else if(section) {
-  IniDelete(inipath, section)
- }
- if(edit) {
-  manageWindowProfiles(x, y)
- }
 }
 
 ; Activates a given Window Profile.
