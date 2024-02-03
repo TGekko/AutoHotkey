@@ -68,6 +68,12 @@
  ; Palworld
  #HotIf WinActive("ahk_exe Palworld-Win64-Shipping.exe")
   F13::o
+  g::Send('{f up}{f down}')
+  f:: {
+   Send('{f up}{f down}')
+   KeyWait('f')
+   Send('{f up}')
+  }
 
  ; Sonic Adventure DX
 #HotIf WinActive("ahk_exe Sonic Adventure DX.exe")
