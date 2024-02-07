@@ -160,6 +160,7 @@ menus.hotkeys.Add("&.Hotkeys.ahk", menus.tray)
 menus.hotkeys.Default := "1&"
 menus.hotkeys.Add("&Customize", (z*) => Run('Notepad.exe "' A_AppData '\.Hotkeys\settings"'))
 menus.hotkeys.Add()
+menus.hotkeys.Add("&Window Profiles", (z*) => sendHotkey('^#\'))
 menus.hotkeys.Add("Windows &Troubleshooters", menus.trouble)
 menus.hotkeys.Add("&Network and Internet", (z*) => runWindowsTroubleshooter("NetworkAndInternetTroubleshooter"))
 menus.hotkeys.Add()
