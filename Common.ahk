@@ -97,3 +97,12 @@ includes(array, values, any:=true, title:=false) {
  }
  return 0
 }
+
+; Combines an [array] into a string with a given [delimiter]
+join(array, delimiter:='') {
+ result := ''
+ for(i, item in array) {
+  result.= item (i = array.Length ? '' : delimiter)
+ }
+ return result
+}

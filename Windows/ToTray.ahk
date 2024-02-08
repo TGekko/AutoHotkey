@@ -79,8 +79,10 @@ resetTray() {
 
 beforeExit(z*) {
  global
- if(WinExist(id))
+ if(WinExist(id)) {
   WinShow(id)
+  WinActivate(id)
+ }
 }
 OnExit(beforeExit)
 
