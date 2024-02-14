@@ -281,25 +281,22 @@ activeToggleBorderless() {
 }
 
 ; Toggles Transparency for the active window
-;  prompt - A boolean value indicating whether the user should (true) or should not (false) be prompted for a custom transparency percentage
-;   prompt can also be set to a number from 0-100 to set the transparency manually
-activeToggleTransparency(prompt:=false) {
+;  prompt - A number up to 100. A positive number sets the transparency; a negative number indicates that the user should be prompted for a custom transparency percentage.
+activeToggleTransparency(prompt:=85) {
  id := WinGetID("A")
  transparency := WinGetTransparent(id)
  if(transparency != "" && transparency < 255) {
   WinSetTransparent(255, id)
   WinSetTransparent("Off", id)
  } else {
-  if(IsNumber(prompt)) {
+  if(prompt >= 0 && prompt <= 100) {
    transparency := prompt
    prompt := false
-  } else if(prompt) {
+  } else {
    transparency := InputBox("Input a number from 0 to 100 to set the percentage of opacity.", "Set Window Transparency", "w300 h150", 85)
    if(transparency.Result != "OK")
     return
    transparency := transparency.Value
-  } else {
-   transparency := 85
   }
   if(transparency >= 0 && transparency <= 100) {
    transparency := Round((transparency/100)*255)
@@ -503,7 +500,7 @@ NumLock:: WinSetAlwaysOnTop(-1, "A")
 ; Toggle window transparency
 ^#t::activeToggleTransparency()
 ; Prompt for window transparency percentage
-^#!t::activeToggleTransparency(true)
+^#!t::activeToggleTransparency(-1)
 ; Prompt for window transparency color
 ^#+t:: {
  active := WinGetID("A")
