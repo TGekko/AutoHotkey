@@ -7,7 +7,30 @@
 ; *If [which] is an empty string, all settings are returned as a Map
 ;  GetSetting()
 GetSetting(which := '', split := false) {
- contents := FileExist(A_AppData '\.Hotkeys\settings') = '' ? [''] : StrSplit(FileRead(A_AppData '\.Hotkeys\settings'), '`n')
+ file := A_AppData '\.Hotkeys\' (SubStr(which, 1, 1) != '#' ? 'settings' : 'variables')
+ contents := []
+ if(FileExist(file)) {
+  error := true
+  while(error) {
+   try {
+    contents.push(StrSplit(FileRead(file), '`n')*)
+    error := false
+   } catch
+    Sleep(50)
+  }
+ }
+ if(which = '' && FileExist(A_AppData '\.Hotkeys\variables')) {
+  error := true
+  while(error) {
+   try {
+    contents.push(StrSplit(FileRead(A_AppData '\.Hotkeys\variables'), '`n')*)
+    error := false
+   } catch
+    Sleep(50)
+  }
+ }
+ if(contents.Length = 0)
+  contents.push('')
  settings := Map()
  for(setting in contents) {
   setting := StrSplit(setting, ':', ' ', 2)
@@ -64,8 +87,11 @@ SetSetting(which := '', to := '', overwrite := true) {
  if(!DirExist(A_AppData '\.Hotkeys'))
   DirCreate(A_AppData '\.Hotkeys')
  try FileDelete(A_AppData '\.Hotkeys\settings')
- for(setting, content in settings)
-  FileAppend(setting ': ' content '`n', A_AppData '\.Hotkeys\settings')
+ try FileDelete(A_AppData '\.Hotkeys\variables')
+ for(setting, content in settings) {
+  file := A_AppData '\.Hotkeys\' (SubStr(setting, 1, 1) != '#' ? 'settings' : 'variables')
+  FileAppend(setting ': ' content '`n', file)
+ }
  if(overwritten > 0)
   return true
  return false
@@ -75,7 +101,9 @@ SetSetting(which := '', to := '', overwrite := true) {
 ;  The location of the first found value if [any] [values] are in [array]
 ;  The location of the first found value if [any] [title] in [array] returns a window id that matches an id in [values].
 ;  0 if no value is found.
-; [values] can be a single, non-array item if desired.
+;  [values] can be a single, non-array item if desired.
+;  If [values] is an array and [any] is true, the [array] index of the first value in [values] to be in [array] will be returned.
+;  If [values] is an array and [any] is false, the index of the first found value is returned only if all [values] are found in [array].
 includes(array, values, any:=true, title:=false) {
  if(Type(values) != "Array")
   values := [values]

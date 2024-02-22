@@ -41,6 +41,13 @@
  F18::b     ; Boon Info
  F19::c     ; Open Codex
  
+; Helldivers 2
+#HotIf WinActive("ahk_exe helldivers2.exe")
+ F13::Control ; Open Strategem Menu
+ F14::g ; Throw Grenade
+ F15::b ; Emote
+ F16::v ; Use Stim
+
 ; Hogwarts Legacy
 #HotIf WinActive("ahk_exe HogwartsLegacy.exe")
  F13::2 ; Spell Hotbar Slot 2

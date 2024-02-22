@@ -10,6 +10,7 @@ defaultsettings := [
  ["Close On Open", ""],
  ["Internet Executables", "chrome.exe, msedge.exe, firefox.exe"],
  ["Menu Hotkey Delay", 0],
+ ["Open To Tray", ""],
  ["Script Editor", A_AppData '\..\Local\Programs\Microsoft VS Code\Code.exe'],
  ["Transparent Windows", ""], ; Code.exe, explorer.exe, Notepad.exe, Steam ahk_exe steamwebhelper.exe, Friends List ahk_exe steamwebhelper.exe, Discord.exe, Google Keep ahk_exe msedge.exe, Bing Chat ahk_exe msedge.exe
  ["Windows",, "11"]
