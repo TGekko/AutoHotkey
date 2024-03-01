@@ -35,5 +35,3 @@ detector := Gui()
 DllCall("RegisterShellHookWindow", "UInt",detector.Hwnd)
 messenger := DllCall("RegisterWindowMessage", "Str","SHELLHOOK")
 OnMessage(messenger, recipient)
-
-^0::MsgBox(join(trayed, '`n'))

@@ -14,11 +14,6 @@ saveTray(delete := false) {
  }
 }
 
-call(functions*) {
- for(item in functions)
-  if(Type(item) = "Func" || Type(item) = "BoundFunc")
-   item()
-}
 setTitle() {
  global title
  newtitle := InputBox("Please input a new title.", "Change Tray Title: " A_IconTip,, A_IconTip)
@@ -37,6 +32,25 @@ setIcon() {
   saveTray()
   TraySetIcon(icon,, true)
  }
+}
+setTray() {
+ submenu := Menu()
+ submenu.Add("Change Tray Title", (z*) => setTitle())
+ submenu.Add("Change Tray Icon", (z*) => setIcon())
+ submenu.Add()
+ submenu.Add("Reset Tray", (z*) => resetTray())
+ submenu.Add("View Saved Applications", (z*) => openIni())
+ A_TrayMenu.Delete()
+ A_TrayMenu.Add(A_IconTip, submenu)
+ A_TrayMenu.Add()
+ A_TrayMenu.Add("Show Window", (z*) => WinClose(A_ScriptHwnd))
+ A_TrayMenu.Default:= "Show Window"
+ A_TrayMenu.Add("Hide Menu", (z*) => {})
+ A_TrayMenu.Add()
+ A_TrayMenu.Add("Exit", (z*) => (
+  OnExit((z*) => WinClose(id)),
+  WinClose(A_ScriptHwnd)
+ ))
 }
 resetTray() {
  global icon
@@ -58,6 +72,7 @@ beforeExit(z*) {
 }
 OnExit(beforeExit)
 
+setTray()
 id := 0
 if(A_Args.Length < 1)
  id := "ahk_id " WinGetID('A')
@@ -87,26 +102,6 @@ ini := 0
 TraySetIcon(icon,, true)
 A_IconTip := title
 
-setTray() {
- global title
- submenu := Menu()
- submenu.Add("Change Tray Title", (z*) => setTitle())
- submenu.Add("Change Tray Icon", (z*) => setIcon())
- submenu.Add()
- submenu.Add("Reset Tray", (z*) => resetTray())
- submenu.Add("View Saved Applications", (z*) => openIni())
- A_TrayMenu.Delete()
- A_TrayMenu.Add(A_IconTip, submenu)
- A_TrayMenu.Add()
- A_TrayMenu.Add("Show Window", (z*) => WinClose(A_ScriptHwnd))
- A_TrayMenu.Default:= "Show Window"
- A_TrayMenu.Add("Hide Menu", (z*) => {})
- A_TrayMenu.Add()
- A_TrayMenu.Add("Exit", (z*) => call(
-  OnExit.bind((z*) => WinClose(id)),
-  WinClose.bind(A_ScriptHwnd)
- ))
-}
 setTray()
 
 WinHide(id)
