@@ -5,14 +5,13 @@ DetectHiddenWindows(true)
 
 #Include "Common.ahk"
 
-do := (functions*) => {} ; The functions are executed when calling do(function(), function()...)
 trayed := []
 
 toTray(win) {
  if(!includes(trayed, win)) {
   Run('"' A_AhkPath '" "Windows\ToTray.ahk" "' win '" "wait"')
   trayed.push(win)
-  SetTimer(() => do(WinWaitClose(win), trayed.RemoveAt(includes(trayed, win))), -1)
+  SetTimer(() => (WinWaitClose(win), trayed.RemoveAt(includes(trayed, win))), -1)
  }
 }
 
@@ -37,4 +36,4 @@ DllCall("RegisterShellHookWindow", "UInt",detector.Hwnd)
 messenger := DllCall("RegisterWindowMessage", "Str","SHELLHOOK")
 OnMessage(messenger, recipient)
 
-^0::MsgBox(trayed.Length)
+^0::MsgBox(join(trayed, '`n'))

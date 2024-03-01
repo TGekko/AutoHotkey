@@ -70,6 +70,7 @@ else {
 }
 if(!WinExist(id))
  ExitApp
+SetTimer(() => (WinWaitClose(id), ExitApp), -1000)
 
 inipath := A_AppData '\.Hotkeys\ToTray.ini'
 #Include "Windows.ini.ahk"
