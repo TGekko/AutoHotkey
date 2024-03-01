@@ -43,10 +43,10 @@
  
 ; Helldivers 2
 #HotIf WinActive("ahk_exe helldivers2.exe")
- F13::Control ; Open Strategem Menu
- F14::g ; Throw Grenade
- F15::b ; Emote
- F16::v ; Use Stim
+ F13::LControl ; Open Strategem Menu
+ F14::g        ; Throw Grenade
+ F15::b        ; Emote
+ F16::v        ; Use Stim
 
 ; Hogwarts Legacy
 #HotIf WinActive("ahk_exe HogwartsLegacy.exe")

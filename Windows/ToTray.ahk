@@ -2,34 +2,6 @@
 DetectHiddenWindows(true)
 Persistent(true)
 
-id := 0
-if(A_Args.Length < 1)
- id := "ahk_id " WinGetID('A')
-else {
- if(A_Args.length > 1) {
-  if(InStr(A_Args[2], 'wait'))
-   WinWait(A_Args[1])
- }
- id := "ahk_id " WinGetID(A_Args[1])
-}
-if(!WinExist(id))
- ExitApp
-
-inipath := A_AppData '\.Hotkeys\ToTray.ini'
-#Include "Windows.ini.ahk"
-
-icon := WinGetProcessPath(id)
-title := WinGetTitle(id)
-section := title " ahk_exe " WinGetProcessName(id)
-ini := IniReadObject(inipath)
-if(ini.Has(section)) {
- title := ini[section]['title']
- icon := ini[section]['icon']
-}
-ini := 0
-TraySetIcon(icon,, true)
-A_IconTip := title
-
 ; Saves the user's defined title and icon for this window
 saveTray(delete := false) {
  global icon
@@ -85,6 +57,34 @@ beforeExit(z*) {
  }
 }
 OnExit(beforeExit)
+
+id := 0
+if(A_Args.Length < 1)
+ id := "ahk_id " WinGetID('A')
+else {
+ if(A_Args.length > 1) {
+  if(InStr(A_Args[2], 'wait'))
+   WinWait(A_Args[1])
+ }
+ id := "ahk_id " WinGetID(A_Args[1])
+}
+if(!WinExist(id))
+ ExitApp
+
+inipath := A_AppData '\.Hotkeys\ToTray.ini'
+#Include "Windows.ini.ahk"
+
+icon := WinGetProcessPath(id)
+title := WinGetTitle(id)
+section := title " ahk_exe " WinGetProcessName(id)
+ini := IniReadObject(inipath)
+if(ini.Has(section)) {
+ title := ini[section]['title']
+ icon := ini[section]['icon']
+}
+ini := 0
+TraySetIcon(icon,, true)
+A_IconTip := title
 
 setTray() {
  global title
