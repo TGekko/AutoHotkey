@@ -67,10 +67,13 @@
 
 ; Minecraft
 #HotIf WinActive("Minecraft")
- F15::F1                                           ; Toggle Perspective
- F19::F1                                           ; Toggle Perspective
- !1::Run("Minecraft\Sword_and_Food.ahk")           ; Swing Sword and Eat Food
- !Shift::Run("Miscellaneous\Minecraft\Hold_Shift") ; Hold Shift
+ F15::F1                                                 ; Toggle Perspective
+ F16::Send("{F3 down}b{F3 up}")                          ; Toggle Hitboxes
+ F17::F3                                                 ; View Information
+ F18::Send("{F3 down}g{F3 up}")                          ; Toggle Chunk Borders
+ !1::Run("Miscellaneous\Minecraft\Sword_and_Food.ahk")   ; Swing Sword and Eat Food
+ !2::Run("Miscellaneous\Minecraft\Attack.ahk")           ; Automatically attack when the attack icon appears
+ !Control::Run("Miscellaneous\Minecraft\Hold_Shift.ahk") ; Hold Shift
 
  ; Palworld
  #HotIf WinActive("ahk_exe Palworld-Win64-Shipping.exe")

@@ -1,22 +1,39 @@
 #SingleInstance Ignore
 DetectHiddenWindows(true)
 
-; An array to contain WinTitles to minimize to the System Tray
-totray := []
-; An array to contain WinTitles to hide that don't hide when using the Run command
-hide := []
+; An array of arrays containing the parameters of the Run command
+startup := [
+ ['*RunAs C:\Users\TGekko\Documents\AutoHotkey\.Hotkeys.ahk', 'C:\Users\TGekko\Documents\AutoHotkey'],
+ ['*RunAs C:\Program Files (x86)\VB\Voicemeeter\voicemeeter8.exe'],
+ ['*RunAs E:\Games\Steam\steam.exe'],
+ ['*RunAs C:\Users\TGekko\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Discord Inc\Discord.lnk'],
+ ['*RunAs C:\Program Files\Voicemod Desktop\VoicemodDesktop.exe',, 'Hide'],
+ ['*RunAs C:\Program Files\Elgato\StreamDeck\StreamDeck.exe'],
+ ['*RunAs "C:\Program Files\obs-studio\bin\64bit\obs64.exe" --startreplaybuffer'],
+;['*RunAs "' A_AppData '\..\Local\Microsoft\WindowsApps\wt.exe" -w 0 new-tab -d . -p "Command Prompt" "E:\Games\Steam\steamapps\common\Valheim dedicated server\server.TheEsteemed.bat"', 'E:\Games\Steam\steamapps\common\Valheim dedicated server'],
+;['*RunAs "E:\Games\Steam\steamapps\common\PalServer\PalServer.exe"'],
+;['*RunAs "' A_AppData '\..\Local\Microsoft\WindowsApps\wt.exe" -w 0 new-tab -d . -p "Command Prompt" "C:\Users\TGekko\Documents\My Games\Terraria\Servers\Lemona.bat"', 'C:\Users\TGekko\Documents\My Games\Terraria\Servers'],
+]
 
-; Run any applications and push WinTitles to [totray] and [hide]
-Run("*RunAs C:\Users\TGekko\Documents\AutoHotkey\.Hotkeys.ahk", "C:\Users\TGekko\Documents\AutoHotkey")
-Run("*RunAs C:\Program Files (x86)\VB\Voicemeeter\voicemeeter8.exe", "C:\Program Files (x86)\VB\Voicemeeter")
-Run("*RunAs E:\Games\Steam\steam.exe", "E:\Games\Steam")
-Run("*RunAs C:\Users\TGekko\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Discord Inc\Discord.lnk")
-Run("*RunAs C:\Program Files\Voicemod Desktop\VoicemodDesktop.exe", "C:\Program Files\Voicemod Desktop", "Hide")
-Run("*RunAs C:\Program Files\Elgato\StreamDeck\StreamDeck.exe", "C:\Program Files\Elgato\StreamDeck")
-totray.push("Stream Deck ahk_exe StreamDeck.exe")
-Run('*RunAs "C:\Program Files\obs-studio\bin\64bit\obs64.exe" --startreplaybuffer', "C:\Program Files\obs-studio\bin\64bit")
-Run('*RunAs "' A_AppData '\..\Local\Microsoft\WindowsApps\wt.exe" -w 0 new-tab -d . -p "Command Prompt" "E:\Games\Steam\steamapps\common\Valheim dedicated server\server.TheEsteemed.bat"', "E:\Games\Steam\steamapps\common\Valheim dedicated server")
-totray.push('The Esteemed - Valheim Server ahk_exe WindowsTerminal.exe')
+; An array to contain WinTitles to minimize to the System Tray
+totray := [
+;'The Esteemed - Valheim Server ahk_exe WindowsTerminal.exe',
+;'E:\Games\Steam\steamapps\common\PalServer\Pal\Binaries\Win64\PalServer-Win64-Test-Cmd.exe',
+;'Terraria Server: Lemona ahk_exe WindowsTerminal.exe',
+]
+
+; An array to contain WinTitles to hide that don't hide when using the Run command
+hide := [
+
+]
+
+
+
+
+
+; Run all items in [startup]
+for(item in startup)
+ Run(item*)
 
 ; Wait for the items in [totray] to exist, then minimize them to the System Tray
 for(item in totray)

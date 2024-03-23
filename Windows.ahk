@@ -266,7 +266,7 @@ activeSizeBy(width:=0, height:=0, percent:=false, screen:=false) {
 activeToggleBorderless() {
  global borderless
  id := WinGetID("A")
- if(borderless[id]) {
+ if(borderless.Has(id)) {
   style := borderless[id]
   WinSetStyle(style, "A")
   borderless.Delete(id)
