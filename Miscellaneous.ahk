@@ -29,6 +29,7 @@
  F13::7 ; Augment
  F14::b ; Show Emote Menu
  +=::Send("{w down}")
+ !1::Run("Miscellaneous\Minecraft\Sword_and_Food.ahk")
 
 ; Hades
 #HotIf WinActive("ahk_exe Hades.exe")
@@ -67,13 +68,14 @@
 
 ; Minecraft
 #HotIf WinActive("Minecraft")
- F15::F1                                                 ; Toggle Perspective
- F16::Send("{F3 down}b{F3 up}")                          ; Toggle Hitboxes
- F17::F3                                                 ; View Information
- F18::Send("{F3 down}g{F3 up}")                          ; Toggle Chunk Borders
- !1::Run("Miscellaneous\Minecraft\Sword_and_Food.ahk")   ; Swing Sword and Eat Food
- !2::Run("Miscellaneous\Minecraft\Attack.ahk")           ; Automatically attack when the attack icon appears
- !Control::Run("Miscellaneous\Minecraft\Hold_Shift.ahk") ; Hold Shift
+ F14::F1                                                    ; Toggle Perspective
+ F16::Send("{F3 down}b{F3 up}")                             ; Toggle Hitboxes
+ F17::F3                                                    ; View Information
+ F18::Send("{F3 down}g{F3 up}")                             ; Toggle Chunk Borders
+ !1::Run("Miscellaneous\Minecraft\Sword_and_Food.ahk")      ; Swing Sword and Eat Food
+ !2::Run("Miscellaneous\Minecraft\Attack_and_Food.ahk")     ; Eat food and automatically attack when the attack icon appears
+ !3::Run("Miscellaneous\Minecraft\Slow_Sword_and_Food.ahk") ; Swing Sword and Eat Food less quickly
+ !Control::Run("Miscellaneous\Minecraft\Hold_Shift.ahk")    ; Hold Shift
 
  ; Palworld
  #HotIf WinActive("ahk_exe Palworld-Win64-Shipping.exe")
@@ -133,5 +135,6 @@ Escape::Enter ; Pause
 ; paint.net
 #HotIf WinActive("ahk_exe paintdotnet.exe")
  ^+z::^y ; Undo
+ ~Backspace::^+Del
 
 #HotIf
