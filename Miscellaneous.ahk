@@ -58,13 +58,10 @@
 
 ; Lethal Company
 #HotIf WinActive("ahk_exe Lethal Company.exe")
- Numpad0::Send("Switch{Enter}")
- Numpad1::Send("Scan{Enter}")
- Numpad2::Send("Moons{Enter}")
- Numpad3::Send("Store{Enter}")
- NumpadAdd::Send("Deny{Enter}")
- NumpadEnter::Send("Confirm{Enter}")
- NumpadDot::Send("View Monitor{Enter}")
+ NumpadAdd::Send("Switch{Enter}")
+ NumpadDiv::Send("Deny{Enter}")
+ NumpadMult::Send("Confirm{Enter}")
+ NumpadSub::Send("View Monitor{Enter}")
 
 ; Minecraft
 #HotIf WinActive("Minecraft")
