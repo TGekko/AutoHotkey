@@ -30,7 +30,7 @@ setIcon() {
  if(file != '') {
   icon := file
   saveTray()
-  TraySetIcon(icon,, true)
+  try TraySetIcon(icon,, true)
  }
 }
 setTray() {
@@ -57,7 +57,7 @@ resetTray() {
  global title
  icon := WinGetProcessPath(id)
  title := WinGetTitle(id)
- TraySetIcon(icon,, true)
+ try TraySetIcon(icon,, true)
  A_IconTip := title
  saveTray(true)
  setTray()
@@ -99,7 +99,7 @@ if(ini.Has(section)) {
  icon := ini[section]['icon']
 }
 ini := 0
-TraySetIcon(icon,, true)
+try TraySetIcon(icon,, true)
 A_IconTip := title
 
 setTray()
