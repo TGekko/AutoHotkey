@@ -11,215 +11,215 @@
 
    var images = [
     ["white",
-     ["BgCommon",                    "5/54/BgCommon.png",                    [""]],
-     ["Repulsion Armor Plate",       "a/aa/Repulsion_Armor_Plate.png",       ["blue"]],
-     ["Mocha",                       "4/48/Mocha.png",                       ["yellow", "white"]],
-     ["Topaz Brooch",                "c/c5/Topaz_Brooch.png",                ["blue"]],
-     ["Tougher Times",               "3/39/Tougher_Times.png",               ["blue"]],
-     ["Tri-Tip Dagger",              "1/17/Tri-Tip_Dagger.png",              ["red"]],
-     ["Armor-Piercing Rounds",       "f/f0/Armor-Piercing_Rounds.png",       ["red"]],
-     ["Lens-Maker's Glasses",        "2/23/Lens-Maker%27s_Glasses.png",      ["orange"]],
-     ["Crowbar",                     "c/c0/Crowbar.png",                     ["red"]],
-     ["Warped Echo",                 "3/3e/Warped_Echo.png",                 ["blue"]],
-     ["Bundle of Fireworks",         "3/3d/Bundle_of_Fireworks.png",         ["red", "black"]],
-     ["Bison Steak",                 "9/9f/Bison_Steak.png",                 ["green"]],
-     ["Delicate Watch",              "c/c6/Delicate_Watch.png",              ["red"]],
-     ["Roll of Pennies",             "e/e9/Roll_of_Pennies.png",             ["black"]],
-     ["Cautious Slug",               "c/c6/Cautious_Slug.png",               ["green"]],
-     ["Power Elixir",                "5/51/Power_Elixir.png",                ["green"]],
-     ["Paul's Goat Hoof",            "4/4a/Paul%27s_Goat_Hoof.png",          ["white"]],
-     ["Gasoline",                    "6/6e/Gasoline.png",                    ["red"]],
-     ["Chronic Expansion",           "d/d0/Chronic_Expansion.png",           ["red"]],
-     ["Knockback Fin",               "d/d0/Knockback_Fin.png",               ["gray"]],
-     ["Bolstering Lantern",          "5/50/Bolstering_Lantern.png",          ["red"]],
-     ["Medkit",                      "0/0f/Medkit.png",                      ["green"]],
-     ["Bustling Fungus",             "3/33/Bustling_Fungus.png",             ["green"]],
-     ["Focus Crystal",               "5/59/Focus_Crystal.png",               ["red"]],
-     ["Antler Shield",               "f/f6/Antler_Shield.png",               ["red"]],
-     ["Oddly-shaped Opal",           "f/f3/Oddly-shaped_Opal.png",           ["blue"]],
-     ["Personal Shield Generator",   "e/e0/Personal_Shield_Generator.png",   ["blue"]],
-     ["Backup Magazine",             "f/f3/Backup_Magazine.png",             ["purple"]],
-     ["Energy Drink",                "7/7e/Energy_Drink.png",                ["white"]],
-     ["Sticky Bomb",                 "7/74/Sticky_Bomb.png",                 ["red"]],
-     ["Stun Grenade",                "2/27/Stun_Grenade.png",                ["gray"]],
-     ["Soldier's Syringe",           "f/f2/Soldier%27s_Syringe.png",         ["yellow"]],
-     ["Monster Tooth",               "3/3b/Monster_Tooth.png",               ["green"]],
-     ["Rusted Key",                  "9/9b/Rusted_Key.png",                  ["black"]],
-     ["Warbanner",                   "f/f0/Warbanner.png",                   ["red", "white"]],
-     //["Item Scrap, White",         "9/99/Item_Scrap%2C_White.png",         ["black"]],
+     ["BgCommon",                    "5/54/BgCommon.png",                    ,                   [""]],
+     ["Repulsion Armor Plate",       "a/aa/Repulsion_Armor_Plate.png",       ,                   ["blue"]],
+     ["Mocha",                       "4/48/Mocha.png",                       ,                   ["yellow", "white"]],
+     ["Topaz Brooch",                "c/c5/Topaz_Brooch.png",                ["kill"],           ["blue"]],
+     ["Tougher Times",               "3/39/Tougher_Times.png",               ["chance", "hurt"], ["blue"]],
+     ["Tri-Tip Dagger",              "1/17/Tri-Tip_Dagger.png",              ["chance", "hit"],  ["red"]],
+     ["Armor-Piercing Rounds",       "f/f0/Armor-Piercing_Rounds.png",       ,                   ["red"]],
+     ["Lens-Maker's Glasses",        "2/23/Lens-Maker%27s_Glasses.png",      ["chance", "hit"],  ["orange"]],
+     ["Crowbar",                     "c/c0/Crowbar.png",                     ["hit"],            ["red"]],
+     ["Warped Echo",                 "3/3e/Warped_Echo.png",                 ["hurt"],           ["blue"]],
+     ["Bundle of Fireworks",         "3/3d/Bundle_of_Fireworks.png",         ,                   ["red", "black"]],
+     ["Bison Steak",                 "9/9f/Bison_Steak.png",                 ,                   ["green"]],
+     ["Delicate Watch",              "c/c6/Delicate_Watch.png",              ,                   ["red"]],
+     ["Roll of Pennies",             "e/e9/Roll_of_Pennies.png",             ["hurt"],           ["black"]],
+     ["Cautious Slug",               "c/c6/Cautious_Slug.png",               ["safe"],           ["green"]],
+     ["Power Elixir",                "5/51/Power_Elixir.png",                ["low"],            ["green"]],
+     ["Paul's Goat Hoof",            "4/4a/Paul%27s_Goat_Hoof.png",          ,                   ["white"]],
+     ["Gasoline",                    "6/6e/Gasoline.png",                    ["kill"],           ["red"]],
+     ["Chronic Expansion",           "d/d0/Chronic_Expansion.png",           ["kills"],          ["red"]],
+     ["Knockback Fin",               "d/d0/Knockback_Fin.png",               ["chance", "hit"],  ["gray"]],
+     ["Bolstering Lantern",          "5/50/Bolstering_Lantern.png",          ["low"],            ["red"]],
+     ["Medkit",                      "0/0f/Medkit.png",                      ["hurt", "safe"],   ["green"]],
+     ["Bustling Fungus",             "3/33/Bustling_Fungus.png",             ,                   ["green"]],
+     ["Focus Crystal",               "5/59/Focus_Crystal.png",               ,                   ["red"]],
+     ["Antler Shield",               "f/f6/Antler_Shield.png",               ["chance", "hurt"], ["red"]],
+     ["Oddly-shaped Opal",           "f/f3/Oddly-shaped_Opal.png",           ["safe"],           ["blue"]],
+     ["Personal Shield Generator",   "e/e0/Personal_Shield_Generator.png",   ,                   ["blue"]],
+     ["Backup Magazine",             "f/f3/Backup_Magazine.png",             ,                   ["purple"]],
+     ["Energy Drink",                "7/7e/Energy_Drink.png",                ,                   ["white"]],
+     ["Sticky Bomb",                 "7/74/Sticky_Bomb.png",                 ["chance", "hit"],  ["red"]],
+     ["Stun Grenade",                "2/27/Stun_Grenade.png",                ["chance", "hit"],  ["gray"]],
+     ["Soldier's Syringe",           "f/f2/Soldier%27s_Syringe.png",         ,                   ["yellow"]],
+     ["Monster Tooth",               "3/3b/Monster_Tooth.png",               ["kill"],           ["green"]],
+     ["Rusted Key",                  "9/9b/Rusted_Key.png",                  ,                   ["black"]],
+     ["Warbanner",                   "f/f0/Warbanner.png",                   ,                   ["red", "white"]],
+     //["Item Scrap, White",         "9/99/Item_Scrap%2C_White.png",         ,                   ["black"]],
     ], ["green",
-     ["BgUncommon",                  "d/db/BgUncommon.png",                  [""]],
-     ["Predatory Instincts",         "3/39/Predatory_Instincts.png",         ["orange", "yellow"]],
-     ["Bandolier",                   "6/62/Bandolier.png",                   ["purple"]],
-     ["Ghor's Tome",                 "9/9a/Ghor%27s_Tome.png",               ["black"]],
-     ["Ukulele",                     "9/98/Ukulele.png",                     ["red"]],
-     ["Death Mark",                  "3/34/Death_Mark.png",                  ["red"]],
-     ["War Horn",                    "9/9c/War_Horn.png",                    ["yellow"]],
-     ["Fuel Cell",                   "4/4d/Fuel_Cell.png",                   ["purple"]],
-     ["Old Guillotine",              "8/8d/Old_Guillotine.png",              ["red"]],
-     ["Will-o'-the-wisp",            "c/c4/Will-o%27-the-wisp.png",          ["red"]],
-     ["Chance Doll",                 "e/e5/Chance_Doll.png",                 ["black"]],
-     ["Prayer Beads",                "3/36/Prayer_Beads.png",                ["red", "green"]],
-     ["Hopoo Feather",               "3/3a/Hopoo_Feather.png",               ["white"]],
-     ["Kjaro's Band",                "e/eb/Kjaro%27s_Band.png",              ["red"]],
-     ["Shipping Request Form",       "4/44/Shipping_Request_Form.png",       ["black"]],
-     ["Harvester's Scythe",          "e/e1/Harvester%27s_Scythe.png",        ["orange", "green"]],
-     ["Runald's Band",               "0/05/Runald%27s_Band.png",             ["red", "gray"]],
-     ["Luminous Shot",               "2/25/Luminous_Shot.png",               ["red"]],
-     ["Infusion",                    "7/7d/Infusion.png",                    ["green"]],
-     ["Wax Quail",                   "6/6c/Wax_Quail.png",                   ["white"]],
-     ["Sale Star",                   "e/e1/Sale_Star.png",                   ["black"]],
-     ["AtG Missile Mk",              "6/6a/AtG_Missile_Mk._1.png",           ["red"]],
-     ["Hunter's Harpoon",            "c/c4/Hunter%27s_Harpoon.png",          ["white"]],
-     ["Old War Stealthkit",          "2/2c/Old_War_Stealthkit.png",          ["white", "gray"]],
-     ["Shuriken",                    "a/ac/Shuriken.png",                    ["red"]],
-     ["Regenerating Scrap",          "7/77/Regenerating_Scrap.png",          ["black"]],
-     ["Leeching Seed",               "a/a0/Leeching_Seed.png",               ["green"]],
-     ["Chronobauble",                "3/38/Chronobauble.png",                ["gray"]],
-     ["Rose Buckler",                "2/2f/Rose_Buckler.png",                ["blue"]],
-     ["Red Whip",                    "2/2a/Red_Whip.png",                    ["white"]],
-     ["Squid Polyp",                 "d/de/Squid_Polyp.png",                 ["red", "black"]],
-     ["Ignition Tank",               "e/ed/Ignition_Tank.png",               ["red"]],
-     ["Lepton Daisy",                "7/73/Lepton_Daisy.png",                ["green"]],
-     ["Unstable Transmitter",        "e/e0/Unstable_Transmitter.png",        ["red", "white"]],
-     ["Razorwire",                   "a/ac/Razorwire.png",                   ["red"]],
-     ["Noxious Thorn",               "4/4b/Noxious_Thorn.png",               ["red", "gray"]],
-     ["Berzerker's Pauldron",        "a/a6/Berzerker%27s_Pauldron.png",      ["yellow", "white"]],
-     //["Item Scrap, Green",         "0/01/Item_Scrap%2C_Green.png",         ["black"]],
+     ["BgUncommon",                  "d/db/BgUncommon.png",                  ,                   [""]],
+     ["Predatory Instincts",         "3/39/Predatory_Instincts.png",         ["hit"],            ["orange", "yellow"]],
+     ["Bandolier",                   "6/62/Bandolier.png",                   ["chance", "kill"], ["purple"]],
+     ["Ghor's Tome",                 "9/9a/Ghor%27s_Tome.png",               ["chance", "kill"], ["black"]],
+     ["Ukulele",                     "9/98/Ukulele.png",                     ["chance", "hit"],  ["red"]],
+     ["Death Mark",                  "3/34/Death_Mark.png",                  ,                   ["red"]],
+     ["War Horn",                    "9/9c/War_Horn.png",                    ,                   ["yellow"]],
+     ["Fuel Cell",                   "4/4d/Fuel_Cell.png",                   ,                   ["purple"]],
+     ["Old Guillotine",              "8/8d/Old_Guillotine.png",              ,                   ["red"]],
+     ["Will-o'-the-wisp",            "c/c4/Will-o%27-the-wisp.png",          ["kill"],           ["red"]],
+     ["Chance Doll",                 "e/e5/Chance_Doll.png",                 ["chance"],         ["black"]],
+     ["Prayer Beads",                "3/36/Prayer_Beads.png",                ,                   ["red", "green"]],
+     ["Hopoo Feather",               "3/3a/Hopoo_Feather.png",               ,                   ["white"]],
+     ["Kjaro's Band",                "e/eb/Kjaro%27s_Band.png",              ["hit"],            ["red"]],
+     ["Shipping Request Form",       "4/44/Shipping_Request_Form.png",       ,                   ["black"]],
+     ["Harvester's Scythe",          "e/e1/Harvester%27s_Scythe.png",        ["hit"],            ["orange", "green"]],
+     ["Runald's Band",               "0/05/Runald%27s_Band.png",             ["hit"],            ["red", "gray"]],
+     ["Luminous Shot",               "2/25/Luminous_Shot.png",               ,                   ["red"]],
+     ["Infusion",                    "7/7d/Infusion.png",                    ["kill"],           ["green"]],
+     ["Wax Quail",                   "6/6c/Wax_Quail.png",                   ,                   ["white"]],
+     ["Sale Star",                   "e/e1/Sale_Star.png",                   ,                   ["black"]],
+     ["AtG Missile Mk",              "6/6a/AtG_Missile_Mk._1.png",           ["chance", "hit"],  ["red"]],
+     ["Hunter's Harpoon",            "c/c4/Hunter%27s_Harpoon.png",          ["kill"],           ["white"]],
+     ["Old War Stealthkit",          "2/2c/Old_War_Stealthkit.png",          ["low"],            ["white", "gray"]],
+     ["Shuriken",                    "a/ac/Shuriken.png",                    ,                   ["red"]],
+     ["Regenerating Scrap",          "7/77/Regenerating_Scrap.png",          ,                   ["black"]],
+     ["Leeching Seed",               "a/a0/Leeching_Seed.png",               ["hit"],            ["green"]],
+     ["Chronobauble",                "3/38/Chronobauble.png",                ["hit"],            ["gray"]],
+     ["Rose Buckler",                "2/2f/Rose_Buckler.png",                ,                   ["blue"]],
+     ["Red Whip",                    "2/2a/Red_Whip.png",                    ["safe"],           ["white"]],
+     ["Squid Polyp",                 "d/de/Squid_Polyp.png",                 ,                   ["red", "black"]],
+     ["Ignition Tank",               "e/ed/Ignition_Tank.png",               ,                   ["red"]],
+     ["Lepton Daisy",                "7/73/Lepton_Daisy.png",                ,                   ["green"]],
+     ["Unstable Transmitter",        "e/e0/Unstable_Transmitter.png",        ["low"],            ["red", "white"]],
+     ["Razorwire",                   "a/ac/Razorwire.png",                   ["hurt"],           ["red"]],
+     ["Noxious Thorn",               "4/4b/Noxious_Thorn.png",               ["chance", "hurt"], ["red", "gray"]],
+     ["Berzerker's Pauldron",        "a/a6/Berzerker%27s_Pauldron.png",      ["kills"],          ["yellow", "white"]],
+     //["Item Scrap, Green",         "0/01/Item_Scrap%2C_Green.png",         ,                   ["black"]],
     ], ["red",
-     ["BgLegendary",                 "a/ad/BgLegendary.png",                 [""]],
-     ["Alien Head",                  "2/25/Alien_Head.png",                  ["purple"]],
-     ["Shattering Justice",          "2/2d/Shattering_Justice.png",          ["red"]],
-     ["Aegis",                       "e/e5/Aegis.png",                       ["blue"]],
-     ["Brilliant Behemoth",          "f/fa/Brilliant_Behemoth.png",          ["red"]],
-     ["Growth Nectar",               "8/8e/Growth_Nectar.png",               ["red", "green"]],
-     ["Sentient Meat Hook",          "e/e7/Sentient_Meat_Hook.png",          ["red"]],
-     ["57 Leaf Clover",              "e/e5/57_Leaf_Clover.png",              ["red", "orange", "yellow", "purple", "gray", "black"]],
-     ["Laser Scope",                 "0/00/Laser_Scope.png",                 ["orange"]],
-     ["Ceremonial Dagger",           "7/76/Ceremonial_Dagger.png",           ["red"]],
-     ["Spare Drone Parts",           "8/85/Spare_Drone_Parts.png",           ["red"]],
-     ["Dio's Best Friend",           "d/dc/Dio%27s_Best_Friend.png",         ["green"]],
-     ["H3AD-5T v2",                  "3/36/H3AD-5T_v2.png",                  ["red", "white"]],
-     ["Happiest Mask",               "d/d4/Happiest_Mask.png",               ["red"]],
-     ["War Bonds",                   "7/75/War_Bonds.png",                   ["black"]],
-     ["Wake of Vultures",            "f/f8/Wake_of_Vultures.png",            ["red", "green", "blue", "gray"]],
-     ["Frost Relic",                 "5/58/Frost_Relic.png",                 ["red", "gray"]],
-     ["Ben's Raincoat",              "2/25/Ben%27s_Raincoat.png",            ["blue"]],
-     ["Rejuvenation Rack",           "0/0a/Rejuvenation_Rack.png",           ["green"]],
-     ["Brainstalks",                 "c/c0/Brainstalks.png",                 ["purple"]],
-     ["Resonance Disc",              "8/8d/Resonance_Disc.png",              ["red"]],
-     ["Runic Lens",                  "d/d3/Runic_Lens.png",                  ["red"]],
-     ["Pocket I.C.B.M.",             "f/ff/Pocket_I.C.B.M..png",             ["red"]],
-     ["N'kuhana's Opinion",          "c/c9/N%27kuhana%27s_Opinion.png",      ["red"]],
-     ["Symbiotic Scorpion",          "9/91/Symbiotic_Scorpion.png",          ["red"]],
-     ["Interstellar Desk Plant",     "1/1e/Interstellar_Desk_Plant.png",     ["green"]],
-     ["Bottled Chaos",               "4/42/Bottled_Chaos.png",               ["black"]],
-     ["Sonorous Whispers",           "b/be/Sonorous_Whispers.png",           ["black"]],
-     ["Unstable Tesla Coil",         "e/e4/Unstable_Tesla_Coil.png",         ["red"]],
-     ["Electric Boomerang",          "8/8d/Electric_Boomerang.png",          ["red"]],
-     ["Soulbound Catalyst",          "f/f1/Soulbound_Catalyst.png",          ["purple"]],
-     ["Hardlight Afterburner",       "2/20/Hardlight_Afterburner.png",       ["purple"]],
-     //["Defensive Microbots",       "d/dd/Defensive_Microbots.png",         [""]],
-     //["Item Scrap, Red",           "4/48/Item_Scrap%2C_Red.png",           ["black"]],
+     ["BgLegendary",                 "a/ad/BgLegendary.png",                 ,                   [""]],
+     ["Alien Head",                  "2/25/Alien_Head.png",                  ,                   ["purple"]],
+     ["Shattering Justice",          "2/2d/Shattering_Justice.png",          ,                   ["red"]],
+     ["Aegis",                       "e/e5/Aegis.png",                       ,                   ["blue"]],
+     ["Brilliant Behemoth",          "f/fa/Brilliant_Behemoth.png",          ["hit"],            ["red"]],
+     ["Growth Nectar",               "8/8e/Growth_Nectar.png",               ,                   ["red", "green"]],
+     ["Sentient Meat Hook",          "e/e7/Sentient_Meat_Hook.png",          ["chance", "hit"],  ["red"]],
+     ["57 Leaf Clover",              "e/e5/57_Leaf_Clover.png",              ["chance"],         ["red", "orange", "yellow", "purple", "gray", "black"]],
+     ["Laser Scope",                 "0/00/Laser_Scope.png",                 ,                   ["orange"]],
+     ["Ceremonial Dagger",           "7/76/Ceremonial_Dagger.png",           ["kill"],           ["red"]],
+     ["Spare Drone Parts",           "8/85/Spare_Drone_Parts.png",           ,                   ["red"]],
+     ["Dio's Best Friend",           "d/dc/Dio%27s_Best_Friend.png",         ["low"],            ["green"]],
+     ["H3AD-5T v2",                  "3/36/H3AD-5T_v2.png",                  ,                   ["red", "white"]],
+     ["Happiest Mask",               "d/d4/Happiest_Mask.png",               ["chance", "kill"], ["red"]],
+     ["War Bonds",                   "7/75/War_Bonds.png",                   ,                   ["black"]],
+     ["Wake of Vultures",            "f/f8/Wake_of_Vultures.png",            ["kill"],           ["red", "green", "blue", "gray"]],
+     ["Frost Relic",                 "5/58/Frost_Relic.png",                 ["kill"],           ["red", "gray"]],
+     ["Ben's Raincoat",              "2/25/Ben%27s_Raincoat.png",            ,                   ["blue"]],
+     ["Rejuvenation Rack",           "0/0a/Rejuvenation_Rack.png",           ,                   ["green"]],
+     ["Brainstalks",                 "c/c0/Brainstalks.png",                 ["kill"],           ["purple"]],
+     ["Resonance Disc",              "8/8d/Resonance_Disc.png",              ["kills"],          ["red"]],
+     ["Runic Lens",                  "d/d3/Runic_Lens.png",                  ["chance", "hit"],  ["red"]],
+     ["Pocket I.C.B.M.",             "f/ff/Pocket_I.C.B.M..png",             ,                   ["red"]],
+     ["N'kuhana's Opinion",          "c/c9/N%27kuhana%27s_Opinion.png",      ,                   ["red"]],
+     ["Symbiotic Scorpion",          "9/91/Symbiotic_Scorpion.png",          ["hit"],            ["red"]],
+     ["Interstellar Desk Plant",     "1/1e/Interstellar_Desk_Plant.png",     ["kill"],           ["green"]],
+     ["Bottled Chaos",               "4/42/Bottled_Chaos.png",               ,                   ["black"]],
+     ["Sonorous Whispers",           "b/be/Sonorous_Whispers.png",           ["kill"],           ["black"]],
+     ["Unstable Tesla Coil",         "e/e4/Unstable_Tesla_Coil.png",         ,                   ["red"]],
+     ["Electric Boomerang",          "8/8d/Electric_Boomerang.png",          ["chance", "hit"],  ["red"]],
+     ["Soulbound Catalyst",          "f/f1/Soulbound_Catalyst.png",          ["kill"],           ["purple"]],
+     ["Hardlight Afterburner",       "2/20/Hardlight_Afterburner.png",       ,                   ["purple"]],
+     //["Defensive Microbots",       "d/dd/Defensive_Microbots.png",         ,                   [""]],
+     //["Item Scrap, Red",           "4/48/Item_Scrap%2C_Red.png",           ,                   ["black"]],
     ], ["orange",
-     ["BgEquipment",                 "2/2d/BgEquipment.png",                 [""]],
-     ["Preon Accumulator",           "f/fe/Preon_Accumulator.png",           ["red"]],
-     ["Primordial Cube",             "d/d9/Primordial_Cube.png",             ["gray"]],
-     ["Trophy Hunter's Tricorn",     "7/72/Trophy_Hunter%27s_Tricorn.png",   ["red"]],
-     ["Blast Shower",                "4/4f/Blast_Shower.png",                ["blue"]],
-     ["Disposable Missile Launcher", "7/78/Disposable_Missile_Launcher.png", ["red"]],
-     ["Ocular HUD",                  "6/68/Ocular_HUD.png",                  ["orange"]],
-     ["Forgive Me Please",           "7/78/Forgive_Me_Please.png",           ["red", "yellow", "green", "blue", "purple", "white"]],
-     ["The Back-up",                 "3/39/The_Back-up.png",                 ["red", "blue"]],
-     ["Volcanic Egg",                "2/2e/Volcanic_Egg.png",                ["red"]],
-     ["Foreign Fruit",               "d/d0/Foreign_Fruit.png",               ["green"]],
-     ["Jade Elephant",               "4/41/Jade_Elephant.png",               ["blue"]],
-     ["Eccentric Vase",              "c/ce/Eccentric_Vase.png",              ["white"]],
-     ["The Crowdfunder",             "d/d4/The_Crowdfunder.png",             ["red"]],
-     ["Goobo Jr",                    "3/3a/Goobo_Jr..png",                   ["red", "blue"]],
-     ["Seed of Life",                "9/9e/Seed_of_Life.png",                ["green"]],
-     ["Milky Chrysalis",             "e/e3/Milky_Chrysalis.png",             ["white"]],
-     ["Super Massive Leech",         "a/ae/Super_Massive_Leech.png",         ["green"]],
-     ["Royal Capacitor",             "e/ef/Royal_Capacitor.png",             ["red", "gray"]],
-     ["Molotov (6-Pack)",            "b/bf/Molotov_%286-Pack%29.png",        ["red"]],
-     ["Executive Card",              "8/82/Executive_Card.png",              ["black"]],
-     ["Gnarled Woodsprite",          "d/d8/Gnarled_Woodsprite.png",          ["green"]],
-     ["Recycler",                    "6/67/Recycler.png",                    ["black"]],
-     ["Sawmerang",                   "6/62/Sawmerang.png",                   ["red"]],
-     ["Radar Scanner",               "7/7f/Radar_Scanner.png",               ["black"]],
-     ["Gorag's Opus",                "5/56/Gorag%27s_Opus.png",              ["yellow", "white"]],
-     ["Remote Caffeinator",          "9/9c/Remote_Caffeinator.png",          ["red", "green"]],
-     //["Fuel Array",                "f/fe/Fuel_Array.png",                  [""]],
-     /*["Ifrit's Distinction",       "0/08/Ifrit%27s_Distinction.png",       [""]],
-     ["His Reassurance",             "5/5d/His_Reassurance.png",             [""]],
-     ["Silence Between Two Strikes", "0/0a/Silence_Between_Two_Strikes.png", [""]],
-     ["Her Biting Embrace",          "8/8b/Her_Biting_Embrace.png",          [""]],
-     ["N'kuhana's Retort",           "9/9b/N%27kuhana%27s_Retort.png",       [""]],
-     ["Spectral Circlet",            "d/d2/Spectral_Circlet.png",            [""]],
-     ["Shared Design",               "5/50/Shared_Design.png",               [""]],*/
+     ["BgEquipment",                 "2/2d/BgEquipment.png",                 ,                   [""]],
+     ["Preon Accumulator",           "f/fe/Preon_Accumulator.png",           ,                   ["red"]],
+     ["Primordial Cube",             "d/d9/Primordial_Cube.png",             ,                   ["gray"]],
+     ["Trophy Hunter's Tricorn",     "7/72/Trophy_Hunter%27s_Tricorn.png",   ,                   ["red"]],
+     ["Blast Shower",                "4/4f/Blast_Shower.png",                ,                   ["blue"]],
+     ["Disposable Missile Launcher", "7/78/Disposable_Missile_Launcher.png", ,                   ["red"]],
+     ["Ocular HUD",                  "6/68/Ocular_HUD.png",                  ,                   ["orange"]],
+     ["Forgive Me Please",           "7/78/Forgive_Me_Please.png",           ["kill"],           ["red", "yellow", "green", "blue", "purple", "white"]],
+     ["The Back-up",                 "3/39/The_Back-up.png",                 ,                   ["red", "blue"]],
+     ["Volcanic Egg",                "2/2e/Volcanic_Egg.png",                ,                   ["red"]],
+     ["Foreign Fruit",               "d/d0/Foreign_Fruit.png",               ,                   ["green"]],
+     ["Jade Elephant",               "4/41/Jade_Elephant.png",               ,                   ["blue"]],
+     ["Eccentric Vase",              "c/ce/Eccentric_Vase.png",              ,                   ["white"]],
+     ["The Crowdfunder",             "d/d4/The_Crowdfunder.png",             ,                   ["red"]],
+     ["Goobo Jr",                    "3/3a/Goobo_Jr..png",                   ,                   ["red", "blue"]],
+     ["Seed of Life",                "9/9e/Seed_of_Life.png",                ,                   ["green"]],
+     ["Milky Chrysalis",             "e/e3/Milky_Chrysalis.png",             ,                   ["white"]],
+     ["Super Massive Leech",         "a/ae/Super_Massive_Leech.png",         ,                   ["green"]],
+     ["Royal Capacitor",             "e/ef/Royal_Capacitor.png",             ,                   ["red", "gray"]],
+     ["Molotov (6-Pack)",            "b/bf/Molotov_%286-Pack%29.png",        ,                   ["red"]],
+     ["Executive Card",              "8/82/Executive_Card.png",              ,                   ["black"]],
+     ["Gnarled Woodsprite",          "d/d8/Gnarled_Woodsprite.png",          ,                   ["green"]],
+     ["Recycler",                    "6/67/Recycler.png",                    ,                   ["black"]],
+     ["Sawmerang",                   "6/62/Sawmerang.png",                   ,                   ["red"]],
+     ["Radar Scanner",               "7/7f/Radar_Scanner.png",               ,                   ["black"]],
+     ["Gorag's Opus",                "5/56/Gorag%27s_Opus.png",              ,                   ["yellow", "white"]],
+     ["Remote Caffeinator",          "9/9c/Remote_Caffeinator.png",          ,                   ["red", "green"]],
+     //["Fuel Array",                "f/fe/Fuel_Array.png",                  ,                   [""]],
+     /*["Ifrit's Distinction",       "0/08/Ifrit%27s_Distinction.png",       ,                   [""]],
+     ["His Reassurance",             "5/5d/His_Reassurance.png",             ,                   [""]],
+     ["Silence Between Two Strikes", "0/0a/Silence_Between_Two_Strikes.png", ,                   [""]],
+     ["Her Biting Embrace",          "8/8b/Her_Biting_Embrace.png",          ,                   [""]],
+     ["N'kuhana's Retort",           "9/9b/N%27kuhana%27s_Retort.png",       ,                   [""]],
+     ["Spectral Circlet",            "d/d2/Spectral_Circlet.png",            ,                   [""]],
+     ["Shared Design",               "5/50/Shared_Design.png",               ,                   [""]],*/
     ], ["yellow",
-     ["BgBoss",                      "c/c7/BgBoss.png",                      [""]],
-     ["Queen's Gland",               "0/0b/Queen%27s_Gland.png",             ["red"]],
-     ["Shatterspleen",               "c/cd/Shatterspleen.png",               ["red", "orange"]],
-     ["Molten Perforator",           "7/71/Molten_Perforator.png",           ["red"]],
-     ["Titanic Knurl",               "9/9f/Titanic_Knurl.png",               ["green"]],
-     ["Charged Perforator",          "c/cc/Charged_Perforator.png",          ["red"]],
-     ["Defense Nucleus",             "1/10/Defense_Nucleus.png",             ["red", "blue"]],
-     ["Genesis Loop",                "c/c8/Genesis_Loop.png",                ["red"]],
-     ["Planula",                     "a/a9/Planula.png",                     ["green"]],
-     ["Empathy Cores",               "5/51/Empathy_Cores.png",               ["red", "blue"]],
-     ["Mired Urn",                   "6/62/Mired_Urn.png",                   ["red", "green", "gray"]],
-     ["Little Disciple",             "0/08/Little_Disciple.png",             ["red"]],
-     //["Item Scrap, Yellow",        "7/7f/Item_Scrap%2C_Yellow.png",        ["black"]],
+     ["BgBoss",                      "c/c7/BgBoss.png",                      ,                   [""]],
+     ["Queen's Gland",               "0/0b/Queen%27s_Gland.png",             ,                   ["red"]],
+     ["Shatterspleen",               "c/cd/Shatterspleen.png",               ["Hit"],            ["red", "orange"]],
+     ["Molten Perforator",           "7/71/Molten_Perforator.png",           ["chance", "hit"],  ["red"]],
+     ["Titanic Knurl",               "9/9f/Titanic_Knurl.png",               ,                   ["green"]],
+     ["Charged Perforator",          "c/cc/Charged_Perforator.png",          ["chance", "hit"],  ["red"]],
+     ["Defense Nucleus",             "1/10/Defense_Nucleus.png",             ["kill"],           ["red", "blue"]],
+     ["Genesis Loop",                "c/c8/Genesis_Loop.png",                ["low"],            ["red"]],
+     ["Planula",                     "a/a9/Planula.png",                     ["hurt"],           ["green"]],
+     ["Empathy Cores",               "5/51/Empathy_Cores.png",               ,                   ["red", "blue"]],
+     ["Mired Urn",                   "6/62/Mired_Urn.png",                   ,                   ["red", "green", "gray"]],
+     ["Little Disciple",             "0/08/Little_Disciple.png",             ,                   ["red"]],
+     //["Item Scrap, Yellow",        "7/7f/Item_Scrap%2C_Yellow.png",        ,                   ["black"]],
      9,
-     ["Artifact Key",                "1/17/Artifact_Key.png",                ["black"]],
-     ["Halcyon Seed",                "e/e6/Halcyon_Seed.png",                ["red", "blue"]],
-     ["Irradiant Pearl",             "e/ef/Irradiant_Pearl.png",             ["red", "orange", "yellow", "green", "blue", "white"]],
-     ["Pearl",                       "7/73/Pearl.png",                       ["green"]],
+     ["Artifact Key",                "1/17/Artifact_Key.png",                ,                   ["black"]],
+     ["Halcyon Seed",                "e/e6/Halcyon_Seed.png",                ,                   ["red", "blue"]],
+     ["Irradiant Pearl",             "e/ef/Irradiant_Pearl.png",             ,                   ["red", "orange", "yellow", "green", "blue", "white"]],
+     ["Pearl",                       "7/73/Pearl.png",                       ,                   ["green"]],
     ], ["purple",
-     ["BgVoid",                      "4/41/BgVoid.png",                      [""]],
-     ["Safer Spaces",                "9/9d/Safer_Spaces.png",                ["blue"]],
-     ["Needletick",                  "7/76/Needletick.png",                  ["red"]],
-     ["Weeping Fungus",              "e/e1/Weeping_Fungus.png",              ["green"]],
-     ["Lost Seer's Lenses",          "1/14/Lost_Seer%27s_Lenses.png",        ["red"]],
-     ["Encrusted Key",               "f/fa/Encrusted_Key.png",               ["black"]],
+     ["BgVoid",                      "4/41/BgVoid.png",                      ,                   [""]],
+     ["Safer Spaces",                "9/9d/Safer_Spaces.png",                ,                   ["blue"]],
+     ["Needletick",                  "7/76/Needletick.png",                  ["chance", "hit"],  ["red"]],
+     ["Weeping Fungus",              "e/e1/Weeping_Fungus.png",              ,                   ["green"]],
+     ["Lost Seer's Lenses",          "1/14/Lost_Seer%27s_Lenses.png",        ["chance", "hit"],  ["red"]],
+     ["Encrusted Key",               "f/fa/Encrusted_Key.png",               ,                   ["black"]],
      5,
-     ["Polylute",                    "b/b5/Polylute.png",                    ["red"]],
-     ["Singularity Band",            "3/30/Singularity_Band.png",            ["red", "gray"]],
-     ["Lysate Cell",                 "5/53/Lysate_Cell.png",                 ["purple"]],
-     ["Voidsent Flame",              "6/69/Voidsent_Flame.png",              ["red"]],
-     ["Plasma Shrimp",               "c/cf/Plasma_Shrimp.png",               ["red", "blue"]],
-     ["Tentabauble",                 "6/64/Tentabauble.png",                 ["gray"]],
+     ["Polylute",                    "b/b5/Polylute.png",                    ["chance", "hit"],  ["red"]],
+     ["Singularity Band",            "3/30/Singularity_Band.png",            ["hit"],            ["red", "gray"]],
+     ["Lysate Cell",                 "5/53/Lysate_Cell.png",                 ,                   ["purple"]],
+     ["Voidsent Flame",              "6/69/Voidsent_Flame.png",              ["hit"],            ["red"]],
+     ["Plasma Shrimp",               "c/cf/Plasma_Shrimp.png",               ["hit"],            ["red", "blue"]],
+     ["Tentabauble",                 "6/64/Tentabauble.png",                 ["chance", "hit"],  ["gray"]],
      9,
-     ["Benthic Bloom",               "b/b0/Benthic_Bloom.png",               ["black"]],
-     ["Pluripotent Larva",           "2/26/Pluripotent_Larva.png",           ["green"]],
-     //["Newly Hatched Zoea",        "5/55/Newly_Hatched_Zoea.png",          [""]],
+     ["Benthic Bloom",               "b/b0/Benthic_Bloom.png",               ,                   ["black"]],
+     ["Pluripotent Larva",           "2/26/Pluripotent_Larva.png",           ["low"],            ["green"]],
+     //["Newly Hatched Zoea",        "5/55/Newly_Hatched_Zoea.png",          ,                   [""]],
     ], ["blue",
-     ["BgLunar",                     "b/b5/BgLunar.png",                     [""]],
-     ["Gesture of the Drowned",      "c/c9/Gesture_of_the_Drowned.png",      ["purple"]],
-     ["Focused Convergence",         "2/2c/Focused_Convergence.png",         ["black"], ["black"]],
-     ["Brittle Crown",               "a/ae/Brittle_Crown.png",               ["black"], ["black"]],
-     ["Light Flux Pauldron",         "6/6e/Light_Flux_Pauldron.png",         ["purple"], ["yellow"]],
-     ["Stone Flux Pauldron",         "b/b1/Stone_Flux_Pauldron.png",         ["green"], ["white"]],
-     ["Purity",                      "a/a2/Purity.png",                      ["purple"], ["red", "orange", "yellow", "purple", "gray", "black"]],
-     ["Shaped Glass",                "f/ff/Shaped_Glass.png",                ["red"], ["green"]],
-     ["Visions of Heresy",           "3/31/Visions_of_Heresy.png",           ["red"], 0],
-     ["Hooks of Heresy",             "6/66/Hooks_of_Heresy.png",             ["red", "gray"], 1],
-     ["Essence of Heresy",           "3/3e/Essence_of_Heresy.png",           ["red"], 3],
-     ["Egocentrism",                 "9/90/Egocentrism.png",                 ["red"], ["black"]],
-     ["Beads of Fealty",             "0/07/Beads_of_Fealty.png",             ["black"]],
-     ["Strides of Heresy",           "1/1a/Strides_of_Heresy.png",           ["green", "blue", "white"], 2],
-     ["Defiant Gouge",               "b/b5/Defiant_Gouge.png",               ["black"]],
-     ["Longstanding Solitude",       "8/8b/Longstanding_Solitude.png",       ["red", "green", "black"], ["black"]],
-     ["Mercurial Rachis",            "2/25/Mercurial_Rachis.png",            ["red"], ["red"]],
-     ["Eulogy Zero",                 "1/12/Eulogy_Zero.png",                 ["black"]],
-     ["Corpsebloom",                 "3/31/Corpsebloom.png",                 ["green"]],
-     ["Transcendence",               "8/85/Transcendence.png",               ["blue"], ["green"]],
+     ["BgLunar",                     "b/b5/BgLunar.png",                     ,                   [""]],
+     ["Gesture of the Drowned",      "c/c9/Gesture_of_the_Drowned.png",      ,                   ["purple"]],
+     ["Focused Convergence",         "2/2c/Focused_Convergence.png",         ,                   ["black"], ["black"]],
+     ["Brittle Crown",               "a/ae/Brittle_Crown.png",               ["chance", "hit"],  ["black"], ["black"]],
+     ["Light Flux Pauldron",         "6/6e/Light_Flux_Pauldron.png",         ,                   ["purple"], ["yellow"]],
+     ["Stone Flux Pauldron",         "b/b1/Stone_Flux_Pauldron.png",         ,                   ["green"], ["white"]],
+     ["Purity",                      "a/a2/Purity.png",                      ,                   ["purple"], ["red", "orange", "yellow", "purple", "gray", "black"]],
+     ["Shaped Glass",                "f/ff/Shaped_Glass.png",                ,                   ["red"], ["green"]],
+     ["Visions of Heresy",           "3/31/Visions_of_Heresy.png",           ,                   ["red"], 0],
+     ["Hooks of Heresy",             "6/66/Hooks_of_Heresy.png",             ,                   ["red", "gray"], 1],
+     ["Essence of Heresy",           "3/3e/Essence_of_Heresy.png",           ,                   ["red"], 3],
+     ["Egocentrism",                 "9/90/Egocentrism.png",                 ,                   ["red"], ["black"]],
+     ["Beads of Fealty",             "0/07/Beads_of_Fealty.png",             ,                   ["black"]],
+     ["Strides of Heresy",           "1/1a/Strides_of_Heresy.png",           ,                   ["green", "blue", "white"], 2],
+     ["Defiant Gouge",               "b/b5/Defiant_Gouge.png",               ,                   ["black"]],
+     ["Longstanding Solitude",       "8/8b/Longstanding_Solitude.png",       ,                   ["red", "green", "black"], ["black"]],
+     ["Mercurial Rachis",            "2/25/Mercurial_Rachis.png",            ,                   ["red"], ["red"]],
+     ["Eulogy Zero",                 "1/12/Eulogy_Zero.png",                 ,                   ["black"]],
+     ["Corpsebloom",                 "3/31/Corpsebloom.png",                 ,                   ["green"]],
+     ["Transcendence",               "8/85/Transcendence.png",               ,                   ["blue"], ["green"]],
      6,
-     ["Helfire Tincture",            "4/4d/Helfire_Tincture.png",            ["red"], ["green"]],
-     ["Effigy of Grief",             "4/45/Effigy_of_Grief.png",             ["gray", "blue"], ["gray", "blue"]],
-     ["Glowing Meteorite",           "f/f4/Glowing_Meteorite.png",           ["red"], ["red"]],
-     ["Spinel Tonic",                "2/29/Spinel_Tonic.png",                ["red", "yellow", "green", "blue", "white"], ["red", "orange", "yellow", "green", "blue", "white"]],
+     ["Helfire Tincture",            "4/4d/Helfire_Tincture.png",            ,                   ["red"], ["green"]],
+     ["Effigy of Grief",             "4/45/Effigy_of_Grief.png",             ,                   ["gray", "blue"], ["gray", "blue"]],
+     ["Glowing Meteorite",           "f/f4/Glowing_Meteorite.png",           ,                   ["red"], ["red"]],
+     ["Spinel Tonic",                "2/29/Spinel_Tonic.png",                ,                   ["red", "yellow", "green", "blue", "white"], ["red", "orange", "yellow", "green", "blue", "white"]],
     ],
    ];
    var ref = image => `https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/${image}/revision/latest`;
@@ -234,12 +234,22 @@
     gray: "0 0% 50%",
     black: "0 0% 20%"
    }
+   Object.assign(colors, {
+    chance: colors.white,
+    hit: colors.red,
+    hurt: colors.green,
+    kill: colors.black,
+    low: colors.yellow,
+    safe: colors.blue,
+    kills: colors.purple
+   });
    document.addEventListener('DOMContentLoaded', () => {
     for(var i = 0; i < images.length; i++) {
      var div = e.create('div');
      //div.style.border = `var(--border) solid hsl(${colors[images[i][0]]})`;
      for(var image of images[i]) {
       if(Array.isArray(image)) {
+       var span = e.create('span')
        var img = e.create('img');
        img.title = image[0];
        img.id = image[0];
@@ -256,33 +266,40 @@
        }, { once: true });*/
        img.src = ref(image[1]);
 
-       if(image[2].length == 1) image[2].push(image[2][0]);
-       image[2].forEach((v, i, a) => a[i] = colors[v]);
-       if(Array.isArray(image[3])) {
-        if(image[3].length == 1) image[3].push(image[3][0]);
-        image[3].forEach((v, i, a) => a[i] = colors[v]);
+       if(Array.isArray(image[2])) {
+        image[2].push(image[2][0])
+        span.style.setProperty('--type', image[2].map(v => `hsl(${colors[v]})`).join(', '));
+        span.style.setProperty('--shadow', new Array(3).fill("0 0 calc(var(--size) * 0.014) black").join(', '));
+       }
+
+       if(image[3].length == 1) image[3].push(image[3][0]);
+       image[3].forEach((v, i, a) => a[i] = colors[v]);
+       if(Array.isArray(image[4])) {
+        if(image[4].length == 1) image[4].push(image[4][0]);
+        image[4].forEach((v, i, a) => a[i] = colors[v]);
        }
 
        img.style.backgroundBlendMode = 'overlay';
        var background = ``;
-       if(Array.isArray(image[3]))
+       if(Array.isArray(image[4]))
         background+= `right/50% 100% linear-gradient(${
-         image[3].map((v, i, a) => `hsl(${v}) ${100/a.length*i}%, hsl(${v}) ${100/a.length*(i+1)}%`).join(', ')
+         image[4].map((v, i, a) => `hsl(${v}) ${100/a.length*i}%, hsl(${v}) ${100/a.length*(i+1)}%`).join(', ')
         }) no-repeat, left/50% 100%`;
-       else if(typeof image[3] == 'number') {
-        background+= `${image[3]/3*100}%/25% 100% linear-gradient(hsl(${colors['purple']}), hsl(${colors['purple']})) no-repeat,`;
+       else if(typeof image[4] == 'number') {
+        background+= `${image[4]/3*100}%/25% 100% linear-gradient(hsl(${colors['purple']}), hsl(${colors['purple']})) no-repeat,`;
         img.style.backgroundBlendMode = 'normal, overlay';
        } else
         background+= `linear-gradient(transparent, transparent),`;
        background+= ` linear-gradient(`;
-       if(!Array.isArray(image[3]))
+       if(!Array.isArray(image[4]))
         background+= '145deg, ';
        background+= `${
-        image[2].map((v, i, a) => `hsl(${v}) ${100/a.length*i}%, hsl(${v}) ${100/a.length*(i+1)}%`).join(', ')
+        image[3].map((v, i, a) => `hsl(${v}) ${100/a.length*i}%, hsl(${v}) ${100/a.length*(i+1)}%`).join(', ')
        }) no-repeat, center/100% url("${ref(images[0][1][1])}")`;
        img.style.background = background;
-       
-       div.append(img);
+
+       span.append(img);
+       div.append(span);
       } else if(typeof image == 'number') {
        for(var n = 0; n < image; n++) {
         var img = e.create('div');
@@ -344,6 +361,24 @@
     width: calc((var(--size) * 5 + var(--min-gap) * 6));
     gap: var(--max-gap)
    }
+   span:has(img) {
+    --type: transparent, transparent;
+    --shadow: none;
+    width: var(--size);
+    height: var(--size);
+   }
+   span:has(img)::after {
+    content: "";
+    position: absolute;
+    display: block;
+    top: calc(var(--size) * 0.04);
+    left: calc(var(--size) * 0.04);
+    width: calc(var(--size) * 0.20);
+    height: calc(var(--size) * 0.20);
+    border-radius: 50%;
+    background: conic-gradient(var(--type));
+    box-shadow: var(--shadow);
+   }
    img, .img {
     padding: var(--min-gap);
     width: var(--size);
@@ -352,7 +387,7 @@
    div.img {
     height: var(--med-gap);
    }
-   img[title*="Bg"] {
+   span:has(img[title*="Bg"]) {
     display: none;
    }
    .key {
