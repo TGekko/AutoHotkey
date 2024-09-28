@@ -8,6 +8,8 @@ light := false
 
 
 #HotIf WinActive("ahk_group browsers")
+ !+Left::Send("!{Left}")
+ !+Right::Send("!{Right}")
  ^Right::Send("{Right 17}")
  ^Left::Send("{Left 17}")
  ^+#/:: {
