@@ -18,6 +18,10 @@
 #HotIf WinActive("ahk_exe citra-qt.exe")
  vk07::Home ; Go Home
 
+#HotIf WinActive("ahk_exe CrabChampions-Win64-Shipping.exe")
+ F13::f ; Melee
+ F16::g ; Grenade
+
 ; Fortnite
 #HotIf WinActive("ahk_exe FortniteClient-Win64-Shipping.exe")
  +Up::DllCall("mouse_event", "UInt", 0x01, "UInt", 0, "UInt", -1)
