@@ -60,6 +60,16 @@
  F15::4 ; Spell Hotbar Slot 4
  F16::1 ; Spell Hotbar Slot 1
 
+ ; League of Legends
+#HotIf WinActive("ahk_exe League of Legends.exe")
+F13::+RButton ; Player Attack Move Click
+F14::^3       ; Dance
+F15::^1       ; Joke
+F16::^2       ; Taunt
+F17::^4       ; Laugh
+F18::^6       ; Mastery
+F19::U        ; Fist Bump 
+
 ; Lethal Company
 #HotIf WinActive("ahk_exe Lethal Company.exe")
  NumpadAdd::Send("Switch{Enter}")
