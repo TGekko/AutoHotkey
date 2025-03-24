@@ -62,13 +62,13 @@
 
  ; League of Legends
 #HotIf WinActive("ahk_exe League of Legends.exe")
-F13::+RButton ; Player Attack Move Click
-F14::^3       ; Dance
-F15::^1       ; Joke
-F16::^2       ; Taunt
-F17::^4       ; Laugh
-F18::^6       ; Mastery
-F19::U        ; Fist Bump 
+F13::x  ; Player Attack Move Click
+F14::^3 ; Dance
+F15::^1 ; Joke
+F16::^2 ; Taunt
+F17::^4 ; Laugh
+F18::^6 ; Mastery
+F19::U  ; Fist Bump 
 
 ; Lethal Company
 #HotIf WinActive("ahk_exe Lethal Company.exe")

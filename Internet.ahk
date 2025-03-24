@@ -28,6 +28,12 @@ light := false
    dark.Show("x0 y0 w" A_ScreenWidth " h" A_ScreenHeight " NoActivate")
   }
  }
+ F7:: {
+  win := WinGetID('A')
+  WinActivate('ahk_class Shell_TrayWnd ahk_exe explorer.exe')
+  Send('{F7}')
+  WinActivate(win)
+ }
 #HotIf WinActive("AutoHotkey :: Internet.ahk > GUI")
  LButton up::hide(dark)
 #HotIf WinExist("AutoHotkey :: Internet.ahk > GUI")
