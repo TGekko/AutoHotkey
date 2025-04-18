@@ -101,12 +101,9 @@ activateWindowProfile(profile) {
  }
 }
 
-; Returns the bounds of the monitor which contains the active window.
-;  full   - A boolean value. If true, the full size of the monitor, including the taskbar, will be used.
-;           (Default == false)
-;  return - An array containing the bounds of the monitor containing the active window.
-;           The resulting array will have the following configuration: [x, y, width, height]
-activeWindowMonitorBounds(full:=false) {
+; Returns the number of the monitor which contains the active window.
+;  return - The number of the monitor which contains the active window.
+activeWindowMonitor() {
  WinGetPos(&x, &y, &width, &height, "A")
  x += width/2
  y += height/2
@@ -115,11 +112,32 @@ activeWindowMonitorBounds(full:=false) {
  if(monitorcount = 1) {
   monitor := 1
  } else {
+  score := [[0, 0]]
   Loop(monitorcount) {
-   MonitorGet(A_index, &bleft, &btop, &bright, &bbottom)
+   points := [A_Index, 0]
+   MonitorGet(A_Index, &bleft, &btop, &bright, &bbottom)
    if(x >= bleft && x <= bright && y >= btop && y <= bbottom) {
-    monitor := A_index
+    monitor := A_Index
     break
+   }
+   xy := [x-width/2, x+width/2, y-width/2, y+width/2]
+   if(xy[1] >= bleft && xy[1] <= bright)
+    points[2]++
+   if(xy[2] >= bleft && xy[2] <= bright)
+    points[2]++
+   if(xy[3] >= btop && xy[3] <= bbottom)
+    points[2]++
+   if(xy[4] >= btop && xy[4] <= bbottom)
+    points[2]++
+   score.Push(points)
+  }
+  if(monitor = 0) {
+   points := 0
+   for item in score {
+    if(item[2] > points) {
+     monitor := item[1]
+     points := item[2]
+    }
    }
   }
   if(monitor = 0) {
@@ -136,6 +154,16 @@ activeWindowMonitorBounds(full:=false) {
    monitor := MonitorGetPrimary()
   }
  }
+ return monitor
+}
+
+; Returns the bounds of the monitor which contains the active window.
+;  full   - A boolean value. If true, the full size of the monitor, including the taskbar, will be used.
+;           (Default == false)
+;  return - An array containing the bounds of the monitor containing the active window.
+;           The resulting array will have the following configuration: [x, y, width, height]
+activeWindowMonitorBounds(full:=false) {
+ monitor := activeWindowMonitor()
  bleft := 0
  btop := 0
  bright := 0
@@ -143,10 +171,35 @@ activeWindowMonitorBounds(full:=false) {
  if(full) {
   MonitorGet(monitor, &bleft, &btop, &bright, &bbottom)
  } else {
-  MonitorGetWorkArea(A_index, &bleft, &btop, &bright, &bbottom)
+  MonitorGetWorkArea(monitor, &bleft, &btop, &bright, &bbottom)
  }
  monitor := [bleft, btop, bright-bleft, bbottom-btop]
  return monitor
+}
+
+; Moves the active window to another monitor.
+;  monitor  - The desired monitor (if the monitor is 0 or doesn't exist, it defaults to the monitor the window is currently on)
+;  modifier - modifies the value of [monitor]. 1 adds one, -1 subtracts one, etc.
+activeMoveToMonitor(monitor:= 0, modifier:= 0) {
+ if(monitor < 1 || monitor > MonitorGetCount())
+  monitor := activeWindowMonitor()
+ monitor+= modifier
+ while(monitor < 1)
+  monitor+= MonitorGetCount()
+ while(monitor > MonitorGetCount())
+  monitor-= MonitorGetCount()
+ WinGetPos(&x, &y, &width, &height, 'A')
+ MonitorGetWorkArea(activeWindowMonitor(), &ax, &ay, &awidth, &aheight)
+ MonitorGetWorkArea(monitor, &bx, &by, &bwidth, &bheight)
+ awidth:= awidth-ax
+ aheight:= aheight-ay
+ bwidth:= bwidth-bx
+ bheight:= bheight-by
+ x:= ((x-ax)/awidth)*bwidth+bx
+ y:= ((y-ay)/aheight)*bheight+by
+ width := (width/awidth)*bwidth
+ height := (height/aheight)*bheight
+ WinMove(x, y, width, height, 'A')
 }
 
 ; Moves the active window to a given position within the monitor which it resides. The window is kept within the monitor.
@@ -201,14 +254,10 @@ activeMoveTo(x:=-1, y:=-1, width:=-1, height:=-1, full:=false, margins:=true) {
   }
  }
  if(x >= 0 && x <= 1) {
-  winx := bounds[1]+(bounds[3]*x)
-  winx := Min(winx, bounds[3]-winwidth/2)
-  winx := Max(winx, bounds[1]+winwidth/2)
+  winx := Max(Min(bounds[1]+(bounds[3]*x), bounds[1]+bounds[3]-winwidth/2), bounds[1]+winwidth/2)
  }
  if(y >= 0 && y <= 1) {
-  winy := bounds[2]+(bounds[4]*y)
-  winy := Min(winy, bounds[4]-winheight/2)
-  winy := Max(winy, bounds[2]+winheight/2)
+  winy := Max(Min(bounds[2]+(bounds[4]*y), bounds[2]+bounds[4]-winheight/2), bounds[2]+winheight/2)
  }
  winx-= winwidth/2
  winy-= winheight/2
@@ -451,6 +500,10 @@ ProcessResume(wintitle := 'A') {
 #NumpadMult::activeSizeBy(0.05, 0.05, true)
 ; Resize active window by -5% of the monitor size
 #NumpadDiv::activeSizeBy(-0.05, -0.05, true)
+
+; Move window to the previous or Next monitor
+^#NumpadSub::activeMoveToMonitor(,-1)
+^#NumpadAdd::activeMoveToMonitor(,1)
 
 ; Move window by one pixel in the direction of the numpad key with relation to [Numpad5]
 ^#Numpad8::activeMoveBy(, -1)
