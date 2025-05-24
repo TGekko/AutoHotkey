@@ -98,6 +98,15 @@ F19::U  ; Fist Bump
    Send('{f up}')
   }
 
+ ; R.E.P.O.
+#HotIf WinActive("ahk_exe REPO.exe")
+ ~F13::0 ; Happy
+ ~F14::9 ; Crazy
+ ~F15::5 ; Angry
+ ~F16::7 ; Suspicious
+ ~F17::6 ; Sad
+ ~F18::8 ; Eyes Closed
+
  ; Sonic Adventure DX
 #HotIf WinActive("ahk_exe Sonic Adventure DX.exe")
 w::Up         ; Forward
