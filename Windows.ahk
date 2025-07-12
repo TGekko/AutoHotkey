@@ -535,7 +535,6 @@ ProcessResume(wintitle := 'A') {
 
 ; Toggle "Always On Top" for the active window
 ^#a::WinSetAlwaysOnTop(-1, "A")
-NumLock:: WinSetAlwaysOnTop(-1, "A")
 ; Keep the active window on bottom and hide it from the taskbar
 ^#+a::DllCall("SetParent", "Ptr", WinGetID("A"), "Ptr", WinGetID("ahk_class WorkerW", "FolderView"))
 ; Set the active window's parent to the desktop -- useful for allowing windows forcibly kept on bottom to move again

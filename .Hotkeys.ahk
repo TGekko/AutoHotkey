@@ -31,6 +31,8 @@ menus := {
  tray: A_TrayMenu,
 }
 
+extenddisplay := true
+
 showMenu() {
  global loaded
  if(loaded) {
@@ -119,7 +121,7 @@ for(i, troubleshooter in troubleshooters) {
 ; 0            == Dividing Line
 ; ["", "", ""] == ["Left menu item", "Right menu item", "Hotkey to Send when selected"]
 scripthotkeys := Map()
-scripthotkeys[".Hotkeys"] := [["Show Menu", "Win+Right Click", "#{RButton}"], 0, ["Hold Left Click", "Alt+9", "!9"], ["Hold Right Click", "Alt+0", "!0"], ["Repeat Left Click", "Alt+Shift+9", "!+9"], ["Repeat Right Click", "Alt+Shift+0", "!+0"], ["Move Constantly", "Alt+Shift+Backspace", "!+{Backspace}"], 0, ["Stop Running Hotkey", "Pause or End", "{Pause}"], 0, ["Move Mouse Up", "Alt+Up", "!{Up}"], ["Mouse Mouse Down", "Alt+Down", "!{Down}"], ["Mouse Mouse Left", "Alt+Left", "!{Left}"], ["Mouse Mouse Right", "Alt+Right", "!{Right}"], ["Left Click", "Alt+[", "!["], ["Right Click", "Alt+]", "!]"], 0, ["Toggle Reticle", "Alt+Insert", "!{Insert}"], ["Toggle Amplified Cursor", "Alt+Print Screen", "!{PrintScreen}"]]
+scripthotkeys[".Hotkeys"] := [["Show Menu", "Win+Right Click", "#{RButton}"], 0, ["Hold Left Click", "Alt+9", "!9"], ["Hold Right Click", "Alt+0", "!0"], ["Repeat Left Click", "Alt+Shift+9", "!+9"], ["Repeat Right Click", "Alt+Shift+0", "!+0"], ["Move Constantly", "Alt+Shift+Backspace", "!+{Backspace}"], 0, ["Stop Running Hotkey", "Pause or End", "{Pause}"], 0, ["Move Mouse Up", "Alt+Up", "!{Up}"], ["Mouse Mouse Down", "Alt+Down", "!{Down}"], ["Mouse Mouse Left", "Alt+Left", "!{Left}"], ["Mouse Mouse Right", "Alt+Right", "!{Right}"], ["Left Click", "Alt+[", "!["], ["Right Click", "Alt+]", "!]"], 0, ["Toggle Reticle", "Alt+Insert", "!{Insert}"], ["Toggle Amplified Cursor", "Alt+Print Screen", "!{PrintScreen}"], 0, ["Windows Key", "NumLock", "{NumLock}"], ["Toggle NumLock", "Win+NumLock", "#{NumLock}"], ["Toggle Displays to Extend or Clone", "NumLock+Delete", "{NumLock Down}{Delete}{NumLock Up}"]]
 scripthotkeys["Magicka"] := [["Show Spell Menu", "Alt+Right Click", "!{RButton}"], 0, ["Cast Charm", "Numpad 0", "{Numpad0}"], ["Cast Conflagration", "Numpad 1", "{Numpad1}"], ["Cast Confuse", "Numpad 2", "{Numpad2}"], ["Cast Corporealize", "Numpad 3", "{Numpad3}"], ["Cast Crash to Desktop", "Numpad 4", "{Numpad4}"], ["Cast Fear", "Numpad 5", "{Numpad5}"], ["Cast Invisibility", "Numpad 6", "{Numpad6}"], ["Cast Meteor Storm", "Numpad 7", "{Numpad7}"], ["Cast Raise Dead", "Numpad 8", "{Numpad8}"], ["Cast Summon Death", "Numpad 9", "{Numpad9}"], ["Cast Summon Elemental", "Numpad Add", "{NumpadAdd}"], ["Cast Thunder Storm", "Numpad Dot", "{NumpadDot}"], ["Cast Vortex", "Numpad Subtract", "{NumpadSub}"]]
 scripthotkeys["Risk of Rain 2"] := [["Show Item Reference", "Left Control", "{LControl}"], ["Show Help", "Right Control", "{RControl}"]]
 scripthotkeys["Valheim"] := [["Press E 10 times", "Alt+E", "!e"], ["Scroll Through Hotbar", "Alt+Scroll", ""], ["Move Mouse", "Arrow Keys", ""], ["Left Click", "Backslash", "\"], 0, ["Train Bow", "Alt+1", "!1"], ["Train Jump", "Alt+2", "!2"], ["Train Run", "Alt+3", "!3"], ["Train Sneak", "Alt+4", "!4"], ["Train Sword", "Alt+5", "!5"]]
@@ -290,6 +292,21 @@ begin()
 !] Up::Click("Right Up")
 #RButton up::showMenu()
 #AppsKey::showMenu()
+*NumLock::{
+ Send('{LWin Down}')
+ KeyWait("NumLock")
+ Send('{LWin Up}')
+}
+#NumLock::Send('{NumLock}')
+NumLock & Delete::{
+ global extenddisplay
+ if(extenddisplay) {
+  Run(A_WinDir "\System32\DisplaySwitch.exe 2")
+ } else {
+  Run(A_WinDir "\System32\DisplaySwitch.exe 3")
+ }
+ extenddisplay:= !extenddisplay
+}
 
 !Insert::toggleReticle()
 !PrintScreen::{
