@@ -104,54 +104,18 @@ activateWindowProfile(profile) {
 ; Returns the number of the monitor which contains the active window.
 ;  return - The number of the monitor which contains the active window.
 activeWindowMonitor() {
- WinGetPos(&x, &y, &width, &height, "A")
- x += width/2
- y += height/2
- monitorcount := MonitorGetCount()
- monitor := 0
- if(monitorcount = 1) {
-  monitor := 1
- } else {
-  score := [[0, 0]]
-  Loop(monitorcount) {
-   points := [A_Index, 0]
-   MonitorGet(A_Index, &bleft, &btop, &bright, &bbottom)
-   if(x >= bleft && x <= bright && y >= btop && y <= bbottom) {
-    monitor := A_Index
-    break
-   }
-   xy := [x-width/2, x+width/2, y-width/2, y+width/2]
-   if(xy[1] >= bleft && xy[1] <= bright)
-    points[2]++
-   if(xy[2] >= bleft && xy[2] <= bright)
-    points[2]++
-   if(xy[3] >= btop && xy[3] <= bbottom)
-    points[2]++
-   if(xy[4] >= btop && xy[4] <= bbottom)
-    points[2]++
-   score.Push(points)
-  }
-  if(monitor = 0) {
-   points := 0
-   for item in score {
-    if(item[2] > points) {
-     monitor := item[1]
-     points := item[2]
-    }
-   }
-  }
-  if(monitor = 0) {
-   MouseGetPos &x, &y
-   Loop(monitorcount) {
-    MonitorGet(A_index, &bleft, &btop, &bright, &bbottom)
-    if(x >= bleft && x <= bright && y >= btop && y <= bbottom) {
-     monitor := A_index
-     break
-    }
-   }
-  }
-  if(monitor = 0) {
-   monitor := MonitorGetPrimary()
+ WinGetPos(&x, &y, &w, &h, "A")
+ count := MonitorGetCount()
+ if(count = 1)
+  return 1
+ monitor := 1
+ topscore := 0
+ Loop(count) {
+  MonitorGet(A_Index, &l, &t, &r, &b)
+  score := Max(0, Min(x+w, r)-Max(x, l))*Max(0, Min(y+h, b)-Max(y, t))
+  if(score > topscore) {
+   monitor := A_Index
+   topscore := score
   }
  }
  return monitor
