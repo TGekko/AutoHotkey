@@ -45,6 +45,13 @@
  F17::1     ; Summon
  F18::b     ; Boon Info
  F19::c     ; Open Codex
+
+; Haste
+#HotIf WinActive("ahk_exe Haste.exe")
+ F13::1     ; Item 2
+ F14::2     ; Item 3
+ F15::3     ; Item 4
+ F16::4     ; Item 5
  
 ; Helldivers 2
 #HotIf WinActive("ahk_exe helldivers2.exe")
