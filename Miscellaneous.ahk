@@ -86,7 +86,8 @@ F19::U  ; Fist Bump
 
 ; Minecraft
 #HotIf WinActive("Minecraft")
- F14::F1                                                    ; Toggle Perspective
+ F14::F5                                                    ; Toggle Perspective
+ F15::F1                                                    ; Toggle UI
  F16::Send("{F3 down}b{F3 up}")                             ; Toggle Hitboxes
  F17::F3                                                    ; View Information
  F18::Send("{F3 down}g{F3 up}")                             ; Toggle Chunk Borders

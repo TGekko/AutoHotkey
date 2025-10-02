@@ -264,9 +264,6 @@ activeSizeBy(width:=0, height:=0, percent:=false, screen:=false) {
    width := winwidth*width
    height := winheight*height
   }
- } else {
-  width := width
-  height := height
  }
  x -= width/2
  y -= height/2
@@ -491,6 +488,14 @@ ProcessResume(wintitle := 'A') {
 #NumpadSub:: activeMoveTo(0.5, 0.5, 1, 1)
 ; Set window to 100% of the screen's size including the taskbar
 #!NumpadSub:: activeMoveTo(0.5, 0.5, 1, 1, true, false)
+; Set window to 100% of the screen's size and extend above the screen (used for web browsers to achieve pseudo fullscreen).
+#HotIf WinActive("ahk_group browsers")
+^#!NumpadSub:: {
+ activeMoveTo(0.5, 0.5, 1, 1)
+ activeSizeBy(,160)
+ activeMoveBy(,-80)
+}
+#HotIf
 
 ; Minimize the active window to the system tray
 #Backspace::toTray()
