@@ -69,7 +69,7 @@
 
  ; League of Legends
 #HotIf WinActive("ahk_exe League of Legends.exe")
-F13::x  ; Player Attack Move Click
+F13::`  ; Recall (previously x - Player Attack Move Click)
 F14::^3 ; Dance
 F15::^1 ; Joke
 F16::^2 ; Taunt
