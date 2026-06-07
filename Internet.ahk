@@ -10,8 +10,6 @@ light := false
 #HotIf WinActive("ahk_group browsers")
  !+Left::Send("!{Left}")
  !+Right::Send("!{Right}")
- ^Right::Send("{Right 17}")
- ^Left::Send("{Left 17}")
  ^+#/:: {
   global dark
   if(!hide(dark)) {
@@ -19,11 +17,11 @@ light := false
    dark.BackColor := "000000"
    WinSetTransColor("100100", dark.Hwnd)
    WinGetPos(&x, &y, &w, &h, "A")
-   WinMove(x, y-56,,, "A")
+   WinMove(x, y-61,,, "A")
    x += 14
-   y += 58
+   y += 61
    w -= 28
-   h -= 127
+   h -= 130
    dark.Add("Progress", "x" x " y" y " w" w " h" h " c100100 background100100 vwindow", 100)
    dark.Show("x0 y0 w" A_ScreenWidth " h" A_ScreenHeight " NoActivate")
   }

@@ -131,7 +131,7 @@ Backspace::d  ; Back
 Escape::Enter ; Pause
 
 ; Terraria
-#HotIf WinActive("Terraria")
+#HotIf WinActive("ahk_exe Terraria.exe")
  F13::m                                             ; Map
  !1::Run("Miscellaneous\Terraria\Honey.ahk")        ; Duplicate Honey
  !2::Run("Miscellaneous\Terraria\Lava.ahk")         ; Duplicate Lava
