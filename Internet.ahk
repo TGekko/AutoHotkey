@@ -20,8 +20,8 @@ light := false
    WinMove(x, y-61,,, "A")
    x += 14
    y += 61
-   w -= 28
-   h -= 130
+   w -= 24
+   h -= 132
    dark.Add("Progress", "x" x " y" y " w" w " h" h " c100100 background100100 vwindow", 100)
    dark.Show("x0 y0 w" A_ScreenWidth " h" A_ScreenHeight " NoActivate")
   }
