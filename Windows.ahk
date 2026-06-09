@@ -492,8 +492,8 @@ ProcessResume(wintitle := 'A') {
 #HotIf WinActive("ahk_group browsers")
 ^#!NumpadSub:: {
  activeMoveTo(0.5, 0.5, 1, 1)
- activeSizeBy(,160)
- activeMoveBy(,-80)
+ activeSizeBy(,170)
+ activeMoveBy(,-85)
 }
 #HotIf
 
